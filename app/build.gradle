@@ -1,0 +1,59 @@
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+}
+
+android {
+    useLibrary 'org.apache.http.legacy'
+    namespace 'com.example.myaquarium'
+    compileSdk 32
+
+    defaultConfig {
+        applicationId "com.example.myaquarium"
+        minSdk 21
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_9
+        targetCompatibility JavaVersion.VERSION_1_9
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.loopj.android:android-async-http:1.4.5'
+    implementation 'com.google.code.gson:gson:2.10'
+    implementation 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+    implementation platform('com.google.firebase:firebase-bom:31.1.1')
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.navigation:navigation-fragment:2.5.3'
+    implementation 'androidx.navigation:navigation-ui:2.5.3'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
+    implementation 'com.android.volley:volley:1.2.1'
+    implementation files('D:/university/vkr/lib/json-20090211')
+    implementation 'org.apache:apache:29'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    implementation 'com.android.volley:volley:1.2.1'
+    implementation "androidx.fragment:fragment:1.5.5"
+}

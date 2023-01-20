@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/layout"
+    tools:context=".fragment.FragmentForumSections"
+    tools:listitem="@layout/forum_sections_item">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/layout"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="Введите название темы для поиска"
+            android:paddingStart="10dp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            tools:ignore="RtlSymmetry" />
+        <SearchView
+            android:id="@+id/search"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:textSize="16sp"
+            android:background="@color/menuColor"
+            app:defaultQueryHint="Введите название темы" />
+
+        <Button
+            android:id="@+id/filters"
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+            android:layout_marginEnd="5dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/bthAll"
+            android:text="Фильтр"
+            tools:ignore="RtlHardcoded" />
+
+        <CheckBox
+            android:id="@+id/all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:checked="true"
+            android:text="Показать все разделы"
+            android:visibility="gone"
+            />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sectionsFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center_vertical"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/forum_sections_list_items" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:visibility="visible"
+            android:id="@+id/themesRecycler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/forum_sections_item" />
+
+    </LinearLayout>
+
+</FrameLayout>

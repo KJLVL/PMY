@@ -1,0 +1,88 @@
+<resources>
+    <string name="app_name_rus">Мой Аквариум</string>
+    <string name="logo">Logo</string>
+    <string name="tips_text">Статьи</string>
+    <string name="calendar_text">Календарь</string>
+    <string name="service_text">Сервисы</string>
+    <string name="forum_text">Форум</string>
+    <string name="profile_text">Профиль</string>
+    <string name="settings_text">Настройки профиля</string>
+
+    <string name="sign_text">Войдите в свою учетную запись</string>
+    <string name="registration_text">Регистрация</string>
+    <string name="sign_in_text">Вход</string>
+
+    <string name="logo_text">Мой аквариум</string>
+    <string name="title_activity_calendar">Calendar</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <!--    for service-->
+    <!--    calculators-->
+    <string name="service_menu_calculators">Калькуляторы</string>
+    <string name="service_menu_compatibility">Совместимость</string>
+    <string name="service_menu_calendar">Календарь</string>
+    <string name="service_calculator_volume">Калькулятор объема аквариума</string>
+    <string name="service_calculator_priming">Калькулятор объема грунта</string>
+    <string name="service_volume_fish">Выберите рыбок, которые живут в вашем аквариуме</string>
+    <string name="service_calculator_search">Поиск</string>
+    <string name="service_use_my_fish">Расчитать для рыбок, указанных в профиле</string>
+    <string name="service_calculate">Рассичтать объем аквариума</string>
+    <string name="service_rec_vol">Необходимый объем аквариума:</string>
+    <string name="service_rec_prim_length">Длина аквариума:</string>
+    <string name="service_rec_prim_width">Ширина аквариума:</string>
+    <string name="service_rec_prim_height">Высота аквариума:</string>
+    <string name="service_rec_prim_thickness"> Желаемый слой грунта:</string>
+    <string name="service_calculate2">Рассичтать объем грунта</string>
+    <string name="service_rec_prim">Необходимое количество грунта:</string>
+    <string name="service_question">?</string>
+    <string name="service_message">*Данные рассчитаны из количества выбранных рыбок и необходимого минимума объема воды для каждой. Для еще более комфортного проживания рыбок в аквариуме рекомедуется добавить к полученному результату ~10–30 литров!</string>
+
+    <!--    for compatibility-->
+    <string name="service_com_title">Совместимость аквариумных рыбок</string>
+    <string name="service_com_text">Выберите рыбок для расчета совместимости</string>
+    <string name="service_com_btn">Проверить рыбок на совместимость</string>
+    <string name="service_com_result_text">Ваш расчет совместимости</string>
+    <string name="service_com_result1">Совместимы</string>
+    <string name="service_com_result2">Невсегда совместимы</string>
+    <string name="service_com_result3">Несовместимы</string>
+    <string name="service_com_result_decoding">Расшифровка результатов</string>
+
+    <!--    for forum-->
+    <string name="forum_menu_sections">Обсуждения</string>
+    <string name="forum_menu_swap">Объявления</string>
+    <string name="forum_menu_my">Мои темы</string>
+
+    <!--    for profile settings-->
+    <string name="settings_download">Загрузить изображение</string>
+    <string name="settings_personal_data">Личные данные</string>
+    <string name="settings_name_field">*Имя</string>
+    <string name="settings_surname_field">Фамилия</string>
+    <string name="settings_city_field">Город</string>
+    <string name="settings_phone_field">Номер телефона</string>
+    <string name="settings_login_field">*Логин</string>
+    <string name="settings_password_field">Пароль</string>
+    <string name="settings_password">изменить пароль</string>
+    <string name="settings_security">Данные для входа</string>
+    <string name="settings_aquarium_data">Данные об аквариуме и рыбках</string>
+    <string name="settings_volume">Объем аквариума:</string>
+    <string name="settings_my_fish">Мои рыбки</string>
+    <string name="settings_add">Выберите рыбок для добавления</string>
+    <string name="settings_save">Сохранить</string>
+
+    <!--    for profile-->
+    <string name="settings_myLikeData">Избранное</string>
+    <string name="settings_discussionsField">Избранные обсуждения:</string>
+    <string name="settings_adsField">Избранные объявления:</string>
+    <string name="settings_tipsField">Избранные статьи:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

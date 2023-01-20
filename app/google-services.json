@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1038787006956",
+    "project_id": "myaquarium1303",
+    "storage_bucket": "myaquarium1303.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1038787006956:android:40dadfce9301e16f3770c9",
+        "android_client_info": {
+          "package_name": "com.example.myaquarium"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1038787006956-b0gdc3q7uku15u08g30bbjp48sfjr6ms.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTV-KjyLsXCTB89GpsYNJ0nYocSuDHf8Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1038787006956-b0gdc3q7uku15u08g30bbjp48sfjr6ms.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

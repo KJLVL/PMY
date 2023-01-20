@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/sectionsItem"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/menuColor"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UselessParent">
+
+        <ImageView
+            android:id="@+id/ImageView"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/forum_item"
+            android:contentDescription="@string/logo" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/theme"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_weight="4"
+                android:text="База совместимости рыб"
+                android:textAlignment="textStart"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                tools:ignore="RtlCompat" />
+
+            <TextView
+                android:id="@+id/author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="автор: juli"
+                android:textAlignment="textStart"
+                android:textColor="@color/bthAll"
+                android:textSize="14sp"
+                tools:ignore="RtlCompat" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="#605C5C" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

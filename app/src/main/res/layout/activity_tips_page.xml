@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mainColor"
+    android:id="@+id/tipsPageBG"
+    tools:context=".TipsPage">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ScrollView
+        android:layout_width="381dp"
+        android:layout_height="782dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/include"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="381dp"
+            android:layout_height="809dp"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/items"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="328dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="Выбор аквариума"
+                    android:textColor="@color/black"
+                    android:textSize="30sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="380dp"
+                    android:layout_height="268dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.428"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:srcCompat="@drawable/aquarium" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_thin"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="Аквариум – это красиво. Но чтобы любоваться подводным миром в своей квартире, недостаточно просто пойти в магазин и выбрать первый приглянувшийся резервуар. Подобный опрометчивый поступок в будущем обернется проблемами и разочарованиями. Напротив, выбирать обитель для рыбок нужно неторопливо, изучив все тонкости «банок» (как называют аквариумы профессионалы). На что же следует обращать внимание?"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:layout_marginStart="10dp"
+                    android:text="Хочу аквариум: с чего начать?"
+                    android:gravity="center"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_thin"
+                    android:layout_marginStart="10dp"
+                    android:text="Сразу следует отметить, что аквариумистика для начинающих – достаточно затратное увлечение, если говорить о первоначальных вложениях. Но что же следует учитывать тем, кто твёрдо решил приобрести аквариум?\
+
+Первый вопрос, на который нужно ответить будущему аквариумисту – будет ли аквариум играть роль декоративного элемента, или его первостепенной задачей является жизнеобеспечение выбранных организмов?
+
+Ответ определит один из двух подходов к выбору резервуара:
+
+На первый план выдвигается гармония с интерьером. Выбор обитателей подводного мира будет ограничиваться внешней формой аквариума и его отделкой.
+Объем и геометрия стеклянной части аквариума будут продиктованы маленькими жителями. Решение принимается на основании количества и размера рыб, их совместимости и условий обитания, необходимых растений, а также оборудования для поддержания жизнедеятельности."
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:layout_marginStart="10dp"
+                    android:text="TextView"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_thin"
+                    android:layout_marginStart="10dp"
+                    android:text="dhifhudivfu\ndjiofcsodiffjocdjld\nhfouehchndfcodschn\nhfiuefchbidfcui\nhfuidhfciusdfhcufch\nffffff"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:layout_marginStart="10dp"
+                    android:text="TextView"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_thin"
+                    android:layout_marginStart="10dp"
+                    android:text="dhifhudiv fu\ndjiofcsodiffjocdjld\nhfouehchndfcodschn\nhfiuefchbidfcui\nhfuidhfciusdfhcufch\nffffff"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
