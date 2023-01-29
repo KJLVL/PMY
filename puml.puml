@@ -1,0 +1,709 @@
+@startuml
+class com.example.myaquarium.ExampleInstrumentedTest {
++ void useAppContext()
+}
+class com.example.myaquarium.adapter.view.TipsMenuViewHolder {
++ TextView categoryTitle
+}
+class com.example.myaquarium.databinding.MenuBinding {
+- RelativeLayout rootView
++ TextView forum
++ TextView profile
++ TextView service
++ RelativeLayout getRoot()
++ {static} MenuBinding inflate(LayoutInflater)
++ {static} MenuBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} MenuBinding bind(View)
+}
+class com.example.myaquarium.databinding.FragmentForumSectionsBinding {
+- FrameLayout rootView
++ CheckBox all
++ Button filters
++ SearchView search
++ RecyclerView sectionsFilter
++ RecyclerView themesRecycler
++ FrameLayout getRoot()
++ {static} FragmentForumSectionsBinding inflate(LayoutInflater)
++ {static} FragmentForumSectionsBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} FragmentForumSectionsBinding bind(View)
+}
+class com.example.myaquarium.adapter.FishListWithChoiceAdapter {
+- Context context
+- List<String> fishList
+- OnFishClickListener onClickListener
++ FishListWithChoiceViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(FishListWithChoiceViewHolder,int)
++ int getItemCount()
+}
+interface com.example.myaquarium.adapter.FishListWithChoiceAdapter.OnFishClickListener {
+~ void onStateClick(CheckBox)
+}
+class com.example.myaquarium.databinding.FragmentServiceCalculatorFishBinding {
+- FrameLayout rootView
++ Button btnFish
++ Button btnRes
++ Button calculationFish
++ RecyclerView listview
++ RecyclerView listviewResult
++ LinearLayout result
++ LinearLayout textResult
++ TextView textView3
++ FrameLayout getRoot()
++ {static} FragmentServiceCalculatorFishBinding inflate(LayoutInflater)
++ {static} FragmentServiceCalculatorFishBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} FragmentServiceCalculatorFishBinding bind(View)
+}
+class com.example.myaquarium.databinding.FishListItemByCompResultBinding {
+- ConstraintLayout rootView
++ TextView fish
++ ImageView image
++ ConstraintLayout getRoot()
++ {static} FishListItemByCompResultBinding inflate(LayoutInflater)
++ {static} FishListItemByCompResultBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} FishListItemByCompResultBinding bind(View)
+}
+class com.example.myaquarium.adapter.FishListAdapter {
+- Context context
+- {static} List<List<String>> fishList
++ FishListViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(FishListViewHolder,int)
++ int getItemCount()
+}
+class com.example.myaquarium.databinding.ActivitySignInBinding {
+- RelativeLayout rootView
++ AppCompatButton btnRegistration
++ AppCompatButton btnSignIn
++ RelativeLayout root
++ TextView sign
++ RelativeLayout getRoot()
++ {static} ActivitySignInBinding inflate(LayoutInflater)
++ {static} ActivitySignInBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} ActivitySignInBinding bind(View)
+}
+class com.example.myaquarium.fragment.FragmentServiceCalendar {
++ {static} FragmentServiceCalendar newInstance()
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+}
+class com.example.myaquarium.databinding.ActivityProfileSettingsBinding {
+- RelativeLayout rootView
++ EditText city
++ Button download
++ LinearLayout header
++ ImageView image
++ MenuBinding include
++ EditText login
++ EditText name
++ TextView password
++ EditText phone
++ CardView photo
++ RelativeLayout root
++ Button save
++ EditText surname
++ ToolbarBinding toolbar
++ RelativeLayout getRoot()
++ {static} ActivityProfileSettingsBinding inflate(LayoutInflater)
++ {static} ActivityProfileSettingsBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} ActivityProfileSettingsBinding bind(View)
+}
+class com.example.myaquarium.adapter.ForumThemesAdapter {
+- Context context
+- List<List<String>> themesList
+- OnThemeClickListener onClickListener
++ ForumThemesViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(ForumThemesViewHolder,int)
++ int getItemCount()
+}
+interface com.example.myaquarium.adapter.ForumThemesAdapter.OnThemeClickListener {
+~ void onStateClick(String)
+}
+class com.example.myaquarium.databinding.ActivityForumItemBinding {
+- ConstraintLayout rootView
++ TextView title
++ ConstraintLayout getRoot()
++ {static} ActivityForumItemBinding inflate(LayoutInflater)
++ {static} ActivityForumItemBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} ActivityForumItemBinding bind(View)
+}
+class com.example.myaquarium.databinding.RegistrationWindowBinding {
+- CardView rootView
++ MaterialEditText loginField
++ MaterialEditText nameField
++ MaterialEditText passwordField
++ CardView getRoot()
++ {static} RegistrationWindowBinding inflate(LayoutInflater)
++ {static} RegistrationWindowBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} RegistrationWindowBinding bind(View)
+}
+class com.example.myaquarium.databinding.ActivityForumBinding {
+- RelativeLayout rootView
++ LinearLayout header
++ MenuBinding include
++ BottomNavigationView navigation
++ LinearLayout scrollSections
++ ToolbarBinding toolbar
++ RelativeLayout getRoot()
++ {static} ActivityForumBinding inflate(LayoutInflater)
++ {static} ActivityForumBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} ActivityForumBinding bind(View)
+}
+class com.example.myaquarium.ExampleUnitTest {
++ void addition_isCorrect()
+}
+class com.example.myaquarium.databinding.ActivityTipsBinding {
+- RelativeLayout rootView
++ LinearLayout header
++ MenuBinding include
++ RecyclerView tipsMenu
++ RecyclerView tipsRecycler
++ ToolbarBinding toolbar
++ RelativeLayout getRoot()
++ {static} ActivityTipsBinding inflate(LayoutInflater)
++ {static} ActivityTipsBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} ActivityTipsBinding bind(View)
+}
+class com.example.myaquarium.Profile {
+- RecyclerView listView
+- RecyclerView fishRecycler
+- SearchView search
+- Requests requests
+~ TextView nameField
+~ TextView volumeField
+- FishListAdapter fishAdapter
+- FishListViewAdapter fishListAdapter
+- List<List<String>> fishListAll
+- Map<String,String> userInfo
+- List<String> fishList
+- {static} List<List<String>> fishListCurrent
+# void onCreate(Bundle)
+- void setToolbar()
+- void searchAction()
+- void searchFishByEditText(String)
+- void getUser()
+- void getUserFish()
+- void getFishList()
+- void setSelectedFishList(List<String>)
+- void setFishList(List<List<String>>)
+- void setStyleSearchView()
+}
+class com.example.myaquarium.Forum {
+- BottomNavigationView bottomNavigationView
+# void onCreate(Bundle)
+- void setToolbar()
+- void loadFragment(Fragment)
+}
+class com.example.myaquarium.databinding.ActivityServiceBinding {
+- RelativeLayout rootView
++ LinearLayout header
++ MenuBinding include
++ ScrollView scrollService
++ ToolbarBinding toolbar
++ RelativeLayout getRoot()
++ {static} ActivityServiceBinding inflate(LayoutInflater)
++ {static} ActivityServiceBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} ActivityServiceBinding bind(View)
+}
+class com.example.myaquarium.databinding.ActivityTipsPageBinding {
+- ConstraintLayout rootView
++ CardView cardView
++ ImageView image
++ MenuBinding include
++ TextView textView3
++ TextView textView4
++ TextView textView5
++ TextView textView6
++ TextView textView7
++ TextView textView8
++ TextView textView9
++ ConstraintLayout tipsPageBG
++ TextView title
++ ConstraintLayout getRoot()
++ {static} ActivityTipsPageBinding inflate(LayoutInflater)
++ {static} ActivityTipsPageBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} ActivityTipsPageBinding bind(View)
+}
+class com.example.myaquarium.SignIn {
+- {static} String urlSignIn
+- {static} String urlRegistration
+- Button btnSignIn
+- Button btnRegistration
+- RelativeLayout root
+# void onCreate(Bundle)
+- void showRegistrationWindow()
+- void showSignInWindow()
+- void getNotice(String)
+}
+class com.example.myaquarium.databinding.ActivityProfileBinding {
+- RelativeLayout rootView
++ TextView addFish
++ RecyclerView fishListItems
++ LinearLayout header
++ ImageView image
++ MenuBinding include
++ RecyclerView listview
++ TextView nameField
++ CardView photo
++ Button save
++ SearchView search
++ ImageButton settings
++ ToolbarBinding toolbar
++ EditText volumeField
++ RelativeLayout getRoot()
++ {static} ActivityProfileBinding inflate(LayoutInflater)
++ {static} ActivityProfileBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} ActivityProfileBinding bind(View)
+}
+class com.example.myaquarium.fragment.FragmentServiceCalculatorPriming {
+- View inflatedView
+- Button calcPriming
+- TextView recPrimText
++ {static} FragmentServiceCalculatorPriming newInstance()
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+- void setToolbar()
+- void setMessage()
+- void calculatePriming()
+}
+class com.example.myaquarium.databinding.SignInWindowBinding {
+- CardView rootView
++ MaterialEditText loginField
++ TextView notice
++ MaterialEditText passwordField
++ CardView getRoot()
++ {static} SignInWindowBinding inflate(LayoutInflater)
++ {static} SignInWindowBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} SignInWindowBinding bind(View)
+}
+class com.example.myaquarium.BuildConfig {
++ {static} boolean DEBUG
++ {static} String APPLICATION_ID
++ {static} String BUILD_TYPE
++ {static} int VERSION_CODE
++ {static} String VERSION_NAME
+}
+class com.example.myaquarium.adapter.view.FishViewHolder {
++ TextView item
+}
+class com.example.myaquarium.adapter.view.ResultCompatibilityViewHolder {
++ TextView name
++ ImageView result
+}
+class com.example.myaquarium.databinding.FishListItemByCompBinding {
+- ConstraintLayout rootView
++ CheckBox item
++ ConstraintLayout getRoot()
++ {static} FishListItemByCompBinding inflate(LayoutInflater)
++ {static} FishListItemByCompBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} FishListItemByCompBinding bind(View)
+}
+class com.example.myaquarium.databinding.ThemesItemBinding {
+- RelativeLayout rootView
++ TextView author
++ TextView date
++ TextView theme
++ RelativeLayout getRoot()
++ {static} ThemesItemBinding inflate(LayoutInflater)
++ {static} ThemesItemBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} ThemesItemBinding bind(View)
+}
+class com.example.myaquarium.databinding.TipsItemBinding {
+- ConstraintLayout rootView
++ LinearLayout tipsBg
++ TextView tipsContent
++ ImageView tipsImage
++ TextView tipsTitle
++ ConstraintLayout getRoot()
++ {static} TipsItemBinding inflate(LayoutInflater)
++ {static} TipsItemBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} TipsItemBinding bind(View)
+}
+class com.example.myaquarium.databinding.FragmentServiceCalculatorPrimingBinding {
+- FrameLayout rootView
++ Button btnPr
++ Button calculationP
++ EditText length
++ TextView priming
++ FrameLayout primingView
++ TextView recPrimText
++ EditText thickness
++ EditText width
++ FrameLayout getRoot()
++ {static} FragmentServiceCalculatorPrimingBinding inflate(LayoutInflater)
++ {static} FragmentServiceCalculatorPrimingBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} FragmentServiceCalculatorPrimingBinding bind(View)
+}
+class com.example.myaquarium.Service {
+# void onCreate(Bundle)
+- void setToolbar()
+- void loadFragment(Fragment)
+}
+class com.example.myaquarium.fragment.FragmentServiceCalculatorVolume {
+- View inflatedView
+- Button calcVolume
+- RecyclerView listView
+- RecyclerView fishRecycler
+- SearchView search
+- CheckBox useMyFish
+- TextView volumeText
+- TextView result
+- TextView message
+- Requests requests
+- FishListAdapter fishAdapter
+- FishListViewAdapter fishListAdapter
+- List<List<String>> fishListAll
+- List<String> fishList
+- {static} List<List<String>> fishListCurrent
++ {static} FragmentServiceCalculatorVolume newInstance()
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+- void setToolbar()
+- void setMessage()
+- void searchAction()
+- void calculateVolume()
+- int calculateFishByList(List<List<String>>)
+- void searchFishByEditText(String)
+- void setSelectedFishList(List<String>)
+- void getFishList()
+- void getUserFish()
+- void setFishList(List<List<String>>)
+}
+class com.example.myaquarium.adapter.view.FishListViewHolder {
++ TextView nameView
++ TextView countView
++ Button addButton
++ Button removeButton
++ Button deleteButton
+}
+class com.example.myaquarium.adapter.view.ForumThemesListViewHolder {
++ TextView section
++ CheckBox checkBox
+}
+class com.example.myaquarium.adapter.ResultCompatibilityAdapter {
+- Context context
+- List<List<String>> fishList
++ ResultCompatibilityViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(ResultCompatibilityViewHolder,int)
++ int getItemCount()
+}
+class com.example.myaquarium.Tips {
+- List<String> tipsMenuList
+~ {static} TipsAdapter tipsAdapter
+- TipsMenuAdapter tipsMenuAdapter
+~ {static} List<List<String>> tipsList
+~ {static} List<List<String>> fullTipsList
+- Requests requests
+- RecyclerView tipsMenuRecycler
+- RecyclerView tipsRecycler
+# void onCreate(Bundle)
+- void setToolbar()
+- void getTipsMenu()
+- void getTips()
+- void setTipsRecycler()
+- void setCategoryRecycler()
++ {static} void showTipsByCategory(int)
+}
+class com.example.myaquarium.adapter.view.ForumThemesViewHolder {
++ LinearLayout sectionsItem
++ TextView theme
++ TextView author
+}
+class com.example.myaquarium.TipsPage {
+# void onCreate(Bundle)
+}
+class com.example.myaquarium.ProfileSettings {
+- EditText name
+- EditText surname
+- EditText city
+- EditText phone
+- EditText login
+- TextView password
+- Button save
+- RelativeLayout root
+- Map<String,String> userInfo
+- Requests requests
+~ ActivityResultLauncher<Intent> someActivityResultLauncher
+# void onCreate(Bundle)
+- void setToolbar()
+- void changePassword()
+- void getNotice(String)
+- void getUser()
+- void save()
+- void updateUser()
+- void downloadImage()
+- void copy(Uri,File)
+}
+class com.example.myaquarium.fragment.FragmentService {
+- View inflatedView
+- ImageView fish
+- ImageView volume
+- ImageView priming
+- ImageView tips
+- ImageView calendar
++ {static} FragmentService newInstance()
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+- void setNavigationByImage()
+}
+class com.example.myaquarium.adapter.view.TipsViewHolder {
++ ImageView tipsImage
++ TextView tipsTitle
++ TextView tipsData
++ TextView tipsContent
+}
+class com.example.myaquarium.databinding.ForumSectionsListItemsBinding {
+- RelativeLayout rootView
++ CheckBox checkBox
++ TextView section
++ RelativeLayout getRoot()
++ {static} ForumSectionsListItemsBinding inflate(LayoutInflater)
++ {static} ForumSectionsListItemsBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} ForumSectionsListItemsBinding bind(View)
+}
+class com.example.myaquarium.databinding.FishItemBinding {
+- ConstraintLayout rootView
++ Button addButton
++ TextView countView
++ Button deleteButton
++ TextView nameView
++ Button removeButton
++ LinearLayout tipsBg
++ ConstraintLayout getRoot()
++ {static} FishItemBinding inflate(LayoutInflater)
++ {static} FishItemBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} FishItemBinding bind(View)
+}
+class com.example.myaquarium.fragment.FragmentForumSections {
+- View inflatedView
+- SearchView search
+- RecyclerView themesRecycler
+- RecyclerView sectionsFilter
+- Button filters
+- CheckBox all
+- List<List<String>> themesList
+- List<List<String>> currentThemes
+- List<String> themesListItems
+- Map<String,Boolean> checked
+- boolean check
+- Requests requests
+- ForumThemesAdapter themesAdapter
+- ForumThemesListAdapter themesListAdapter
++ {static} FragmentForumSections newInstance()
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+- void setThemesListItems(List<String>,boolean)
+- void setThemesList(List<List<String>>)
+- void getThemesList()
+- void searchAction()
+- void searchThemesByEditText(String,List<List<String>>)
+- void setStyleSearchView()
+}
+class com.example.myaquarium.databinding.ToolbarBinding {
+- Toolbar rootView
++ TextView title
++ Toolbar toolbar
++ Toolbar getRoot()
++ {static} ToolbarBinding inflate(LayoutInflater)
++ {static} ToolbarBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} ToolbarBinding bind(View)
+}
+class com.example.myaquarium.adapter.TipsAdapter {
+- Context context
+- List<List<String>> tips
++ TipsViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(TipsViewHolder,int)
++ int getItemCount()
+}
+class com.example.myaquarium.databinding.FragmentServiceCalculatorVolumeBinding {
+- FrameLayout rootView
++ Button btnVol
++ Button calculationV
++ RecyclerView fishListItems
++ RecyclerView listview
++ TextView message
++ SearchView search
++ TextView textView3
++ CheckBox useMyFish
++ TextView volume
++ TextView volumeText
++ FrameLayout getRoot()
++ {static} FragmentServiceCalculatorVolumeBinding inflate(LayoutInflater)
++ {static} FragmentServiceCalculatorVolumeBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} FragmentServiceCalculatorVolumeBinding bind(View)
+}
+class com.example.myaquarium.fragment.FragmentServiceCalculatorFish {
+- View inflatedView
+- RecyclerView listview
+- RecyclerView listviewResult
+- Button calculationFish
+- Requests requests
+- FishListWithChoiceAdapter fishAdapter
+- ResultCompatibilityAdapter compatibilityAdapter
+- List<String> fishList
+- List<String> currentFishList
+- List<List<String>> resultComp
++ {static} FragmentServiceCalculatorFish newInstance()
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+- void setCompatibilityList(List<List<String>>)
+- void setToolbar()
+- void setMessage()
+- void getFishList()
+- void setFishList(List<String>)
+- void calculateFish()
+- void getComp()
+}
+class com.example.myaquarium.adapter.FishListViewAdapter {
+- Context context
+- List<String> fishList
+- OnFishClickListener onClickListener
++ FishViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(FishViewHolder,int)
++ int getItemCount()
+}
+interface com.example.myaquarium.adapter.FishListViewAdapter.OnFishClickListener {
+~ void onStateClick(String)
+}
+class com.example.myaquarium.ForumItem {
+# void onCreate(Bundle)
+}
+class com.example.myaquarium.adapter.view.FishListWithChoiceViewHolder {
++ CheckBox checkBox
+}
+class com.example.myaquarium.server.Requests {
++ String urlFishList
++ String urlUserFish
++ String urlTipsMenu
++ String urlTips
++ String urlGetUser
++ String urlUserUpdate
++ String urlPasswordUpdate
++ String urlSectionsTitle
++ String urlCalculateFish
++ String[] setRequest(String)
+}
+class com.example.myaquarium.databinding.FragmentServiceBinding {
+- FrameLayout rootView
++ ImageView calendar
++ ImageView fish
++ ImageView priming
++ FrameLayout service
++ ImageView tips
++ ImageView volume
++ FrameLayout getRoot()
++ {static} FragmentServiceBinding inflate(LayoutInflater)
++ {static} FragmentServiceBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} FragmentServiceBinding bind(View)
+}
+class com.example.myaquarium.databinding.InformationCategoryItemBinding {
+- ConstraintLayout rootView
++ ImageView imageView2
++ TextView tipsMenu
++ ConstraintLayout getRoot()
++ {static} InformationCategoryItemBinding inflate(LayoutInflater)
++ {static} InformationCategoryItemBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} InformationCategoryItemBinding bind(View)
+}
+class com.example.myaquarium.databinding.ForumSectionsItemBinding {
+- RelativeLayout rootView
++ ImageView ImageView
++ TextView author
++ LinearLayout sectionsItem
++ TextView theme
++ RelativeLayout getRoot()
++ {static} ForumSectionsItemBinding inflate(LayoutInflater)
++ {static} ForumSectionsItemBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} ForumSectionsItemBinding bind(View)
+}
+class com.example.myaquarium.databinding.FishListItemBinding {
+- ConstraintLayout rootView
++ TextView item
++ ConstraintLayout getRoot()
++ {static} FishListItemBinding inflate(LayoutInflater)
++ {static} FishListItemBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} FishListItemBinding bind(View)
+}
+class com.example.myaquarium.databinding.ChangePasswordWindowBinding {
+- CardView rootView
++ MaterialEditText newPassword
++ MaterialEditText oldPassword
++ CardView getRoot()
++ {static} ChangePasswordWindowBinding inflate(LayoutInflater)
++ {static} ChangePasswordWindowBinding inflate(LayoutInflater,ViewGroup,boolean)
++ {static} ChangePasswordWindowBinding bind(View)
+}
+class com.example.myaquarium.adapter.ForumThemesListAdapter {
+- Context context
+- List<String> themesList
+- OnThemeClickListener onClickListener
++ ForumThemesListViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(ForumThemesListViewHolder,int)
++ int getItemCount()
+}
+interface com.example.myaquarium.adapter.ForumThemesListAdapter.OnThemeClickListener {
+~ void onStateClick(String,CheckBox)
+}
+class com.example.myaquarium.adapter.TipsMenuAdapter {
+- Context context
+- List<String> category
++ TipsMenuViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(TipsMenuViewHolder,int)
++ int getItemCount()
+}
+
+
+com.example.myaquarium.adapter.view.ViewHolder <|-- com.example.myaquarium.adapter.view.TipsMenuViewHolder
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.MenuBinding
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.FragmentForumSectionsBinding
+com.example.myaquarium.adapter.Adapter <|-- com.example.myaquarium.adapter.FishListWithChoiceAdapter
+com.example.myaquarium.adapter.FishListWithChoiceAdapter +.. com.example.myaquarium.adapter.FishListWithChoiceAdapter.OnFishClickListener
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.FragmentServiceCalculatorFishBinding
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.FishListItemByCompResultBinding
+com.example.myaquarium.adapter.Adapter <|-- com.example.myaquarium.adapter.FishListAdapter
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.ActivitySignInBinding
+androidx.fragment.app.Fragment <|-- com.example.myaquarium.fragment.FragmentServiceCalendar
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.ActivityProfileSettingsBinding
+com.example.myaquarium.adapter.Adapter <|-- com.example.myaquarium.adapter.ForumThemesAdapter
+com.example.myaquarium.adapter.ForumThemesAdapter +.. com.example.myaquarium.adapter.ForumThemesAdapter.OnThemeClickListener
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.ActivityForumItemBinding
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.RegistrationWindowBinding
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.ActivityForumBinding
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.ActivityTipsBinding
+androidx.appcompat.app.AppCompatActivity <|-- com.example.myaquarium.Profile
+androidx.appcompat.app.AppCompatActivity <|-- com.example.myaquarium.Forum
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.ActivityServiceBinding
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.ActivityTipsPageBinding
+androidx.appcompat.app.AppCompatActivity <|-- com.example.myaquarium.SignIn
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.ActivityProfileBinding
+androidx.fragment.app.Fragment <|-- com.example.myaquarium.fragment.FragmentServiceCalculatorPriming
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.SignInWindowBinding
+com.example.myaquarium.adapter.view.ViewHolder <|-- com.example.myaquarium.adapter.view.FishViewHolder
+com.example.myaquarium.adapter.view.ViewHolder <|-- com.example.myaquarium.adapter.view.ResultCompatibilityViewHolder
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.FishListItemByCompBinding
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.ThemesItemBinding
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.TipsItemBinding
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.FragmentServiceCalculatorPrimingBinding
+androidx.appcompat.app.AppCompatActivity <|-- com.example.myaquarium.Service
+androidx.fragment.app.Fragment <|-- com.example.myaquarium.fragment.FragmentServiceCalculatorVolume
+com.example.myaquarium.adapter.view.ViewHolder <|-- com.example.myaquarium.adapter.view.FishListViewHolder
+com.example.myaquarium.adapter.view.ViewHolder <|-- com.example.myaquarium.adapter.view.ForumThemesListViewHolder
+com.example.myaquarium.adapter.Adapter <|-- com.example.myaquarium.adapter.ResultCompatibilityAdapter
+androidx.appcompat.app.AppCompatActivity <|-- com.example.myaquarium.Tips
+com.example.myaquarium.adapter.view.ViewHolder <|-- com.example.myaquarium.adapter.view.ForumThemesViewHolder
+androidx.appcompat.app.AppCompatActivity <|-- com.example.myaquarium.TipsPage
+androidx.appcompat.app.AppCompatActivity <|-- com.example.myaquarium.ProfileSettings
+androidx.fragment.app.Fragment <|-- com.example.myaquarium.fragment.FragmentService
+com.example.myaquarium.adapter.view.ViewHolder <|-- com.example.myaquarium.adapter.view.TipsViewHolder
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.ForumSectionsListItemsBinding
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.FishItemBinding
+androidx.fragment.app.Fragment <|-- com.example.myaquarium.fragment.FragmentForumSections
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.ToolbarBinding
+com.example.myaquarium.adapter.Adapter <|-- com.example.myaquarium.adapter.TipsAdapter
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.FragmentServiceCalculatorVolumeBinding
+androidx.fragment.app.Fragment <|-- com.example.myaquarium.fragment.FragmentServiceCalculatorFish
+com.example.myaquarium.adapter.Adapter <|-- com.example.myaquarium.adapter.FishListViewAdapter
+com.example.myaquarium.adapter.FishListViewAdapter +.. com.example.myaquarium.adapter.FishListViewAdapter.OnFishClickListener
+androidx.appcompat.app.AppCompatActivity <|-- com.example.myaquarium.ForumItem
+com.example.myaquarium.adapter.view.ViewHolder <|-- com.example.myaquarium.adapter.view.FishListWithChoiceViewHolder
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.FragmentServiceBinding
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.InformationCategoryItemBinding
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.ForumSectionsItemBinding
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.FishListItemBinding
+androidx.viewbinding.ViewBinding <|.. com.example.myaquarium.databinding.ChangePasswordWindowBinding
+com.example.myaquarium.adapter.Adapter <|-- com.example.myaquarium.adapter.ForumThemesListAdapter
+com.example.myaquarium.adapter.ForumThemesListAdapter +.. com.example.myaquarium.adapter.ForumThemesListAdapter.OnThemeClickListener
+com.example.myaquarium.adapter.Adapter <|-- com.example.myaquarium.adapter.TipsMenuAdapter
+@enduml
