@@ -8,19 +8,20 @@
 
     <TextView
         android:id="@+id/section"
-        android:paddingStart="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:paddingStart="10dp"
+        android:textColor="@color/black"
         android:textSize="17sp"
         tools:ignore="RtlSymmetry" />
 
-    <CheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:checked="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:buttonTint="@color/mainColor"
+        android:checked="true" />
 
 </RelativeLayout>

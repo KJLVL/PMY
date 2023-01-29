@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center_horizontal"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="18sp" />
 
             <View
@@ -95,13 +95,13 @@
                 android:gravity="center_horizontal"
                 android:textSize="16dp"
                 android:text="@string/settings_aquarium_data"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="22dp"
                 android:text="@string/settings_volume"
-                android:textColor="@color/gray"
+                android:textColor="@color/black"
                 android:textSize="16sp" />
             <EditText
                 android:id="@+id/volumeField"
@@ -118,7 +118,7 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center_horizontal"
                 android:text="@string/settings_my_fish"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="16sp" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -135,7 +135,7 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center_horizontal"
                 android:text="@string/settings_add"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -168,48 +168,6 @@
                 android:backgroundTint="@color/bthAll"
                 android:text="@string/settings_save"
                 android:textSize="13sp" />
-
-<!--            <TextView-->
-<!--                android:id="@+id/discussionsText"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="22dp"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:text="Избранные обсуждения:"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="18sp" />-->
-
-<!--            <Spinner-->
-<!--                android:id="@+id/discussions"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/adsText"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="22dp"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:text="Избранные объявления:"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="18sp" />-->
-
-<!--            <Spinner-->
-<!--                android:id="@+id/tips"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/tipsText"-->
-<!--                android:layout_width="200dp"-->
-<!--                android:layout_height="22dp"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:text="Избранные статьи:"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="18sp" />-->
-
-<!--            <Spinner-->
-<!--                android:id="@+id/tipsList"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
 
         </LinearLayout>
     </ScrollView>

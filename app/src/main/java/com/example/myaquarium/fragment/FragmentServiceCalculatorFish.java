@@ -136,7 +136,7 @@ public class FragmentServiceCalculatorFish extends Fragment {
         fishList = new ArrayList<>();
         Runnable runnable = () -> {
             try {
-                String[] list = requests.setRequest(requests.urlFishList);
+                String[] list = requests.setRequest(requests.urlRequest + "fish/list");
                 for (String item: list) {
                     JSONObject object = new JSONObject(item);
                     fishList.add(object.getString("fish_name"));
@@ -164,8 +164,7 @@ public class FragmentServiceCalculatorFish extends Fragment {
                 }
             };
 
-            fishAdapter
-                    = new FishListWithChoiceAdapter(inflatedView.getContext(), items, onFishClickListener);
+            fishAdapter = new FishListWithChoiceAdapter(inflatedView.getContext(), items, onFishClickListener);
             listview.setAdapter(fishAdapter);
         });
     }
@@ -192,7 +191,7 @@ public class FragmentServiceCalculatorFish extends Fragment {
     private void getComp() {
         resultComp = new ArrayList<>();
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost http = new HttpPost(requests.urlCalculateFish);
+        HttpPost http = new HttpPost(requests.urlRequest + "calculate");
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("fish", String.join(",", currentFishList)));

@@ -94,7 +94,7 @@ public class Tips extends AppCompatActivity {
     private void getTipsMenu() {
         Runnable runnable = () -> {
             try {
-                String[] menu = requests.setRequest(requests.urlTipsMenu);
+                String[] menu = requests.setRequest(requests.urlRequest + "tips/menu");
                 for (String item: menu) {
                     JSONObject object = new JSONObject(item);
                     tipsMenuList.add(object.getString("title"));
@@ -111,14 +111,14 @@ public class Tips extends AppCompatActivity {
     private void getTips() {
         Runnable runnable = () -> {
             try {
-                String[] tips = requests.setRequest(requests.urlTips);
+                String[] tips = requests.setRequest(requests.urlRequest + "tips/tips");
                 for (String item: tips) {
                     JSONObject object = new JSONObject(item);
                     List<String> itemTips = new ArrayList<>(List.of(
                             object.getString("tips_title_id"),
                             object.getString("title"),
-                            object.getString("title1")
-
+                            object.getString("content"),
+                            object.getString("image")
                     ));
                     tipsList.add(itemTips);
                     fullTipsList.add(itemTips);

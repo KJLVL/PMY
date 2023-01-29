@@ -9,11 +9,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.myaquarium.fragment.FragmentForumMy;
 import com.example.myaquarium.fragment.FragmentForumSections;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Forum extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
+    private Fragment fragment;
+    private  Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,18 +25,18 @@ public class Forum extends AppCompatActivity {
 
         this.setToolbar();
 
+        loadFragment(FragmentForumSections.newInstance(1));
         bottomNavigationView = findViewById(R.id.navigation);
-        loadFragment(FragmentForumSections.newInstance());
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.navigation_sections:
-                    loadFragment(FragmentForumSections.newInstance());
+                    loadFragment(FragmentForumSections.newInstance(1));
                     return true;
                 case R.id.navigation_swap:
-                    loadFragment(FragmentForumSections.newInstance());
+                    loadFragment(FragmentForumSections.newInstance(2));
                     return true;
                 case R.id.navigation_my:
-                    loadFragment(FragmentForumSections.newInstance());
+                    loadFragment(FragmentForumMy.newInstance());
                     return true;
             }
             return false;

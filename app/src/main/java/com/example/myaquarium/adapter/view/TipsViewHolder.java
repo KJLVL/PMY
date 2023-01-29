@@ -11,7 +11,6 @@ import com.example.myaquarium.R;
 public class TipsViewHolder extends RecyclerView.ViewHolder {
     public ImageView tipsImage;
     public TextView tipsTitle;
-    public TextView tipsData;
     public TextView tipsContent;
 
     public TipsViewHolder(View view) {

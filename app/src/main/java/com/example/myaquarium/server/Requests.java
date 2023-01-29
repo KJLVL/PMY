@@ -12,15 +12,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 public class Requests {
-    public String urlFishList = "http://192.168.0.106/fish/list";
-    public String urlUserFish= "http://192.168.0.106/user/fish";
-    public String urlTipsMenu = "http://192.168.0.106/tips/menu";
-    public String urlTips = "http://192.168.0.106/tips/tips";
-    public String urlGetUser = "http://192.168.0.106/user";
-    public String urlUserUpdate = "http://192.168.0.106/user/update";
-    public String urlPasswordUpdate = "http://192.168.0.106/user/password";
-    public String urlSectionsTitle = "http://192.168.0.106/themes";
-    public String urlCalculateFish = "http://192.168.0.106/calculate";
+    public String urlRequest = "http://192.168.0.106/";
+//    public String urlRequest = "http://172.20.10.2/";
 
     public String[] setRequest(String url) throws IOException {
         HttpClient httpclient = new DefaultHttpClient();

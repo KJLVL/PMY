@@ -155,7 +155,7 @@ public class ProfileSettings extends AppCompatActivity {
             params.add(new BasicNameValuePair("newPassword", newPassword));
 
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost http = new HttpPost(requests.urlPasswordUpdate);
+            HttpPost http = new HttpPost(requests.urlRequest + "user/password");
 
             Runnable runnable = () -> {
                 try {
@@ -204,7 +204,7 @@ public class ProfileSettings extends AppCompatActivity {
     private void getUser() {
         Runnable runnable = () -> {
             try {
-                String[] tips = requests.setRequest(requests.urlGetUser);
+                String[] tips = requests.setRequest(requests.urlRequest + "user");
                 for (String item: tips) {
                     JSONObject object = new JSONObject(item);
                     userInfo.put("name", object.getString("user_name"));
@@ -242,7 +242,7 @@ public class ProfileSettings extends AppCompatActivity {
 
     private void updateUser() {
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost http = new HttpPost(requests.urlUserUpdate);
+        HttpPost http = new HttpPost(requests.urlRequest + "user/update");
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("name", name.getText().toString()));

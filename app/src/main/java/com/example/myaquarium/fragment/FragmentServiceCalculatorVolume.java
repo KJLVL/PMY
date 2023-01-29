@@ -220,7 +220,7 @@ public class FragmentServiceCalculatorVolume extends Fragment {
         fishList = new ArrayList<>();
         Runnable runnable = () -> {
             try {
-                String[] list = requests.setRequest(requests.urlFishList);
+                String[] list = requests.setRequest(requests.urlRequest + "fish/list");
                 for (String item : list) {
                     JSONObject object = new JSONObject(item);
                     List<String> fish = new ArrayList<>(List.of(
@@ -243,7 +243,7 @@ public class FragmentServiceCalculatorVolume extends Fragment {
     private void getUserFish() {
         Runnable runnable = () -> {
             try {
-                String[] list = requests.setRequest(requests.urlUserFish);
+                String[] list = requests.setRequest(requests.urlRequest + "user/fish");
                 for (String item : list) {
                     if (item.contains("success")) {
                         fishRecycler.post(() -> {

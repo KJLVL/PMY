@@ -132,7 +132,7 @@ public class Profile extends AppCompatActivity {
     private void getUser() {
         Runnable runnable = () -> {
             try {
-                String[] tips = requests.setRequest(requests.urlGetUser);
+                String[] tips = requests.setRequest(requests.urlRequest + "user");
                 for (String item : tips) {
                     JSONObject object = new JSONObject(item);
                     userInfo.put("name", object.getString("user_name"));
@@ -166,7 +166,7 @@ public class Profile extends AppCompatActivity {
     private void getUserFish() {
         Runnable runnable = () -> {
             try {
-                String[] list = requests.setRequest(requests.urlUserFish);
+                String[] list = requests.setRequest(requests.urlRequest + "user/fish");
                 for (String item : list) {
                     JSONObject object = new JSONObject(item);
                     List<String> fish = new ArrayList<>(List.of(
@@ -191,7 +191,7 @@ public class Profile extends AppCompatActivity {
         fishList = new ArrayList<>();
         Runnable runnable = () -> {
             try {
-                String[] list = requests.setRequest(requests.urlFishList);
+                String[] list = requests.setRequest(requests.urlRequest + "fish/list");
                 for (String item : list) {
                     JSONObject object = new JSONObject(item);
                     List<String> fish = new ArrayList<>(List.of(

@@ -1,15 +1,15 @@
 package com.example.myaquarium.fragment;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
-import android.widget.TextView;
+import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,10 +21,21 @@ import com.example.myaquarium.adapter.ForumThemesAdapter;
 import com.example.myaquarium.adapter.ForumThemesListAdapter;
 import com.example.myaquarium.server.Requests;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,25 +45,31 @@ import java.util.Map;
 public class FragmentForumSections extends Fragment {
     private View inflatedView;
     private SearchView search;
+    private Spinner searchCity;
     private RecyclerView themesRecycler;
     private RecyclerView sectionsFilter;
     private Button filters;
     private CheckBox all;
+    private LinearLayout filter;
 
     private List<List<String>> themesList;
     private List<List<String>> currentThemes;
     private List<String> themesListItems;
     private Map<String, Boolean> checked;
 
-    private boolean check;
+    private final int id;
 
     private Requests requests;
 
     private ForumThemesAdapter themesAdapter;
     private ForumThemesListAdapter themesListAdapter;
 
-    public static FragmentForumSections newInstance() {
-        return new FragmentForumSections();
+    public static FragmentForumSections newInstance(int id) {
+        return new FragmentForumSections(id);
+    }
+
+    public FragmentForumSections(int id) {
+        this.id = id;
     }
 
     @Override
@@ -63,11 +80,13 @@ public class FragmentForumSections extends Fragment {
                 container,
                 false
         );
+
         search = inflatedView.findViewById(R.id.search);
         sectionsFilter = inflatedView.findViewById(R.id.sectionsFilter);
         themesRecycler = inflatedView.findViewById(R.id.themesRecycler);
         filters = inflatedView.findViewById(R.id.filters);
         all = inflatedView.findViewById(R.id.all);
+        filter = inflatedView.findViewById(R.id.filter);
 
         checked = new HashMap<>();
         themesList = new ArrayList<>();
@@ -75,20 +94,16 @@ public class FragmentForumSections extends Fragment {
 
         requests = new Requests();
 
-        this.setStyleSearchView();
         this.getThemesList();
 
         this.setThemesList(themesList);
         this.setThemesListItems(themesListItems, true);
 
         filters.setOnClickListener(view -> {
-            all.setVisibility(View.VISIBLE);
-            if (sectionsFilter.getVisibility() == View.GONE) {
-                all.setVisibility(View.VISIBLE);
-                sectionsFilter.setVisibility(View.VISIBLE);
-            } else if (sectionsFilter.getVisibility() == View.VISIBLE) {
-                sectionsFilter.setVisibility(View.GONE);
-                all.setVisibility(View.GONE);
+            if (filter.getVisibility() == View.GONE) {
+                filter.setVisibility(View.VISIBLE);
+            } else if (filter.getVisibility() == View.VISIBLE) {
+                filter.setVisibility(View.GONE);
             }
         });
 
@@ -96,14 +111,12 @@ public class FragmentForumSections extends Fragment {
 
         all.setOnClickListener(view -> {
             if (all.isChecked()) {
-                check = true;
                 for (String item: themesListItems) {
                     checked.put(item, true);
                 }
                 setThemesListItems(themesListItems, true);
                 setThemesList(themesList);
             } else {
-                check = false;
                 for (String item: themesListItems) {
                     checked.put(item, false);
                 }
@@ -114,7 +127,6 @@ public class FragmentForumSections extends Fragment {
 
         return inflatedView;
     }
-
 
     private void setThemesListItems(List<String> themesListItems, boolean check) {
         sectionsFilter.post(() -> {
@@ -196,16 +208,40 @@ public class FragmentForumSections extends Fragment {
 
     private void getThemesList() {
         themesListItems = new ArrayList<>();
+        themesList = new ArrayList<>();
+
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost http = new HttpPost(requests.urlRequest + "themes");
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("category_id", String.valueOf(id)));
         Runnable runnable = () -> {
             try {
-                String[] list = requests.setRequest(requests.urlSectionsTitle);
+                http.setEntity(new UrlEncodedFormEntity(params,"UTF-8"));
+                HttpResponse httpResponse = httpclient.execute(http);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                BufferedReader bufferedReader = new BufferedReader(
+                        new InputStreamReader(httpEntity.getContent(), StandardCharsets.UTF_8),
+                        8
+                );
+                StringBuilder stringBuilder = new StringBuilder();
+                while (bufferedReader.readLine() != null) {
+                    stringBuilder.append(bufferedReader.readLine());
+                }
+
+                String result = stringBuilder.toString().replaceAll("\\[", "");
+                result = result.replaceAll("]", "");
+
+                String[] list = result.split(",(?!\"| )");
                 for (String item : list) {
                     JSONObject object = new JSONObject(item);
                     List<String> sections = new ArrayList<>(List.of(
                             object.getString("id"),
                             object.getString("sections"),
-                            object.getString("themes_title"),
-                            "автор: " + object.getString("author")
+                            object.getString("title"),
+                            "автор: " + object.getString("author"),
+                            "дата: " + object.getString("date"),
+                            object.getString("city")
                     ));
 
                     if (!themesListItems.contains(object.getString("sections"))) {
@@ -252,15 +288,4 @@ public class FragmentForumSections extends Fragment {
         startThemes.removeAll(currentThemes);
         setThemesList(startThemes);
     }
-
-    private void setStyleSearchView() {
-        int id = search.getContext()
-                .getResources()
-                .getIdentifier("android:id/search_src_text", null, null);
-
-        TextView textView = search.findViewById(id);
-        textView.setTextColor(Color.WHITE);
-    }
-
-
 }

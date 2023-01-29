@@ -18,6 +18,7 @@ import java.util.List;
 public class TipsAdapter extends RecyclerView.Adapter<TipsViewHolder> {
     private Context context;
     private List<List<String>> tips;
+    private String imageUrl = "D:\\university\\vkr\\img\\tips\\";
 
     public TipsAdapter(Context context, List<List<String>> tips) {
         this.context = context;
@@ -39,18 +40,18 @@ public class TipsAdapter extends RecyclerView.Adapter<TipsViewHolder> {
 
         holder.tipsTitle.setText(tips.get(position).get(1));
         holder.tipsContent.setText(tips.get(position).get(2));
-        String title = tips.get(position).get(1);
+
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(context, TipsPage.class);
-            intent.putExtra("title", title);
+            intent.putExtra("title", tips.get(position).get(1));
             context.startActivity(intent);
         });
 
-//        int imageId = context.getResources().getIdentifier(
-//                                                tips.get(position),
-//                                                "drawable",
-//                                                context.getPackageName());
-//        holder.tipsImage.setImageResource(imageId);;
+        int imageId = context.getResources().getIdentifier(
+                                                tips.get(position).get(3),
+                                                "drawable",
+                                                context.getPackageName());
+        holder.tipsImage.setImageResource(imageId);
 
     }
 

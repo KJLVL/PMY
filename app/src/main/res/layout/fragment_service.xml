@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="Калькуляторы"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="18sp" />
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                     android:layout_height="60dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:background="@drawable/calc_item"
+                    android:background="@drawable/calc_icon"
                     android:src="@drawable/fish" />
 
                 <TextView
@@ -60,7 +60,7 @@
                     android:gravity="center_horizontal"
                     android:layout_marginTop="5dp"
                     android:text="Совместимость рыбок"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -77,7 +77,7 @@
                     android:layout_height="60dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:background="@drawable/calc_item"
+                    android:background="@drawable/calc_icon"
                     android:src="@drawable/calc_volume" />
 
                 <TextView
@@ -86,7 +86,7 @@
                     android:gravity="center_horizontal"
                     android:text="Калькулятор аквариума"
                     android:layout_marginTop="5dp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -103,7 +103,7 @@
                     android:layout_height="60dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:background="@drawable/calc_item"
+                    android:background="@drawable/calc_icon"
                     android:src="@drawable/calc_pr" />
 
                 <TextView
@@ -112,7 +112,7 @@
                     android:gravity="center_horizontal"
                     android:text="Калькулятор грунта"
                     android:layout_marginTop="5dp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -130,7 +130,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="Разное"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="18sp" />
         <LinearLayout
             android:layout_width="match_parent"
@@ -153,7 +153,7 @@
                     android:layout_height="60dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:background="@drawable/calc_item"
+                    android:background="@drawable/calc_icon"
                     android:src="@drawable/other_tips" />
 
                 <TextView
@@ -162,7 +162,7 @@
                     android:gravity="center_horizontal"
                     android:text="Полезные статьи"
                     android:layout_marginTop="5dp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -179,7 +179,7 @@
                     android:layout_height="60dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:background="@drawable/calc_item"
+                    android:background="@drawable/calc_icon"
                     android:src="@drawable/other_calendar" />
 
                 <TextView
@@ -188,7 +188,7 @@
                     android:gravity="center_horizontal"
                     android:text="Календарь аквариумиста"
                     android:layout_marginTop="5dp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
 

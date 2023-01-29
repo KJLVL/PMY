@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="@string/service_calculator_volume"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="16sp" />
 
             <Button
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="@string/service_volume_fish"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -103,12 +103,13 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/fish_item" />
 
-        <CheckBox
+        <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/useMyFish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/service_use_my_fish"
-            android:textColor="@color/white"
+            android:buttonTint="@color/mainColor"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <Button
@@ -133,7 +134,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:text="@string/service_rec_vol"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -145,7 +146,7 @@
                 android:layout_width="100dp"
                 android:layout_height="22dp"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -159,7 +160,7 @@
             android:layout_marginTop="10dp"
             android:paddingBottom="15dp"
             android:text="@string/service_message"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="15sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"

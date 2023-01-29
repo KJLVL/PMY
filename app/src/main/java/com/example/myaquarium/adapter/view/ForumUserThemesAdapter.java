@@ -1,4 +1,4 @@
-package com.example.myaquarium.adapter;
+package com.example.myaquarium.adapter.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,11 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.R;
-import com.example.myaquarium.adapter.view.ForumThemesViewHolder;
 
 import java.util.List;
 
-public class ForumThemesAdapter extends RecyclerView.Adapter<ForumThemesViewHolder> {
+public class ForumUserThemesAdapter extends RecyclerView.Adapter<ForumUserThemesViewHolder> {
     private Context context;
     private List<List<String>> themesList;
     private final OnThemeClickListener onClickListener;
@@ -22,7 +21,7 @@ public class ForumThemesAdapter extends RecyclerView.Adapter<ForumThemesViewHold
         void onStateClick(String themeId);
     }
 
-    public ForumThemesAdapter(
+    public ForumUserThemesAdapter(
             Context context,
             List<List<String>> themesList,
             OnThemeClickListener onClickListener
@@ -34,25 +33,19 @@ public class ForumThemesAdapter extends RecyclerView.Adapter<ForumThemesViewHold
 
     @NonNull
     @Override
-    public ForumThemesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View fishItems = LayoutInflater
+    public ForumUserThemesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View themes = LayoutInflater
                 .from(context)
-                .inflate(R.layout.forum_sections_item, parent, false);
+                .inflate(R.layout.forum_my_sections_item, parent, false);
 
-        return new ForumThemesViewHolder(fishItems);
+        return new ForumUserThemesViewHolder(themes);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ForumThemesViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ForumUserThemesViewHolder holder, int position) {
         holder.theme.setText(themesList.get(position).get(2));
-        holder.author.setText(themesList.get(position).get(3));
         holder.date.setText(themesList.get(position).get(4));
-        if (!themesList.get(position).get(5).equals("null") && !themesList.get(position).get(5).equals("")) {
-            holder.city.setText("город: " + themesList.get(position).get(5));
-            holder.city.setVisibility(View.VISIBLE);
-        } else {
-            holder.city.setVisibility(View.GONE);
-        }
+
         holder.sectionsItem.setOnClickListener(
                 v -> onClickListener.onStateClick(themesList.get(position).get(0))
         );
