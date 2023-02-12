@@ -1,15 +1,18 @@
 package com.example.myaquarium;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,6 +25,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.myaquarium.server.Requests;
 import com.google.android.material.snackbar.Snackbar;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -35,12 +39,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +57,7 @@ public class ProfileSettings extends AppCompatActivity {
     private EditText login;
 
     private TextView password;
-
+    private ImageView image;
     private Button save;
 
     private RelativeLayout root;
@@ -64,6 +65,9 @@ public class ProfileSettings extends AppCompatActivity {
     private Map<String, String> userInfo;
 
     private Requests requests;
+    private Bitmap bitmap;
+    private String newAvatar;
+    private String newAvatarName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,7 @@ public class ProfileSettings extends AppCompatActivity {
         requests = new Requests();
         root = findViewById(R.id.root);
 
+        image = this.findViewById(R.id.image);
         name = findViewById(R.id.name);
         surname = findViewById(R.id.surname);
         city = findViewById(R.id.city);
@@ -159,7 +164,7 @@ public class ProfileSettings extends AppCompatActivity {
 
             Runnable runnable = () -> {
                 try {
-                    http.setEntity(new UrlEncodedFormEntity(params,"UTF-8"));
+                    http.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
                     HttpResponse httpResponse = httpclient.execute(http);
                     HttpEntity httpEntity = httpResponse.getEntity();
                     BufferedReader bufferedReader = new BufferedReader(
@@ -205,7 +210,7 @@ public class ProfileSettings extends AppCompatActivity {
         Runnable runnable = () -> {
             try {
                 String[] tips = requests.setRequest(requests.urlRequest + "user");
-                for (String item: tips) {
+                for (String item : tips) {
                     JSONObject object = new JSONObject(item);
                     userInfo.put("name", object.getString("user_name"));
                     userInfo.put("surname", !object.getString("surname").equals("null")
@@ -215,6 +220,8 @@ public class ProfileSettings extends AppCompatActivity {
                     userInfo.put("phone", !object.getString("phone").equals("null")
                             ? object.getString("phone") : "");
                     userInfo.put("login", object.getString("login"));
+                    userInfo.put("avatar", !object.getString("avatar").equals("null")
+                            ? object.getString("avatar") : "");
                 }
                 this.runOnUiThread(() -> {
                     name.setText(userInfo.get("name"));
@@ -222,6 +229,14 @@ public class ProfileSettings extends AppCompatActivity {
                     city.setText(userInfo.get("city"));
                     phone.setText(userInfo.get("phone"));
                     login.setText(userInfo.get("login"));
+
+                    if (!Objects.equals(userInfo.get("avatar"), "")) {
+                        Picasso.get()
+                                .load(requests.urlRequestImg + userInfo.get("avatar"))
+                                .into(image);
+                    } else {
+                        image.setImageResource(R.drawable.ic_launcher_foreground);
+                    }
                 });
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
@@ -245,13 +260,15 @@ public class ProfileSettings extends AppCompatActivity {
         HttpPost http = new HttpPost(requests.urlRequest + "user/update");
 
         List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("avatar", newAvatar));
+        params.add(new BasicNameValuePair("avatarName", newAvatarName));
         params.add(new BasicNameValuePair("name", name.getText().toString()));
         params.add(new BasicNameValuePair("surname", surname.getText().toString()));
         params.add(new BasicNameValuePair("login", login.getText().toString()));
 
         Runnable runnable = () -> {
             try {
-                http.setEntity(new UrlEncodedFormEntity(params,"UTF-8"));
+                http.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
                 HttpResponse httpResponse = httpclient.execute(http);
                 HttpEntity httpEntity = httpResponse.getEntity();
                 BufferedReader bufferedReader = new BufferedReader(
@@ -286,39 +303,37 @@ public class ProfileSettings extends AppCompatActivity {
     }
 
     private void downloadImage() {
-        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-        chooseFile.setType("*/*");
-        chooseFile = Intent.createChooser(chooseFile, "Выберите файл");
-        Intent intent = new Intent(chooseFile);
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         someActivityResultLauncher.launch(intent);
-
     }
 
-    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+    private ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
                     Uri uri = data.getData();
-                    String src = uri.getPath();
-                    File source = new File(src);
-                    String filename = uri.getLastPathSegment();
-                    File destination = new File("app\\src\\main\\res\\drawable\\" + filename + ".png");
-                    copy(data.getData(), destination);
+                    newAvatarName = uri.getLastPathSegment();
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                        image.setImageBitmap(bitmap);
+                        generateImage();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
-    private void copy(Uri source, File destination) {
-        try {
-            @SuppressLint("Recycle") InputStream in = getContentResolver().openInputStream(source);
-            OutputStream out = new FileOutputStream(destination);
-            byte[] buffer = new byte[1024];
-            int len;
-            while ((len = in.read(buffer)) != -1) {
-                out.write(buffer, 0, len);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void generateImage() {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        if (bitmap != null) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+            byte[] bytes = byteArrayOutputStream.toByteArray();
+            newAvatar = Base64.encodeToString(bytes, Base64.DEFAULT);
+        } else {
+            newAvatar = "";
         }
     }
 

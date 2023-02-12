@@ -22,7 +22,7 @@ public class Service extends AppCompatActivity {
 
         this.setToolbar();
 
-        loadFragment(FragmentService.newInstance());
+        this.loadFragment(FragmentService.newInstance());
 
         TextView service = findViewById(R.id.service);
         TextView forum = findViewById(R.id.forum);

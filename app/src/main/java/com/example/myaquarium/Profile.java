@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.adapter.FishListAdapter;
 import com.example.myaquarium.adapter.FishListViewAdapter;
 import com.example.myaquarium.server.Requests;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class Profile extends AppCompatActivity {
     private RecyclerView listView;
@@ -35,8 +38,9 @@ public class Profile extends AppCompatActivity {
 
     private Requests requests;
 
-    TextView nameField;
-    TextView volumeField;
+    private TextView nameField;
+    private TextView volumeField;
+    private ImageView image;
 
     private FishListAdapter fishAdapter;
     private FishListViewAdapter fishListAdapter;
@@ -59,8 +63,8 @@ public class Profile extends AppCompatActivity {
         fishRecycler = this.findViewById(R.id.fishListItems);
         search = this.findViewById(R.id.search);
         nameField = this.findViewById(R.id.nameField);
+        image = this.findViewById(R.id.image);
         volumeField = this.findViewById(R.id.volumeField);
-//        this.setStyleSearchView();
 
         fishListCurrent = new ArrayList<>();
         userInfo = new HashMap<>();
@@ -138,22 +142,27 @@ public class Profile extends AppCompatActivity {
                     userInfo.put("name", object.getString("user_name"));
                     userInfo.put("login", object.getString("login"));
 
-                    if (!object.getString("surname").equals("null")) {
-                        userInfo.put("surname", object.getString("surname"));
-                    } else {
-                        userInfo.put("surname", "");
-                    }
+                    userInfo.put("surname", !object.getString("surname").equals("null")
+                            ? object.getString("surname") : "");
 
-                    if (!object.getString("aquarium_volume").equals("null")) {
-                        userInfo.put("aquarium_volume", object.getString("aquarium_volume"));
-                    } else {
-                        userInfo.put("aquarium_volume", "");
-                    }
+                    userInfo.put("aquarium_volume", !object.getString("aquarium_volume").equals("null")
+                            ? object.getString("aquarium_volume") : "");
+
+                    userInfo.put("avatar", !object.getString("avatar").equals("null")
+                            ? object.getString("avatar") : "");
                 }
                 this.runOnUiThread(() -> {
                     String name = userInfo.get("name") + " " + userInfo.get("surname");
                     nameField.setText(name);
                     volumeField.setText(userInfo.get("aquarium_volume"));
+
+                    if (!Objects.equals(userInfo.get("avatar"), "")) {
+                        Picasso.get()
+                                .load(requests.urlRequestImg + userInfo.get("avatar"))
+                                .into(image);
+                    } else {
+                        image.setImageResource(R.drawable.ic_launcher_foreground);
+                    }
                 });
             } catch (IOException | JSONException e) {
                 e.printStackTrace();

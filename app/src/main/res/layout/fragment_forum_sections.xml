@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/sections"
     android:background="@drawable/layout"
     tools:context=".fragment.FragmentForumSections"
     tools:listitem="@layout/forum_sections_item">

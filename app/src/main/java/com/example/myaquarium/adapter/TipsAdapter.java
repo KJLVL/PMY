@@ -12,13 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.R;
 import com.example.myaquarium.TipsPage;
 import com.example.myaquarium.adapter.view.TipsViewHolder;
+import com.example.myaquarium.server.Requests;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class TipsAdapter extends RecyclerView.Adapter<TipsViewHolder> {
     private Context context;
     private List<List<String>> tips;
-    private String imageUrl = "D:\\university\\vkr\\img\\tips\\";
+    private Requests requests = new Requests();
 
     public TipsAdapter(Context context, List<List<String>> tips) {
         this.context = context;
@@ -47,11 +49,9 @@ public class TipsAdapter extends RecyclerView.Adapter<TipsViewHolder> {
             context.startActivity(intent);
         });
 
-        int imageId = context.getResources().getIdentifier(
-                                                tips.get(position).get(3),
-                                                "drawable",
-                                                context.getPackageName());
-        holder.tipsImage.setImageResource(imageId);
+        Picasso.get()
+                .load(requests.urlRequestImg + tips.get(position).get(3))
+                .into(holder.tipsImage);
 
     }
 

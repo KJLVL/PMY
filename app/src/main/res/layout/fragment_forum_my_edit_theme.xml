@@ -2,11 +2,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/newTheme"
+    android:id="@+id/new_theme"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/layout"
-    tools:context=".fragment.FragmentForumNewTheme">
+    tools:context=".fragment.FragmentForumMyEditTheme">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,48 +20,11 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="RtlSymmetry,UselessParent">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Выберите категорию вашей темы:"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-        <RadioGroup
-            android:id="@+id/category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/sectionText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Выберите раздел для вашей темы:"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:visibility="gone" />
-
-        <RadioGroup
-            android:id="@+id/section"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            tools:ignore="MissingConstraints" />
-
         <LinearLayout
             android:id="@+id/theme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
@@ -106,7 +69,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-
             </LinearLayout>
 
             <Button
@@ -119,13 +81,13 @@
                 android:text="Загрузить изображение" />
 
             <Button
-                android:id="@+id/create"
+                android:id="@+id/edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="5dp"
                 android:backgroundTint="@color/bthAll"
-                android:text="Создать" />
+                android:text="Изменить" />
 
         </LinearLayout>
 

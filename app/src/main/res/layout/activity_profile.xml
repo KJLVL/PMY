@@ -33,7 +33,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
+            android:paddingTop="10dp"
             android:background="@drawable/layout"
             android:orientation="vertical">
 
@@ -41,23 +41,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/menuColor"
+                android:gravity="center_horizontal"
+                android:layout_marginStart="130dp"
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/photo"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
-                    android:layout_marginStart="145dp"
-                    android:layout_marginTop="15dp"
-                    app:cardCornerRadius="50dp">
+                    android:gravity="center_horizontal"
+                    app:cardCornerRadius="45dp">
 
                     <ImageView
                         android:id="@+id/image"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:background="#DAD0D0"
-                        android:contentDescription="@string/logo"
-                        android:src="@drawable/ic_launcher_foreground" />
+                        android:layout_width="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:layout_height="wrap_content"/>
 
                 </androidx.cardview.widget.CardView>
 
@@ -65,8 +63,7 @@
                     android:id="@+id/settings"
                     android:layout_width="41dp"
                     android:layout_height="41dp"
-                    android:layout_marginStart="90dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="100dp"
                     android:background="@color/menuColor"
                     app:srcCompat="@drawable/settings" />
 
@@ -76,7 +73,7 @@
                 android:id="@+id/nameField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:gravity="center_horizontal"
                 android:textColor="@color/black"
                 android:textSize="18sp" />

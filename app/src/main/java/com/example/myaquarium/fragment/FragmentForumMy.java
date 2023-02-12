@@ -13,8 +13,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myaquarium.ForumItem;
 import com.example.myaquarium.R;
+import com.example.myaquarium.ViewTheme;
 import com.example.myaquarium.adapter.view.ForumUserThemesAdapter;
 import com.example.myaquarium.server.Requests;
 
@@ -110,8 +110,7 @@ public class FragmentForumMy extends Fragment {
             themesRecycler.setLayoutManager(layoutManager);
 
             ForumUserThemesAdapter.OnThemeClickListener onThemeClickListener = (themes) -> {
-
-                Intent intent = new Intent(inflatedView.getContext(), ForumItem.class);
+                Intent intent = new Intent(inflatedView.getContext(), ViewTheme.class);
                 intent.putExtra("id", themes);
                 this.startActivity(intent);
             };

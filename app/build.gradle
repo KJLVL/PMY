@@ -36,6 +36,11 @@ android {
 }
 
 dependencies {
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'io.getstream:avatarview-coil:1.0.7'
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.loopj.android:android-async-http:1.4.5'
     implementation 'com.google.code.gson:gson:2.10'

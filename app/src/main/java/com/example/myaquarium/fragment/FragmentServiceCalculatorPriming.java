@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -82,14 +83,10 @@ public class FragmentServiceCalculatorPriming extends Fragment {
             ) {
                 resultText.setVisibility(View.GONE);
                 recPrimText.setVisibility(View.GONE);
-                AlertDialog.Builder dialog = new AlertDialog.Builder(inflatedView.getContext());
-                dialog.setTitle("Ошибка");
-                dialog.setMessage("Заполните все поля");
-                dialog.setPositiveButton(
-                        "Закрыть",
-                        (dialogInterface, i) -> dialogInterface.dismiss()
-                );
-                dialog.show();
+                Toast.makeText(
+                        inflatedView.getContext(),
+                        "Заполните все поля", Toast.LENGTH_SHORT
+                ).show();
                 return;
             }
 

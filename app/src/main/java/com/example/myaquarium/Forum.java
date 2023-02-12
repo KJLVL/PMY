@@ -13,10 +13,12 @@ import com.example.myaquarium.fragment.FragmentForumMy;
 import com.example.myaquarium.fragment.FragmentForumSections;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Objects;
+
 public class Forum extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private Fragment fragment;
-    private  Bundle bundle;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +27,7 @@ public class Forum extends AppCompatActivity {
 
         this.setToolbar();
 
-        loadFragment(FragmentForumSections.newInstance(1));
+        loadFragment(FragmentForumMy.newInstance());
         bottomNavigationView = findViewById(R.id.navigation);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -59,6 +61,10 @@ public class Forum extends AppCompatActivity {
     private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
+
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
 
         TextView textView = findViewById(R.id.title);
         textView.setText(getApplicationContext().getString(R.string.forum_text));

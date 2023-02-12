@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -174,15 +175,11 @@ public class FragmentServiceCalculatorFish extends Fragment {
             if (currentFishList.size() < 2) {
                 resultComp.clear();
                 setCompatibilityList(resultComp);
-                AlertDialog.Builder dialog = new AlertDialog.Builder(inflatedView.getContext());
-                dialog.setTitle("Ошибка");
-                dialog.setMessage("Выберите хотя-бы двух рыбок!");
-
-                dialog.setPositiveButton(
-                        "Закрыть",
-                        (dialogInterface, i) -> dialogInterface.dismiss()
-                );
-                dialog.show();
+                Toast.makeText(
+                        inflatedView.getContext(),
+                        "Выберите хотя-бы двух рыбок", Toast.LENGTH_SHORT
+                ).show();
+                return;
             }
             this.getComp();
         });
