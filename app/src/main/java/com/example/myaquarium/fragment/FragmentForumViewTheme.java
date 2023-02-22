@@ -74,7 +74,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
         );
 
         TextView title = inflatedView.findViewById(R.id.title);
-        title.setText(theme.optString("category_title") + " >> " + theme.optString("sections"));
+        title.setText( theme.optString("sections"));
         TextView themeTitle = inflatedView.findViewById(R.id.themeTitle);
         themeTitle.setText(theme.optString("title"));
         TextView content = inflatedView.findViewById(R.id.content);

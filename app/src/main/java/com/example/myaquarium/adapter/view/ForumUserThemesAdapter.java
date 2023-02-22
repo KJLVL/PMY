@@ -10,20 +10,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.R;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 public class ForumUserThemesAdapter extends RecyclerView.Adapter<ForumUserThemesViewHolder> {
     private Context context;
-    private List<List<String>> themesList;
+    private List<JSONObject> themesList;
     private final OnThemeClickListener onClickListener;
 
     public interface OnThemeClickListener {
-        void onStateClick(String themeId);
+        void onStateClick(JSONObject themeId);
     }
 
     public ForumUserThemesAdapter(
             Context context,
-            List<List<String>> themesList,
+            List<JSONObject> themesList,
             OnThemeClickListener onClickListener
     ) {
         this.context = context;
@@ -43,11 +45,14 @@ public class ForumUserThemesAdapter extends RecyclerView.Adapter<ForumUserThemes
 
     @Override
     public void onBindViewHolder(@NonNull ForumUserThemesViewHolder holder, int position) {
-        holder.theme.setText(themesList.get(position).get(2));
-        holder.date.setText(themesList.get(position).get(4));
+        holder.theme.setText(themesList.get(position).optString("title"));
+        holder.date.setText("дата: " + themesList.get(position).optString("date"));
 
         holder.sectionsItem.setOnClickListener(
-                v -> onClickListener.onStateClick(themesList.get(position).get(0))
+                v -> onClickListener.onStateClick(themesList.get(position))
+        );
+        holder.edit.setOnClickListener(
+                v -> onClickListener.onStateClick(themesList.get(position))
         );
     }
 

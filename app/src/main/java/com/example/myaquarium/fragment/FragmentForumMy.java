@@ -1,6 +1,5 @@
 package com.example.myaquarium.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.R;
-import com.example.myaquarium.ViewTheme;
 import com.example.myaquarium.adapter.view.ForumUserThemesAdapter;
 import com.example.myaquarium.server.Requests;
 
@@ -33,7 +31,7 @@ public class FragmentForumMy extends Fragment {
     private RecyclerView themesRecycler;
     private TextView showMyThemes;
 
-    private List<List<String>> themesList;
+    private List<JSONObject> themesList;
 
     private Requests requests;
 
@@ -80,17 +78,9 @@ public class FragmentForumMy extends Fragment {
                 JSONArray list = requests.setRequest(requests.urlRequest + "user/forum/themes", new ArrayList<>());
                 for (int i = 0; i < list.length(); i++) {
                     JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
-                    List<String> sections = new ArrayList<>(List.of(
-                            object.getString("id"),
-                            object.getString("sections"),
-                            object.getString("title"),
-                            "автор: " + object.getString("author"),
-                            "дата: " + object.getString("date"),
-                            object.getString("city")
-                    ));
-                    themesList.add(sections);
+                    themesList.add(object);
                 }
-                this.inflatedView.post(() -> themesAdapter.notifyDataSetChanged());
+//                this.inflatedView.post(() -> themesAdapter.notifyDataSetChanged());
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -108,10 +98,10 @@ public class FragmentForumMy extends Fragment {
             );
             themesRecycler.setLayoutManager(layoutManager);
 
-            ForumUserThemesAdapter.OnThemeClickListener onThemeClickListener = (themes) -> {
-                Intent intent = new Intent(inflatedView.getContext(), ViewTheme.class);
-                intent.putExtra("id", themes);
-                this.startActivity(intent);
+            ForumUserThemesAdapter.OnThemeClickListener onThemeClickListener = (theme) -> {
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.my, FragmentForumMyEditTheme.newInstance(theme));
+                ft.commit();
             };
 
             themesAdapter = new ForumUserThemesAdapter(

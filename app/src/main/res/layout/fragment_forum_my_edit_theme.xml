@@ -87,7 +87,7 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="5dp"
                 android:backgroundTint="@color/bthAll"
-                android:text="Изменить" />
+                android:text="Сохранить" />
 
         </LinearLayout>
 

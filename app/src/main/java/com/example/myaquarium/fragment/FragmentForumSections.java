@@ -20,21 +20,13 @@ import com.example.myaquarium.adapter.ForumThemesAdapter;
 import com.example.myaquarium.adapter.ForumThemesListAdapter;
 import com.example.myaquarium.server.Requests;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -210,32 +202,15 @@ public class FragmentForumSections extends Fragment {
         themesListItems = new ArrayList<>();
         themesList = new ArrayList<>();
 
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpPost http = new HttpPost(requests.urlRequest + "themes");
-
-        List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("category_id", String.valueOf(id)));
+        List<NameValuePair> params = new ArrayList<>(List.of(
+                new BasicNameValuePair("category_id", String.valueOf(id))
+            )
+        );
         Runnable runnable = () -> {
             try {
-                http.setEntity(new UrlEncodedFormEntity(params,"UTF-8"));
-                HttpResponse httpResponse = httpclient.execute(http);
-                HttpEntity httpEntity = httpResponse.getEntity();
-                BufferedReader bufferedReader = new BufferedReader(
-                        new InputStreamReader(httpEntity.getContent(), StandardCharsets.UTF_8),
-                        8
-                );
-                StringBuilder stringBuilder = new StringBuilder();
-                while (bufferedReader.readLine() != null) {
-                    stringBuilder.append(bufferedReader.readLine());
-                }
-
-                String result = stringBuilder.toString().replaceAll("\\[", "");
-                result = result.replaceAll("]", "");
-
-                String[] list = result.split(",(?!\"| )");
-                for (String item : list) {
-                    JSONObject object = new JSONObject(item);
-
+                JSONArray result = requests.setRequest(requests.urlRequest + "themes", params);
+                for (int i = 0; i < result.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(result.getJSONObject(i)));
                     if (!themesListItems.contains(object.getString("sections"))) {
                         themesListItems.add(object.getString("sections"));
                     }

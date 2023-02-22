@@ -177,9 +177,12 @@ public class ProfileSettings extends AppCompatActivity {
         userInfo = requests.getUser();
 
         name.setText(userInfo.optString("user_name"));
-        surname.setText(userInfo.optString("surname"));
-        city.setText(userInfo.optString("city"));
-        phone.setText(userInfo.optString("phone"));
+        if (!userInfo.optString("surname").equals("null"))
+            surname.setText(userInfo.optString("surname"));
+        if (!userInfo.optString("city").equals("null"))
+            city.setText(userInfo.optString("city"));
+        if (!userInfo.optString("phone").equals("null"))
+            phone.setText(userInfo.optString("phone"));
         login.setText(userInfo.optString("login"));
 
         if (!Objects.equals(userInfo.optString("avatar"), "")) {

@@ -30,8 +30,8 @@ public class ViewTheme extends AppCompatActivity {
         JSONObject theme = new JSONObject();
         try {
             theme = new JSONObject(arguments.getString("theme"));
-        } catch (JSONException ignored) {
-            ignored.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

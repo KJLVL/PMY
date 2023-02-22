@@ -3,10 +3,12 @@ package com.example.myaquarium;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +20,8 @@ import com.example.myaquarium.adapter.FishListViewAdapter;
 import com.example.myaquarium.server.Requests;
 import com.squareup.picasso.Picasso;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +44,7 @@ public class Profile extends AppCompatActivity {
     private TextView nameField;
     private TextView volumeField;
     private ImageView image;
+    private Button save;
 
     private FishListAdapter fishAdapter;
     private FishListViewAdapter fishListAdapter;
@@ -64,6 +69,7 @@ public class Profile extends AppCompatActivity {
         nameField = this.findViewById(R.id.nameField);
         image = this.findViewById(R.id.image);
         volumeField = this.findViewById(R.id.volumeField);
+        save = this.findViewById(R.id.save);
 
         fishListCurrent = new ArrayList<>();
         userInfo = new HashMap<>();
@@ -79,6 +85,8 @@ public class Profile extends AppCompatActivity {
             this.startActivity(new Intent(this, ProfileSettings.class));
         });
 
+        save.setOnClickListener(view -> this.saveProfile());
+
         TextView calculator = findViewById(R.id.service);
         TextView profile = findViewById(R.id.profile);
         TextView forum = findViewById(R.id.forum);
@@ -86,6 +94,35 @@ public class Profile extends AppCompatActivity {
         calculator.setOnClickListener(view -> this.startActivity(new Intent(this, Service.class)));
         forum.setOnClickListener(view -> this.startActivity(new Intent(this, Forum.class)));
         profile.setOnClickListener(view -> this.startActivity(new Intent(this, Profile.class)));
+    }
+
+    private void saveProfile() {
+        JSONArray jsonArray = new JSONArray(fishListCurrent);
+        List<NameValuePair> params = new ArrayList<>(List.of(
+                new BasicNameValuePair("aquarium_volume", volumeField.getText().toString()),
+                new BasicNameValuePair("fish", jsonArray.toString())
+            )
+        );
+
+        Runnable runnable = () -> {
+            try {
+                JSONArray message = requests.setRequest(requests.urlRequest + "user/profile", params);
+                JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
+                if (object.optString("success").equals("1")) {
+                    this.runOnUiThread(() -> {
+                        Toast.makeText(
+                                getApplicationContext(),
+                                "Данные были успешно сохранены", Toast.LENGTH_SHORT
+                        ).show();
+                    });
+                }
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+        };
+
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
     private void setToolbar() {
