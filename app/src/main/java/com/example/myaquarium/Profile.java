@@ -1,7 +1,6 @@
 package com.example.myaquarium;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -19,6 +18,7 @@ import com.example.myaquarium.adapter.FishListViewAdapter;
 import com.example.myaquarium.server.Requests;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 public class Profile extends AppCompatActivity {
     private RecyclerView listView;
@@ -80,21 +79,13 @@ public class Profile extends AppCompatActivity {
             this.startActivity(new Intent(this, ProfileSettings.class));
         });
 
-        TextView service = findViewById(R.id.service);
-        TextView forum = findViewById(R.id.forum);
+        TextView calculator = findViewById(R.id.service);
         TextView profile = findViewById(R.id.profile);
+        TextView forum = findViewById(R.id.forum);
 
-        service.setOnClickListener(view -> {
-            this.startActivity(new Intent(this, Service.class));
-        });
-
-        forum.setOnClickListener(view -> {
-            this.startActivity(new Intent(this, Forum.class));
-        });
-
-        profile.setOnClickListener(view -> {
-            this.startActivity(new Intent(this, Profile.class));
-        });
+        calculator.setOnClickListener(view -> this.startActivity(new Intent(this, Service.class)));
+        forum.setOnClickListener(view -> this.startActivity(new Intent(this, Forum.class)));
+        profile.setOnClickListener(view -> this.startActivity(new Intent(this, Profile.class)));
     }
 
     private void setToolbar() {
@@ -136,33 +127,30 @@ public class Profile extends AppCompatActivity {
     private void getUser() {
         Runnable runnable = () -> {
             try {
-                String[] tips = requests.setRequest(requests.urlRequest + "user");
-                for (String item : tips) {
-                    JSONObject object = new JSONObject(item);
-                    userInfo.put("name", object.getString("user_name"));
-                    userInfo.put("login", object.getString("login"));
+                JSONArray user = requests.setRequest(requests.urlRequest + "user", new ArrayList<>());
+                JSONObject object = new JSONObject(user.getJSONObject(0).toString());
+                requests.setUser(object);
+                userInfo.put("name", object.getString("user_name"));
+                userInfo.put("login", object.getString("login"));
 
-                    userInfo.put("surname", !object.getString("surname").equals("null")
-                            ? object.getString("surname") : "");
+                userInfo.put("surname", !object.getString("surname").equals("null")
+                        ? object.getString("surname") : "");
 
-                    userInfo.put("aquarium_volume", !object.getString("aquarium_volume").equals("null")
-                            ? object.getString("aquarium_volume") : "");
+                userInfo.put("aquarium_volume", !object.getString("aquarium_volume").equals("null")
+                        ? object.getString("aquarium_volume") : "");
 
-                    userInfo.put("avatar", !object.getString("avatar").equals("null")
-                            ? object.getString("avatar") : "");
-                }
+                userInfo.put("avatar", !object.getString("avatar").equals("null")
+                        ? object.getString("avatar") : "");
+
                 this.runOnUiThread(() -> {
                     String name = userInfo.get("name") + " " + userInfo.get("surname");
                     nameField.setText(name);
                     volumeField.setText(userInfo.get("aquarium_volume"));
 
-                    if (!Objects.equals(userInfo.get("avatar"), "")) {
-                        Picasso.get()
-                                .load(requests.urlRequestImg + userInfo.get("avatar"))
-                                .into(image);
-                    } else {
-                        image.setImageResource(R.drawable.ic_launcher_foreground);
-                    }
+                    Picasso.get()
+                            .load(requests.urlRequestImg + userInfo.get("avatar"))
+                            .into(image);
+
                 });
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
@@ -175,9 +163,9 @@ public class Profile extends AppCompatActivity {
     private void getUserFish() {
         Runnable runnable = () -> {
             try {
-                String[] list = requests.setRequest(requests.urlRequest + "user/fish");
-                for (String item : list) {
-                    JSONObject object = new JSONObject(item);
+                JSONArray userFish = requests.setRequest(requests.urlRequest + "user/fish", new ArrayList<>());
+                for (int i = 0; i < userFish.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(userFish.getJSONObject(i)));
                     List<String> fish = new ArrayList<>(List.of(
                             object.getString("fish"),
                             object.getString("count")
@@ -200,9 +188,9 @@ public class Profile extends AppCompatActivity {
         fishList = new ArrayList<>();
         Runnable runnable = () -> {
             try {
-                String[] list = requests.setRequest(requests.urlRequest + "fish/list");
-                for (String item : list) {
-                    JSONObject object = new JSONObject(item);
+                JSONArray list = requests.setRequest(requests.urlRequest + "fish/list", new ArrayList<>());
+                for (int i = 0; i < list.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
                     List<String> fish = new ArrayList<>(List.of(
                             object.getString("fish_name"),
                             object.getString("liter")
@@ -254,15 +242,5 @@ public class Profile extends AppCompatActivity {
             fishRecycler.setAdapter(fishAdapter);
         });
     }
-
-    private void setStyleSearchView() {
-        int id = search.getContext()
-                .getResources()
-                .getIdentifier("android:id/search_src_text", null, null);
-
-        TextView textView = (TextView) search.findViewById(id);
-        textView.setTextColor(Color.WHITE);
-    }
-
 
 }

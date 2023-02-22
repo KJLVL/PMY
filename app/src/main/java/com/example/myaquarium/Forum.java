@@ -17,8 +17,7 @@ import java.util.Objects;
 
 public class Forum extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
-    private Fragment fragment;
-    private Bundle bundle;
+    private String sectionsId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +26,6 @@ public class Forum extends AppCompatActivity {
 
         this.setToolbar();
 
-        loadFragment(FragmentForumMy.newInstance());
         bottomNavigationView = findViewById(R.id.navigation);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -44,18 +42,23 @@ public class Forum extends AppCompatActivity {
             return false;
         });
 
+        Bundle arguments = getIntent().getExtras();
+        if (arguments != null) sectionsId = arguments.get("id").toString();
+        if (sectionsId.equals("")) {
+            loadFragment(FragmentForumMy.newInstance());
+        } else {
+            if (sectionsId.equals("1")) bottomNavigationView.setSelectedItemId(R.id.navigation_sections);
+            if (sectionsId.equals("2")) bottomNavigationView.setSelectedItemId(R.id.navigation_swap);
+            loadFragment(FragmentForumSections.newInstance(Integer.parseInt(sectionsId)));
+        }
 
         TextView calculator = findViewById(R.id.service);
         TextView profile = findViewById(R.id.profile);
+        TextView forum = findViewById(R.id.forum);
 
-
-        calculator.setOnClickListener(view -> {
-            this.startActivity(new Intent(this, Service.class));
-        });
-
-        profile.setOnClickListener(view -> {
-            this.startActivity(new Intent(this, Profile.class));
-        });
+        calculator.setOnClickListener(view -> this.startActivity(new Intent(this, Service.class)));
+        forum.setOnClickListener(view -> this.startActivity(new Intent(this, Forum.class)));
+        profile.setOnClickListener(view -> this.startActivity(new Intent(this, Profile.class)));
     }
 
     private void setToolbar() {

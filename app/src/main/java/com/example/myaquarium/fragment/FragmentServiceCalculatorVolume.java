@@ -24,6 +24,7 @@ import com.example.myaquarium.adapter.FishListAdapter;
 import com.example.myaquarium.adapter.FishListViewAdapter;
 import com.example.myaquarium.server.Requests;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -218,9 +219,9 @@ public class FragmentServiceCalculatorVolume extends Fragment {
         fishList = new ArrayList<>();
         Runnable runnable = () -> {
             try {
-                String[] list = requests.setRequest(requests.urlRequest + "fish/list");
-                for (String item : list) {
-                    JSONObject object = new JSONObject(item);
+                JSONArray list = requests.setRequest(requests.urlRequest + "fish/list", new ArrayList<>());
+                for (int i = 0; i < list.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
                     List<String> fish = new ArrayList<>(List.of(
                             object.getString("fish_name"),
                             object.getString("liter")
@@ -241,9 +242,10 @@ public class FragmentServiceCalculatorVolume extends Fragment {
     private void getUserFish() {
         Runnable runnable = () -> {
             try {
-                String[] list = requests.setRequest(requests.urlRequest + "user/fish");
-                for (String item : list) {
-                    if (item.contains("success")) {
+                JSONArray list = requests.setRequest(requests.urlRequest + "user/fish", new ArrayList<>());
+                for (int i = 0; i < list.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
+                    if (object.toString().contains("success")) {
                         fishRecycler.post(() -> {
                             useMyFish.setChecked(false);
                             useMyFish.setClickable(false);
@@ -255,7 +257,6 @@ public class FragmentServiceCalculatorVolume extends Fragment {
                         return;
                     }
 
-                    JSONObject object = new JSONObject(item);
                     List<String> fish = new ArrayList<>(List.of(
                             object.getString("fish"),
                             object.getString("count")

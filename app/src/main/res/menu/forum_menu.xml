@@ -3,7 +3,6 @@
 
     <item
         android:id="@+id/navigation_my"
-        android:checked="true"
         android:title="@string/forum_menu_my" />
 
     <item

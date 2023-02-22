@@ -162,7 +162,7 @@ public class FragmentForumCommentDialog extends DialogFragment {
                     Dialog dialog = getDialog();
                     dialog.dismiss();
                     FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.view, FragmentForumViewDiscussions.newInstance(theme));
+                    ft.replace(R.id.view, FragmentForumViewTheme.newInstance(theme));
                     ft.commit();
                     inflatedView.post(() -> {
                         Toast.makeText(

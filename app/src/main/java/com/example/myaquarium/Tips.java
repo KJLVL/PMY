@@ -14,6 +14,7 @@ import com.example.myaquarium.adapter.TipsAdapter;
 import com.example.myaquarium.adapter.TipsMenuAdapter;
 import com.example.myaquarium.server.Requests;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,21 +59,13 @@ public class Tips extends AppCompatActivity {
         this.getTipsMenu();
         this.getTips();
 
-        TextView service = findViewById(R.id.service);
-        TextView forum = findViewById(R.id.forum);
+        TextView calculator = findViewById(R.id.service);
         TextView profile = findViewById(R.id.profile);
+        TextView forum = findViewById(R.id.forum);
 
-        service.setOnClickListener(view -> {
-            this.startActivity(new Intent(this, Service.class));
-        });
-
-        forum.setOnClickListener(view -> {
-            this.startActivity(new Intent(this, Forum.class));
-        });
-
-        profile.setOnClickListener(view -> {
-            this.startActivity(new Intent(this, Profile.class));
-        });
+        calculator.setOnClickListener(view -> this.startActivity(new Intent(this, Service.class)));
+        forum.setOnClickListener(view -> this.startActivity(new Intent(this, Forum.class)));
+        profile.setOnClickListener(view -> this.startActivity(new Intent(this, Profile.class)));
     }
 
     private void setToolbar() {
@@ -94,9 +87,9 @@ public class Tips extends AppCompatActivity {
     private void getTipsMenu() {
         Runnable runnable = () -> {
             try {
-                String[] menu = requests.setRequest(requests.urlRequest + "tips/menu");
-                for (String item: menu) {
-                    JSONObject object = new JSONObject(item);
+                JSONArray list = requests.setRequest(requests.urlRequest + "tips/menu", new ArrayList<>());
+                for (int i = 0; i < list.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
                     tipsMenuList.add(object.getString("title"));
                 }
                 this.runOnUiThread(() -> tipsMenuAdapter.notifyDataSetChanged());
@@ -111,9 +104,9 @@ public class Tips extends AppCompatActivity {
     private void getTips() {
         Runnable runnable = () -> {
             try {
-                String[] tips = requests.setRequest(requests.urlRequest + "tips/tips");
-                for (String item: tips) {
-                    JSONObject object = new JSONObject(item);
+                JSONArray list = requests.setRequest(requests.urlRequest + "tips/tips", new ArrayList<>());
+                for (int i = 0; i < list.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
                     List<String> itemTips = new ArrayList<>(List.of(
                             object.getString("tips_title_id"),
                             object.getString("title"),

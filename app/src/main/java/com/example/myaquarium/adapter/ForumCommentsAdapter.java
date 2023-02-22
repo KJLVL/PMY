@@ -13,13 +13,13 @@ import com.example.myaquarium.adapter.view.ForumCommentsViewHolder;
 import com.example.myaquarium.server.Requests;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.List;
 
 public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsViewHolder> {
     private Context context;
-    private List<JSONObject> commentsList;
+    private JSONArray commentsList;
     private Requests requests = new Requests();
     private final ForumCommentsAdapter.onAnswerClickListener onClickListener;
 
@@ -29,7 +29,7 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
 
     public ForumCommentsAdapter(
             Context context,
-            List<JSONObject> commentsList,
+            JSONArray commentsList,
             ForumCommentsAdapter.onAnswerClickListener onClickListener
     ) {
         this.context = context;
@@ -49,45 +49,53 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
 
     @Override
     public void onBindViewHolder(@NonNull ForumCommentsViewHolder holder, int position) {
-        Picasso.get()
-                .load(
-                        requests.urlRequestImg
-                                + commentsList.get(position).optString("avatar")
-                )
-                .into(holder.avatar);
 
-        holder.author.setText("автор: " + commentsList.get(position).optString("login_from"));
-        holder.date.setText("дата: " + commentsList.get(position).optString("date"));
+        try {
+            JSONObject jsonObject = commentsList.getJSONObject(position);
 
-        if (!commentsList.get(position).optString("login_to").equals("null")) {
-            holder.response.setText("кому: " + commentsList.get(position).optString("login_to"));
-        } else {
-            holder.response.setVisibility(View.GONE);
-        }
-
-        holder.comment.setText(commentsList.get(position).optString("comment"));
-
-        if (
-                commentsList.get(position).optString("images").equals("null")
-                        || commentsList.get(position).optString("images").equals("")
-        ) {
-            holder.images.setVisibility(View.GONE);
-        } else {
             Picasso.get()
                     .load(
-                            requests.urlRequestImg +
-                                commentsList.get(position).optString("images")
+                            requests.urlRequestImg
+                                    + jsonObject.getString("avatar")
                     )
-                    .into(holder.switcher);
+                    .into(holder.avatar);
+            holder.author.setText("автор: " + jsonObject.optString("login_from"));
+            holder.date.setText("дата: " + jsonObject.optString("date"));
+
+            if (!jsonObject.getString("login_to").equals("null")) {
+                holder.response.setText("кому: " + jsonObject.optString("login_to"));
+            } else {
+                holder.response.setVisibility(View.GONE);
+            }
+
+            holder.comment.setText(jsonObject.optString("comment"));
+
+            if (
+                    jsonObject.optString("images").equals("null")
+                            || jsonObject.optString("images").equals("")
+            ) {
+                holder.images.setVisibility(View.GONE);
+            } else {
+                Picasso.get()
+                        .load(
+                                requests.urlRequestImg +
+                                        jsonObject.optString("images")
+                        )
+                        .into(holder.switcher);
+            }
+            holder.answer.setOnClickListener(view -> {
+                onClickListener.onStateClick(jsonObject.optString("user_id"));
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        holder.answer.setOnClickListener(view -> {
-            onClickListener.onStateClick(commentsList.get(position).optString("user_id"));
-        });
+
     }
 
 
     @Override
     public int getItemCount() {
-        return commentsList.size();
+        return commentsList.length();
     }
 }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/layout"
     android:id="@+id/view"
-    tools:context=".fragment.FragmentForumViewDiscussions">
+    tools:context=".fragment.FragmentForumViewTheme">
 
     <LinearLayout
         android:layout_width="match_parent"

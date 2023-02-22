@@ -8,8 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.myaquarium.fragment.FragmentForumSections;
-import com.example.myaquarium.fragment.FragmentForumViewDiscussions;
+import com.example.myaquarium.fragment.FragmentForumViewTheme;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,17 +34,17 @@ public class ViewTheme extends AppCompatActivity {
             ignored.printStackTrace();
         }
 
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.scrollViewTheme, FragmentForumViewTheme.newInstance(theme));
+        ft.commit();
 
-        switch (id) {
-            case "1":
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.scrollViewTheme, FragmentForumViewDiscussions.newInstance(theme));
-                ft.commit();
-                break;
-            case "2":
+        TextView calculator = findViewById(R.id.service);
+        TextView profile = findViewById(R.id.profile);
+        TextView forum = findViewById(R.id.forum);
 
-                break;
-        }
+        calculator.setOnClickListener(view -> this.startActivity(new Intent(this, Service.class)));
+        forum.setOnClickListener(view -> this.startActivity(new Intent(this, Forum.class)));
+        profile.setOnClickListener(view -> this.startActivity(new Intent(this, Profile.class)));
     }
 
     private void setToolbar() {
@@ -60,17 +59,9 @@ public class ViewTheme extends AppCompatActivity {
         textView.setText(getApplicationContext().getString(R.string.forum_text));
 
         toolbar.setNavigationOnClickListener(view -> {
-            switch (id) {
-                case "1":
-                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.view, FragmentForumSections.newInstance(1));
-                    ft.commit();
-                    break;
-                case "2":
-
-                    break;
-            }
-            this.startActivity(new Intent(this, Forum.class));
+            Intent intent = new Intent(this, Forum.class);
+            intent.putExtra("id", id);
+            this.startActivity(intent);
         });
     }
 }

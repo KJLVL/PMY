@@ -23,31 +23,21 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myaquarium.Forum;
 import com.example.myaquarium.R;
 import com.example.myaquarium.server.Requests;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -142,9 +132,9 @@ public class FragmentForumNewTheme extends Fragment {
         categoryList = new ArrayList<>();
         Runnable runnable = () -> {
             try {
-                String[] list = requests.setRequest(requests.urlRequest + "themes/category");
-                for (String item : list) {
-                    JSONObject object = new JSONObject(item);
+                JSONArray list = requests.setRequest(requests.urlRequest + "themes/category", new ArrayList<>());
+                for (int i = 0; i < list.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
                     Map<String, String> map = Map.of(
                             object.getString("id"),
                             object.getString("title")
@@ -179,36 +169,19 @@ public class FragmentForumNewTheme extends Fragment {
         section.setVisibility(View.VISIBLE);
         this.sectionsList = new ArrayList<>();
 
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpPost http = new HttpPost(requests.urlRequest + "themes/sections");
-        List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("category_id", String.valueOf(id)));
-
+        List<NameValuePair> params = new ArrayList<>(List.of(
+                new BasicNameValuePair("category_id", String.valueOf(id))
+            )
+        );
         Runnable runnable = () -> {
             try {
-                http.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-                HttpResponse httpResponse = httpclient.execute(http);
-                HttpEntity httpEntity = httpResponse.getEntity();
-                BufferedReader bufferedReader = new BufferedReader(
-                        new InputStreamReader(httpEntity.getContent(), StandardCharsets.UTF_8),
-                        8
-                );
-                StringBuilder stringBuilder = new StringBuilder();
-                while (bufferedReader.readLine() != null) {
-                    stringBuilder.append(bufferedReader.readLine());
-                }
-
-                String result = stringBuilder.toString().replaceAll("\\[", "");
-                result = result.replaceAll("]", "");
-
-                String[] list = result.split(",(?![\" ])");
-                for (String item : list) {
-                    JSONObject object = new JSONObject(item);
+                JSONArray result = requests.setRequest(requests.urlRequest + "themes/sections", params);
+                for (int i = 0; i < result.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(result.getJSONObject(i)));
                     Map<String, String> sections = Map.of(
                             object.getString("id"),
                             object.getString("title")
                     );
-
                     sectionsList.add(sections);
                 }
                 this.setSections();
@@ -336,8 +309,6 @@ public class FragmentForumNewTheme extends Fragment {
     }
 
     private void createTheme() {
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpPost http = new HttpPost(requests.urlRequest + "user/forum");
         List<NameValuePair> params = new ArrayList<>(List.of(
                 new BasicNameValuePair("category_id", this.categoryId),
                 new BasicNameValuePair("sections_id", this.sectionId),
@@ -352,35 +323,17 @@ public class FragmentForumNewTheme extends Fragment {
 
         Runnable runnable = () -> {
             try {
-                http.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-                HttpResponse httpResponse = httpclient.execute(http);
-                HttpEntity httpEntity = httpResponse.getEntity();
-                BufferedReader bufferedReader = new BufferedReader(
-                        new InputStreamReader(httpEntity.getContent(), StandardCharsets.UTF_8),
-                        8
-                );
-                StringBuilder stringBuilder = new StringBuilder();
-                while (bufferedReader.readLine() != null) {
-                    stringBuilder.append(bufferedReader.readLine());
-                }
-
-                JSONObject object = new JSONObject(stringBuilder.toString());
-                String success = object.getString("success");
-                if (success.equals("1")) {
+                JSONArray message = requests.setRequest(requests.urlRequest + "user/forum", params);
+                JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
+                if (object.optString("success").equals("1")) {
                     inflatedView.post(() -> {
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(inflatedView.getContext());
-                        dialog.setMessage("Тема была успешно создана!");
-                        dialog.setPositiveButton(
-                                "Закрыть",
-                                (dialogInterface, i) -> dialogInterface.dismiss()
-                        );
-                        dialog.show();
-                        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                        transaction.replace(R.id.new_theme, new FragmentForumMy());
-                        transaction.commit();
+                        Toast.makeText(
+                                inflatedView.getContext(),
+                                "Тема была успешно создана!", Toast.LENGTH_SHORT
+                        ).show();
+                        this.startActivity(new Intent(getContext(), Forum.class));
                     });
                 }
-
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }

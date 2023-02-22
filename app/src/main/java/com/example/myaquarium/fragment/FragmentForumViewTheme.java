@@ -31,6 +31,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,7 +42,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentForumViewDiscussions extends Fragment implements ViewSwitcher.ViewFactory {
+public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.ViewFactory {
     private View inflatedView;
     private ImageSwitcher switcher;
     private Button comment;
@@ -49,18 +50,18 @@ public class FragmentForumViewDiscussions extends Fragment implements ViewSwitch
 
     private int position = 0;
     private List<Bitmap> images;
-    private List<JSONObject> comments;
+    private JSONArray comments;
 
     private final JSONObject theme;
     private Requests requests = new Requests();
     private ForumCommentsAdapter forumCommentsAdapter;
 
-    public FragmentForumViewDiscussions(JSONObject theme) {
+    public FragmentForumViewTheme(JSONObject theme) {
         this.theme = theme;
     }
 
-    public static FragmentForumViewDiscussions newInstance(JSONObject theme) {
-        return new FragmentForumViewDiscussions(theme);
+    public static FragmentForumViewTheme newInstance(JSONObject theme) {
+        return new FragmentForumViewTheme(theme);
     }
 
     @Override
@@ -99,9 +100,8 @@ public class FragmentForumViewDiscussions extends Fragment implements ViewSwitch
         });
 
         this.getComments();
-        this.setCommentsList(comments);
 
-        if (theme.optString("images").equals("null")) {
+        if (theme.optString("images").equals("null") || theme.optString("images").equals("")) {
             imagesLayout.setVisibility(View.GONE);
         }
         else {
@@ -133,8 +133,6 @@ public class FragmentForumViewDiscussions extends Fragment implements ViewSwitch
     }
 
     private void getComments() {
-        comments = new ArrayList<>();
-
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost http = new HttpPost(requests.urlRequest + "user/forum/comments");
 
@@ -156,15 +154,11 @@ public class FragmentForumViewDiscussions extends Fragment implements ViewSwitch
                     stringBuilder.append(bufferedReader.readLine());
                 }
 
-                String result = stringBuilder.toString().replaceAll("\\[", "");
-                result = result.replaceAll("]", "");
+                comments = new JSONArray(stringBuilder.toString());
 
-                String[] list = result.split(",(?!\"| )");
-                for (String item : list) {
-                    JSONObject object = new JSONObject(item);
-                    comments.add(object);
-                }
-                this.inflatedView.post(() -> forumCommentsAdapter.notifyDataSetChanged());
+                this.inflatedView.post(() -> {
+                    this.setCommentsList(comments);
+                });
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -173,7 +167,7 @@ public class FragmentForumViewDiscussions extends Fragment implements ViewSwitch
         thread.start();
     }
 
-    private void setCommentsList(List<JSONObject> comments) {
+    private void setCommentsList(JSONArray comments) {
         commentsRecycler.post(() -> {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
                     inflatedView.getContext(),

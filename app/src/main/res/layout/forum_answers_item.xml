@@ -22,7 +22,7 @@
             android:layout_height="45dp"
             android:gravity="center_horizontal"
             android:layout_gravity="top"
-            app:cardCornerRadius="45dp">
+            app:cardCornerRadius="22dp">
 
             <ImageView
                 android:id="@+id/avatar"

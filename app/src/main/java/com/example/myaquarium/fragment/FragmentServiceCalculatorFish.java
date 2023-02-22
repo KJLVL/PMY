@@ -21,21 +21,13 @@ import com.example.myaquarium.adapter.FishListWithChoiceAdapter;
 import com.example.myaquarium.adapter.ResultCompatibilityAdapter;
 import com.example.myaquarium.server.Requests;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -137,9 +129,9 @@ public class FragmentServiceCalculatorFish extends Fragment {
         fishList = new ArrayList<>();
         Runnable runnable = () -> {
             try {
-                String[] list = requests.setRequest(requests.urlRequest + "fish/list");
-                for (String item: list) {
-                    JSONObject object = new JSONObject(item);
+                JSONArray result = requests.setRequest(requests.urlRequest + "fish/list", new ArrayList<>());
+                for (int i = 0; i < result.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(result.getJSONObject(i)));
                     fishList.add(object.getString("fish_name"));
                 }
                 this.inflatedView.post(() -> {
@@ -187,30 +179,16 @@ public class FragmentServiceCalculatorFish extends Fragment {
 
     private void getComp() {
         resultComp = new ArrayList<>();
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpPost http = new HttpPost(requests.urlRequest + "calculate");
 
-        List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("fish", String.join(",", currentFishList)));
+        List<NameValuePair> params = new ArrayList<>(List.of(
+                new BasicNameValuePair("fish", String.join(",", currentFishList))
+            )
+        );
         Runnable runnable = () -> {
             try {
-                http.setEntity(new UrlEncodedFormEntity(params,"UTF-8"));
-                HttpResponse httpResponse = httpclient.execute(http);
-                HttpEntity httpEntity = httpResponse.getEntity();
-                BufferedReader bufferedReader = new BufferedReader(
-                        new InputStreamReader(httpEntity.getContent(), StandardCharsets.UTF_8),
-                        8
-                );
-                StringBuilder stringBuilder = new StringBuilder();
-                while (bufferedReader.readLine() != null) {
-                    stringBuilder.append(bufferedReader.readLine());
-                }
-
-                String result = stringBuilder.toString().replaceAll("\\[", "");
-                result = result.replaceAll("]", "");
-                String[] list = result.split(",");
-                for (String item: list) {
-                    JSONObject object = new JSONObject(item);
+                JSONArray result = requests.setRequest(requests.urlRequest + "calculate", params);
+                for (int i = 0; i < result.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(result.getJSONObject(i)));
                     String name = Objects.requireNonNull(object.names()).getString(0);
                     List<String> fish = new ArrayList<>(List.of(
                             name,
@@ -220,7 +198,6 @@ public class FragmentServiceCalculatorFish extends Fragment {
                     resultComp.add(fish);
                 }
                 this.setCompatibilityList(resultComp);
-
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }

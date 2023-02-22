@@ -24,21 +24,13 @@ public class Service extends AppCompatActivity {
 
         this.loadFragment(FragmentService.newInstance());
 
-        TextView service = findViewById(R.id.service);
-        TextView forum = findViewById(R.id.forum);
+        TextView calculator = findViewById(R.id.service);
         TextView profile = findViewById(R.id.profile);
+        TextView forum = findViewById(R.id.forum);
 
-        service.setOnClickListener(view -> {
-            this.startActivity(new Intent(this, Service.class));
-        });
-
-        forum.setOnClickListener(view -> {
-            this.startActivity(new Intent(this, Forum.class));
-        });
-
-        profile.setOnClickListener(view -> {
-            this.startActivity(new Intent(this, Profile.class));
-        });
+        calculator.setOnClickListener(view -> this.startActivity(new Intent(this, Service.class)));
+        forum.setOnClickListener(view -> this.startActivity(new Intent(this, Forum.class)));
+        profile.setOnClickListener(view -> this.startActivity(new Intent(this, Profile.class)));
     }
 
     private void setToolbar() {

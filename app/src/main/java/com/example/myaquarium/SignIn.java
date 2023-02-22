@@ -11,41 +11,31 @@ import android.widget.RelativeLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myaquarium.server.Requests;
 import com.google.android.material.snackbar.Snackbar;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SignIn extends AppCompatActivity {
-    private static String urlSignIn = "http://192.168.0.106/user/login";
-    private static String urlRegistration = "http://192.168.0.106/user/registration";
-    private Button btnSignIn;
-    private Button btnRegistration;
     private RelativeLayout root;
+    private final Requests requests = new Requests();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        btnSignIn = findViewById(R.id.btnSignIn);
-        btnRegistration = findViewById(R.id.btnRegistration);
+        Button btnSignIn = findViewById(R.id.btnSignIn);
+        Button btnRegistration = findViewById(R.id.btnRegistration);
         root = findViewById(R.id.root);
 
         btnRegistration.setOnClickListener(view -> showRegistrationWindow());
@@ -86,32 +76,18 @@ public class SignIn extends AppCompatActivity {
                 return;
             }
 
-            List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("login", login));
-            params.add(new BasicNameValuePair("password", password));
-            params.add(new BasicNameValuePair("name", name));
-
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost http = new HttpPost(urlRegistration);
+            List<NameValuePair> params = new ArrayList<>(List.of(
+                    new BasicNameValuePair("login", login),
+                    new BasicNameValuePair("password", password),
+                    new BasicNameValuePair("name", name)
+                )
+            );
 
             Runnable runnable = () -> {
                 try {
-                    http.setEntity(new UrlEncodedFormEntity(params,"UTF-8"));
-                    HttpResponse httpResponse = httpclient.execute(http);
-                    HttpEntity httpEntity = httpResponse.getEntity();
-                    BufferedReader bufferedReader = new BufferedReader(
-                            new InputStreamReader(httpEntity.getContent(), StandardCharsets.UTF_8),
-                            8
-                    );
-                    StringBuilder stringBuilder = new StringBuilder();
-                    while (bufferedReader.readLine() != null) {
-                        stringBuilder.append(bufferedReader.readLine());
-                    }
-
-                    JSONObject object = new JSONObject(stringBuilder.toString());
-                    String success = object.getString("success");
-
-                    if (success.equals("1")) {
+                    JSONArray message = requests.setRequest(requests.urlRequest + "user/registration", params);
+                    JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
+                    if (object.optString("success").equals("1")) {
                         dialogInterface.dismiss();
                         getNotice("Вы были успешно зарегистрированы");
                     }
@@ -146,32 +122,18 @@ public class SignIn extends AppCompatActivity {
                 return;
             }
 
-            List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("login", login));
-            params.add(new BasicNameValuePair("password", password));
-
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost http = new HttpPost(urlSignIn);
+            List<NameValuePair> params = new ArrayList<>(List.of(
+                    new BasicNameValuePair("login", login),
+                    new BasicNameValuePair("password", password)
+                )
+            );
 
             Runnable runnable = () -> {
                 try {
-                    http.setEntity(new UrlEncodedFormEntity(params,"UTF-8"));
-                    HttpResponse httpResponse = httpclient.execute(http);
-                    HttpEntity httpEntity = httpResponse.getEntity();
-                    BufferedReader bufferedReader = new BufferedReader(
-                            new InputStreamReader(httpEntity.getContent(), StandardCharsets.UTF_8),
-                            8
-                    );
-                    StringBuilder stringBuilder = new StringBuilder();
-                    while (bufferedReader.readLine() != null) {
-                        stringBuilder.append(bufferedReader.readLine());
-                    }
+                    JSONArray message = requests.setRequest(requests.urlRequest + "user/login", params);
+                    JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
 
-                    String result = stringBuilder.toString();
-                    JSONObject object = new JSONObject(result);
-                    String success = object.getString("success");
-
-                    if (success.equals("1")) {
+                    if (object.optString("success").equals("1")) {
                         startActivity(new Intent(SignIn.this, Profile.class));
                     } else {
                         dialogInterface.dismiss();
@@ -181,6 +143,7 @@ public class SignIn extends AppCompatActivity {
                     e.printStackTrace();
                 }
             };
+
             Thread thread = new Thread(runnable);
             thread.start();
         });

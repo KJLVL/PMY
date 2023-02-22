@@ -18,6 +18,7 @@ import com.example.myaquarium.ViewTheme;
 import com.example.myaquarium.adapter.view.ForumUserThemesAdapter;
 import com.example.myaquarium.server.Requests;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -76,9 +77,9 @@ public class FragmentForumMy extends Fragment {
         themesList = new ArrayList<>();
         Runnable runnable = () -> {
             try {
-                String[] list = requests.setRequest(requests.urlRequest + "user/forum/themes");
-                for (String item : list) {
-                    JSONObject object = new JSONObject(item);
+                JSONArray list = requests.setRequest(requests.urlRequest + "user/forum/themes", new ArrayList<>());
+                for (int i = 0; i < list.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
                     List<String> sections = new ArrayList<>(List.of(
                             object.getString("id"),
                             object.getString("sections"),
@@ -89,9 +90,7 @@ public class FragmentForumMy extends Fragment {
                     ));
                     themesList.add(sections);
                 }
-                this.inflatedView.post(() -> {
-                    themesAdapter.notifyDataSetChanged();
-                });
+                this.inflatedView.post(() -> themesAdapter.notifyDataSetChanged());
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
