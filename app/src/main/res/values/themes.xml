@@ -19,6 +19,11 @@
         <item name="colorControlNormal">@color/white</item>
     </style>
 
+    <style name="BrandedSwitch.control" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/bthAll</item>
+        <item name="colorSwitchThumbNormal">@color/gray</item>
+    </style>
+
     <style name="BottomNavigationView"
         parent="@style/TextAppearance.AppCompat.Caption">
         <item name="android:textSize">17sp</item>

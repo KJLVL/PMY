@@ -39,7 +39,6 @@ public class FragmentForumSections extends Fragment {
     private SearchView search;
     private RecyclerView themesRecycler;
     private RecyclerView sectionsFilter;
-    private Button filters;
     private CheckBox all;
     private LinearLayout filter;
 
@@ -75,7 +74,7 @@ public class FragmentForumSections extends Fragment {
         search = inflatedView.findViewById(R.id.search);
         sectionsFilter = inflatedView.findViewById(R.id.sectionsFilter);
         themesRecycler = inflatedView.findViewById(R.id.themesRecycler);
-        filters = inflatedView.findViewById(R.id.filters);
+        Button filters = inflatedView.findViewById(R.id.filters);
         all = inflatedView.findViewById(R.id.all);
         filter = inflatedView.findViewById(R.id.filter);
 
@@ -102,15 +101,9 @@ public class FragmentForumSections extends Fragment {
 
         all.setOnClickListener(view -> {
             if (all.isChecked()) {
-                for (String item: themesListItems) {
-                    checked.put(item, true);
-                }
                 setThemesListItems(themesListItems, true);
                 setThemesList(themesList);
             } else {
-                for (String item: themesListItems) {
-                    checked.put(item, false);
-                }
                 setThemesListItems(themesListItems, false);
                 setThemesList(new ArrayList<>());
             }
@@ -130,6 +123,10 @@ public class FragmentForumSections extends Fragment {
             if (check) {
                 for (String item: themesListItems) {
                     checked.put(item, true);
+                }
+            } else {
+                for (String item: themesListItems) {
+                    checked.put(item, false);
                 }
             }
 

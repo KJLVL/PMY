@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,20 +16,22 @@ import java.util.List;
 public class FishListWithChoiceAdapter extends RecyclerView.Adapter<FishListWithChoiceViewHolder> {
     private Context context;
     private List<String> fishList;
-    private final OnFishClickListener onClickListener;
+//    private final OnFishClickListener onClickListener;
+    private boolean[] checked;
 
-    public interface OnFishClickListener {
-        void onStateClick(CheckBox fish);
-    }
+//    public interface OnFishClickListener {
+//        void onStateClick(SwitchCompat fish);
+//    }
 
     public FishListWithChoiceAdapter(
             Context context,
-            List<String> fishList,
-            OnFishClickListener onClickListener
+            List<String> fishList
+//            OnFishClickListener onClickListener
     ) {
         this.context = context;
         this.fishList = fishList;
-        this.onClickListener = onClickListener;
+//        this.onClickListener = onClickListener;
+        checked = new boolean[fishList.size()];
     }
 
     @NonNull
@@ -46,12 +47,17 @@ public class FishListWithChoiceAdapter extends RecyclerView.Adapter<FishListWith
     @Override
     public void onBindViewHolder(@NonNull FishListWithChoiceViewHolder holder, int position) {
         holder.checkBox.setText(fishList.get(position));
-//        int states[][] = {{android.R.attr.state_checked}, {}};
-//        int colors[] = {};
-//        CompoundButtonCompat.setButtonTintList(holder.checkBox, new ColorStateList(states, colors));
+        holder.checkBox.setChecked(checked[position]);
         holder.checkBox.setOnClickListener(
-                v -> onClickListener.onStateClick(holder.checkBox)
+                v -> {
+                    checked[position] = !checked[position];
+//                    onClickListener.onStateClick(holder.checkBox);
+                }
         );
+    }
+
+    public boolean[] getChecked() {
+        return checked;
     }
 
     @Override

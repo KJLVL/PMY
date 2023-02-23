@@ -4,9 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.R;
@@ -15,12 +15,12 @@ import com.example.myaquarium.adapter.view.ForumThemesListViewHolder;
 import java.util.List;
 
 public class ForumThemesListAdapter extends RecyclerView.Adapter<ForumThemesListViewHolder> {
-    private Context context;
-    private List<String> themesList;
+    private final Context context;
+    private final List<String> themesList;
     private final OnThemeClickListener onClickListener;
 
     public interface OnThemeClickListener {
-        void onStateClick(String theme, CheckBox checkBox);
+        void onStateClick(String theme, SwitchCompat checkBox);
     }
 
     public ForumThemesListAdapter(
@@ -45,7 +45,7 @@ public class ForumThemesListAdapter extends RecyclerView.Adapter<ForumThemesList
 
     @Override
     public void onBindViewHolder(@NonNull ForumThemesListViewHolder holder, int position) {
-        holder.section.setText(themesList.get(position));
+        holder.checkBox.setText(themesList.get(position));
         holder.checkBox.setOnClickListener(
                 view -> onClickListener.onStateClick(themesList.get(position), holder.checkBox)
         );

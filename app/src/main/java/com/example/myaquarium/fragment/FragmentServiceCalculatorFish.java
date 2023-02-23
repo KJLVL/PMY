@@ -42,6 +42,7 @@ public class FragmentServiceCalculatorFish extends Fragment {
 
     private FishListWithChoiceAdapter fishAdapter;
     private ResultCompatibilityAdapter compatibilityAdapter;
+    private boolean[] checked;
 
     private List<String> fishList;
     private List<String> currentFishList;
@@ -72,7 +73,6 @@ public class FragmentServiceCalculatorFish extends Fragment {
         this.setMessage();
 
         this.getFishList();
-        this.setFishList(fishList);
 
         this.calculateFish();
 
@@ -134,6 +134,7 @@ public class FragmentServiceCalculatorFish extends Fragment {
                     JSONObject object = new JSONObject(String.valueOf(result.getJSONObject(i)));
                     fishList.add(object.getString("fish_name"));
                 }
+                this.setFishList(fishList);
                 this.inflatedView.post(() -> {
                     fishAdapter.notifyDataSetChanged();
                 });
@@ -147,23 +148,20 @@ public class FragmentServiceCalculatorFish extends Fragment {
 
     private void setFishList(List<String> items) {
         listview.post(() -> {
-            FishListWithChoiceAdapter.OnFishClickListener onFishClickListener = (fish) -> {
-                if (fish.isChecked() && !currentFishList.contains(fish.getText().toString())) {
-                    currentFishList.add(fish.getText().toString());
-                }
-                else {
-                    currentFishList.remove(fish.getText().toString());
-                    fishAdapter.notifyDataSetChanged();
-                }
-            };
-
-            fishAdapter = new FishListWithChoiceAdapter(inflatedView.getContext(), items, onFishClickListener);
+            fishAdapter = new FishListWithChoiceAdapter(inflatedView.getContext(), items);
             listview.setAdapter(fishAdapter);
+            checked = fishAdapter.getChecked();
         });
     }
 
     private void calculateFish() {
         calculationFish.setOnClickListener(view -> {
+            currentFishList.clear();
+            for (int i = 0; i < fishList.size(); i++) {
+                if (checked[i]) {
+                    currentFishList.add(fishList.get(i));
+                }
+            }
             if (currentFishList.size() < 2) {
                 resultComp.clear();
                 setCompatibilityList(resultComp);

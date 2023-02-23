@@ -95,6 +95,9 @@ public class FragmentForumMyEditTheme extends Fragment {
     }
 
     private void getImage(String image) {
+        if (image.equals("null")) {
+            return;
+        }
         countPhoto++;
         LinearLayout layout = new LinearLayout(inflatedView.getContext());
         layout.setId(countPhoto);
@@ -260,7 +263,7 @@ public class FragmentForumMyEditTheme extends Fragment {
             params.add(new BasicNameValuePair("photoNames", photoNames.toString()));
             params.add(new BasicNameValuePair("photo", photoList.toString()));
         }
-        int a = 1;
+
         Runnable runnable = () -> {
             try {
                 JSONArray message = requests.setRequest(requests.urlRequest + "user/forum/update", params);

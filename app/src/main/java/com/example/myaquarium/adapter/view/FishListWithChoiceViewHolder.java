@@ -1,14 +1,14 @@
 package com.example.myaquarium.adapter.view;
 
 import android.view.View;
-import android.widget.CheckBox;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.R;
 
 public class FishListWithChoiceViewHolder extends RecyclerView.ViewHolder {
-    public CheckBox checkBox;
+    public SwitchCompat checkBox;
 
     public FishListWithChoiceViewHolder(View view){
         super(view);
