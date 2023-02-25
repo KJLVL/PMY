@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -56,8 +57,7 @@ public class ProfileSettings extends AppCompatActivity {
 
     private Requests requests;
     private Bitmap bitmap;
-    private String newAvatar;
-    private String newAvatarName;
+    private String newAvatar = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public class ProfileSettings extends AppCompatActivity {
         this.getUser();
 
         password.setOnClickListener(view -> this.changePassword());
-        save.setOnClickListener(view -> this.save());
+        save.setOnClickListener(view -> this.updateUser());
 
         Button download = findViewById(R.id.download);
         download.setOnClickListener(view -> downloadImage());
@@ -194,19 +194,9 @@ public class ProfileSettings extends AppCompatActivity {
         }
     }
 
-    private void save() {
-        if (!Objects.equals(userInfo.optString("name"), name.getText().toString())
-                || !Objects.equals(userInfo.optString("surname"), name.getText().toString())
-                || !Objects.equals(userInfo.optString("login"), name.getText().toString())
-        ) {
-            this.updateUser();
-        }
-    }
-
     private void updateUser() {
         List<NameValuePair> params = new ArrayList<>(List.of(
                 new BasicNameValuePair("avatar", newAvatar),
-                new BasicNameValuePair("avatarName", newAvatarName),
                 new BasicNameValuePair("name", name.getText().toString()),
                 new BasicNameValuePair("surname", surname.getText().toString()),
                 new BasicNameValuePair("login", login.getText().toString())
@@ -219,12 +209,10 @@ public class ProfileSettings extends AppCompatActivity {
                 JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
                 if (object.optString("success").equals("1")) {
                     this.runOnUiThread(() -> {
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(ProfileSettings.this);
-                        dialog.setMessage("Данные были успешно сохранены!");
-                        dialog.setPositiveButton("Закрыть", (dialogInterface, i) -> {
-                            dialogInterface.dismiss();
-                        });
-                        dialog.show();
+                        Toast.makeText(
+                                this,
+                                "Данные были успешно сохранены!", Toast.LENGTH_SHORT
+                        ).show();
                     });
                 }
             } catch (IOException | JSONException e) {
@@ -248,7 +236,6 @@ public class ProfileSettings extends AppCompatActivity {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
                     Uri uri = data.getData();
-                    newAvatarName = uri.getLastPathSegment();
                     try {
                         bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                         image.setImageBitmap(bitmap);

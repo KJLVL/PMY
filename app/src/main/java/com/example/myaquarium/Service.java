@@ -45,7 +45,6 @@ public class Service extends AppCompatActivity {
         textView.setText(getApplicationContext().getString(R.string.service_text));
     }
 
-
     private void loadFragment(Fragment fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.scrollService, fragment);

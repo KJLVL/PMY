@@ -18,8 +18,28 @@
         android:theme="@style/Theme.MyAquarium"
         tools:targetApi="31">
         <activity
-            android:name=".ViewTheme"
+            android:name=".CalendarAdd"
             android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".Calendar"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ViewTheme"
+            android:exported="false"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -40,10 +60,6 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -52,8 +68,6 @@
             android:name=".Forum"
             android:exported="true"
             android:screenOrientation="portrait">
-
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -62,6 +76,8 @@
             android:name=".Service"
             android:exported="true"
             android:screenOrientation="portrait">
+
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

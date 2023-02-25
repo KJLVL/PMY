@@ -33,7 +33,7 @@
     <string name="service_volume_fish">Выберите рыбок, которые живут в вашем аквариуме</string>
     <string name="service_calculator_search">Поиск</string>
     <string name="service_use_my_fish">Расчитать для рыбок, указанных в профиле</string>
-    <string name="service_calculate">Рассичтать объем аквариума</string>
+    <string name="service_calculate">Рассчитать объем аквариума</string>
     <string name="service_rec_vol">Необходимый объем аквариума:</string>
     <string name="service_rec_prim_length">Длина аквариума:</string>
     <string name="service_rec_prim_width">Ширина аквариума:</string>
@@ -81,8 +81,40 @@
     <string name="settings_discussionsField">Избранные обсуждения:</string>
     <string name="settings_adsField">Избранные объявления:</string>
     <string name="settings_tipsField">Избранные статьи:</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--    for calendar-->
+    <string name="service_calendar_title">Календарь для заметок аквариумиста</string>
+    <string name="service_calendar_add">Добавить событие</string>
+    <string name="service_calendar_add_text">Новое событие</string>
+    <string name="service_calendar_save">Сохранить</string>
+    <string name="service_calendar_note">Введите вашу заметку</string>
+
+    <string name="material_calendar_monday">ПН</string>
+    <string name="material_calendar_tuesday">ВТ</string>
+    <string name="material_calendar_wednesday">СР</string>
+    <string name="material_calendar_thursday">ЧТ</string>
+    <string name="material_calendar_friday">ПТ</string>
+    <string name="material_calendar_saturday">СБ</string>
+    <string name="material_calendar_sunday">ВС</string>
+
+    <array name="material_calendar_months_array">
+        <item>Январь</item>
+        <item>Февраль</item>
+        <item>Март</item>
+        <item>Апрель</item>
+        <item>Май</item>
+        <item>Июнь</item>
+        <item>Июль</item>
+        <item>Август</item>
+        <item>Сентябрь</item>
+        <item>Октябрь</item>
+        <item>Ноябрь</item>
+        <item>Декабрь</item>
+    </array>
+
+    <string name="material_calendar_today_button">Сегодня</string>
+    <string name="material_calendar_positive_button">OK</string>
+    <string name="material_calendar_negative_button">Отменить</string>
 
 
 </resources>

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.myaquarium.Calendar;
 import com.example.myaquarium.R;
 import com.example.myaquarium.Tips;
 
@@ -74,7 +75,8 @@ public class FragmentService extends Fragment {
             startActivity(new Intent(inflatedView.getContext(), Tips.class));
         });
 
-
-
+        calendar.setOnClickListener(view -> {
+            startActivity(new Intent(inflatedView.getContext(), Calendar.class));
+        });
     }
 }
