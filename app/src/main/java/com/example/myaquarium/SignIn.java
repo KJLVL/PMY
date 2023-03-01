@@ -124,9 +124,7 @@ public class SignIn extends AppCompatActivity {
 
             List<NameValuePair> params = new ArrayList<>(List.of(
                     new BasicNameValuePair("login", login),
-                    new BasicNameValuePair("password", password)
-                )
-            );
+                    new BasicNameValuePair("password", password)));
 
             Runnable runnable = () -> {
                 try {

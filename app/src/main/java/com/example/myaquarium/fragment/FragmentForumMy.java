@@ -36,6 +36,8 @@ public class FragmentForumMy extends Fragment {
     private Requests requests;
 
     private ForumUserThemesAdapter themesAdapter;
+    String[] DayOfWeek = {"Sunday", "Monday", "Tuesday",
+            "Wednesday", "Thursday", "Friday", "Saturday"};
 
     public static FragmentForumMy newInstance() {
         return new FragmentForumMy();

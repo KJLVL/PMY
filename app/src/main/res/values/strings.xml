@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name_rus">Мой Аквариум</string>
+    <string name="app_name">Мой Аквариум</string>
     <string name="logo">Logo</string>
     <string name="tips_text">Статьи</string>
     <string name="calendar_text">Календарь</string>

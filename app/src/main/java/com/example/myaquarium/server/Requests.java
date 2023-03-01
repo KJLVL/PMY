@@ -18,11 +18,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class Requests {
-    public String urlRequest = "http://192.168.0.106/";
-    public String urlRequestImg = "http://192.168.0.106/img/";
+//    public String urlRequest = "http://192.168.0.106/";
+//    public String urlRequestImg = "http://192.168.0.106/img/";
     public static JSONObject user;
-//    public String urlRequestImg = "http://172.20.10.2/img/";
-//    public String urlRequest = "http://172.20.10.2/";
+    public String urlRequestImg = "http://172.20.10.2/img/";
+    public String urlRequest = "http://172.20.10.2/";
 
     public JSONArray setRequest(String url, List<NameValuePair> params) throws IOException, JSONException {
         HttpClient httpclient = new DefaultHttpClient();

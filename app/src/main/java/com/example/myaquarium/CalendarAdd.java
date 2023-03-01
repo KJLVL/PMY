@@ -116,7 +116,7 @@ public class CalendarAdd extends AppCompatActivity {
             save.setEnabled(false);
             event.setEnabled(false);
             Toast.makeText(
-                    getApplicationContext(),
+                    this,
                     "Заметка на выбранный день существует", Toast.LENGTH_SHORT
             ).show();
         } else {

@@ -11,6 +11,7 @@ import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import androidx.fragment.app.Fragment;
@@ -21,31 +22,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.R;
 import com.example.myaquarium.adapter.ForumCommentsAdapter;
 import com.example.myaquarium.server.Requests;
+import com.like.LikeButton;
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.ViewFactory {
     private View inflatedView;
     private ImageSwitcher switcher;
-    private Button comment;
     private RecyclerView commentsRecycler;
 
     private int position = 0;
@@ -53,7 +45,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
     private JSONArray comments;
 
     private final JSONObject theme;
-    private Requests requests = new Requests();
+    private final Requests requests = new Requests();
     private ForumCommentsAdapter forumCommentsAdapter;
 
     public FragmentForumViewTheme(JSONObject theme) {
@@ -80,7 +72,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
         TextView content = inflatedView.findViewById(R.id.content);
         content.setText(theme.optString("content"));
 
-        comment = inflatedView.findViewById(R.id.comment);
+        Button comment = inflatedView.findViewById(R.id.comment);
         commentsRecycler = inflatedView.findViewById(R.id.commentsRecycler);
         Button buttonLeft = inflatedView.findViewById(R.id.buttonLeft);
         Button buttonRight = inflatedView.findViewById(R.id.buttonRight);
@@ -129,36 +121,88 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
 
         }
 
+        LikeButton likeButton = inflatedView.findViewById(R.id.like);
+        this.getLike(likeButton);
+        likeButton.setOnClickListener(view -> this.likeAction(likeButton));
+
         return inflatedView;
     }
 
-    private void getComments() {
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpPost http = new HttpPost(requests.urlRequest + "user/forum/comments");
+    private void likeAction(LikeButton likeButton) {
+        List<NameValuePair> params = new ArrayList<>(List.of(
+                new BasicNameValuePair("theme_id", theme.optString("id")),
+                new BasicNameValuePair("like", String.valueOf(likeButton.isLiked()))
+            )
+        );
 
+        Runnable runnable = () -> {
+            try {
+                JSONArray result = requests.setRequest(requests.urlRequest + "user/forum/like", params);
+                inflatedView.post(() -> {
+                    try {
+                        if (result.getJSONObject(0).getString("success").equals("1")) {
+                            Toast.makeText(
+                                    inflatedView.getContext(),
+                                    "Добавлено в избранное", Toast.LENGTH_SHORT
+                            ).show();
+                            likeButton.setLiked(true);
+                        } else {
+                            Toast.makeText(
+                                    inflatedView.getContext(),
+                                    "Удалено из избранного", Toast.LENGTH_SHORT
+                            ).show();
+                            likeButton.setLiked(false);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+
+    private void getLike(LikeButton likeButton) {
+        List<NameValuePair> params = new ArrayList<>(List.of(
+                new BasicNameValuePair("theme_id", theme.optString("id"))
+            )
+        );
+
+        Runnable runnable = () -> {
+            try {
+                JSONArray result = requests.setRequest(requests.urlRequest + "user/forum/getLike", params);
+                inflatedView.post(() -> {
+                    try {
+                        likeButton.setLiked(result.getJSONObject(0).getString("success").equals("1"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+
+    private void getComments() {
         List<NameValuePair> params = new ArrayList<>(List.of(
                         new BasicNameValuePair("theme_id", theme.optString("id"))
                         )
         );
+
         Runnable runnable = () -> {
             try {
-                http.setEntity(new UrlEncodedFormEntity(params,"UTF-8"));
-                HttpResponse httpResponse = httpclient.execute(http);
-                HttpEntity httpEntity = httpResponse.getEntity();
-                BufferedReader bufferedReader = new BufferedReader(
-                        new InputStreamReader(httpEntity.getContent(), StandardCharsets.UTF_8),
-                        8
-                );
-                StringBuilder stringBuilder = new StringBuilder();
-                while (bufferedReader.readLine() != null) {
-                    stringBuilder.append(bufferedReader.readLine());
-                }
-
-                comments = new JSONArray(stringBuilder.toString());
+                comments = requests.setRequest(requests.urlRequest + "user/forum/comments", params);
 
                 this.inflatedView.post(() -> {
                     this.setCommentsList(comments);
                 });
+
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }

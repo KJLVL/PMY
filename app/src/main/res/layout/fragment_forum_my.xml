@@ -32,15 +32,42 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:background="@drawable/forum_item"
             android:fontFamily="@font/montserrat_bold"
             android:gravity="center_horizontal"
-            android:text="Показать мои темы"
-            android:background="@drawable/forum_item"
+            android:text="Мои темы"
             android:textColor="@color/bthAll"
             android:textSize="18sp" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHeight_default="wrap"
+            app:layout_constraintHeight_max="450dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/themesRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                app:layout_constraintHeight_max="350dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/forum_my_sections_item"
+                tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:layout_marginTop="10dp"
+            android:paddingStart="10dp"
+            android:text="Избранное:"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/themesRecycler"
+            android:id="@+id/likedRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -48,36 +75,6 @@
             android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/forum_my_sections_item" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="22dp"
-            android:layout_marginTop="10dp"
-            android:paddingStart="10dp"
-            android:text="Избранные обсуждения:"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
-
-        <Spinner
-            android:id="@+id/discussions"
-            android:paddingStart="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="22dp"
-            android:layout_marginTop="10dp"
-            android:paddingStart="10dp"
-            android:text="Избранные объявления:"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
-
-        <Spinner
-            android:id="@+id/tips"
-            android:paddingStart="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

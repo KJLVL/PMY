@@ -33,16 +33,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
+            android:paddingTop="5dp"
             android:background="@drawable/layout"
             android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/settings"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="end"
+                android:background="@color/menuColor"
+                app:srcCompat="@drawable/settings" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/menuColor"
                 android:gravity="center_horizontal"
-                android:layout_marginStart="130dp"
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
@@ -59,13 +66,6 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <ImageButton
-                    android:id="@+id/settings"
-                    android:layout_width="41dp"
-                    android:layout_height="41dp"
-                    android:layout_marginStart="100dp"
-                    android:background="@color/menuColor"
-                    app:srcCompat="@drawable/settings" />
 
             </LinearLayout>
 
