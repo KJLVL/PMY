@@ -109,52 +109,52 @@
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
-                android:text="@string/settings_my_fish"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:gravity="center_horizontal"-->
+<!--                android:text="@string/settings_my_fish"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="16sp" />-->
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fishListItems"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/fish_item" />
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/fishListItems"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--                tools:listitem="@layout/fish_item" />-->
 
-            <TextView
-                android:id="@+id/addFish"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center_horizontal"
-                android:text="@string/settings_add"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/addFish"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:gravity="center_horizontal"-->
+<!--                android:text="@string/settings_add"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="16sp" />-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/calc_item"
-                android:orientation="vertical">
-                <SearchView
-                    android:id="@+id/search"
-                    android:layout_width="fill_parent"
-                    android:layout_height="30dp"/>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/listview"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:paddingTop="10dp"
-                    android:background="@drawable/calc_item"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/fish_list_item"/>
-            </LinearLayout>
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:background="@drawable/calc_item"-->
+<!--                android:orientation="vertical">-->
+<!--                <SearchView-->
+<!--                    android:id="@+id/search"-->
+<!--                    android:layout_width="fill_parent"-->
+<!--                    android:layout_height="30dp"/>-->
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/listview"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="100dp"-->
+<!--                    android:paddingTop="10dp"-->
+<!--                    android:background="@drawable/calc_item"-->
+<!--                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--                    tools:listitem="@layout/fish_list_item"/>-->
+<!--            </LinearLayout>-->
 
             <Button
                 android:id="@+id/save"

@@ -28,15 +28,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -53,7 +46,7 @@ public class ProfileSettings extends AppCompatActivity {
 
     private RelativeLayout root;
 
-    private JSONObject userInfo;
+    private List<Users> userInfo;
 
     private Requests requests;
     private Bitmap bitmap;
@@ -82,9 +75,6 @@ public class ProfileSettings extends AppCompatActivity {
 
         password.setOnClickListener(view -> this.changePassword());
         save.setOnClickListener(view -> this.updateUser());
-
-        Button download = findViewById(R.id.download);
-        download.setOnClickListener(view -> downloadImage());
 
         TextView calculator = findViewById(R.id.service);
         TextView profile = findViewById(R.id.profile);
@@ -124,6 +114,8 @@ public class ProfileSettings extends AppCompatActivity {
 
         dialog.setNegativeButton("Отменить", (dialogInterface, i) -> dialogInterface.dismiss());
         dialog.setPositiveButton("Сохранить", (dialogInterface, i) -> {
+            Users user = Users.findById(Users.class, SignIn.user.get(0).getId());
+
             String oldPassword = oldPasswordField.getText().toString();
             String newPassword = newPasswordField.getText().toString();
 
@@ -136,30 +128,15 @@ public class ProfileSettings extends AppCompatActivity {
                 return;
             }
 
-            List<NameValuePair> params = new ArrayList<>(List.of(
-                    new BasicNameValuePair("oldPassword", oldPassword),
-                    new BasicNameValuePair("newPassword", newPassword)
-                )
-            );
-
-            Runnable runnable = () -> {
-                try {
-                    JSONArray message = requests.setRequest(requests.urlRequest + "user/password", params);
-                    JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
-                    if (object.optString("success").equals("1")) {
-                        dialogInterface.dismiss();
-                        getNotice("Пароль был успешно изменен!");
-                    } else {
-                        dialogInterface.dismiss();
-                        getNotice("Неверно введен текущий пароль. Повторите попытку!");
-                    }
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
-                }
-            };
-            Thread thread = new Thread(runnable);
-            thread.start();
-
+            if (user.password.equals(oldPassword)) {
+                user.password = newPassword;
+                user.save();
+                dialogInterface.dismiss();
+                getNotice("Пароль был успешно изменен!");
+            } else {
+                dialogInterface.dismiss();
+                getNotice("Неверно введен текущий пароль. Повторите попытку!");
+            }
         });
         dialog.show();
     }
@@ -174,54 +151,41 @@ public class ProfileSettings extends AppCompatActivity {
     }
 
     private void getUser() {
-        userInfo = requests.getUser();
+        userInfo = SignIn.user;
 
-        name.setText(userInfo.optString("user_name"));
-        if (!userInfo.optString("surname").equals("null"))
-            surname.setText(userInfo.optString("surname"));
-        if (!userInfo.optString("city").equals("null"))
-            city.setText(userInfo.optString("city"));
-        if (!userInfo.optString("phone").equals("null"))
-            phone.setText(userInfo.optString("phone"));
-        login.setText(userInfo.optString("login"));
+        name.setText(userInfo.get(0).user_name);
+        if (userInfo.get(0).surname != null)
+            surname.setText(userInfo.get(0).surname);
+        if (userInfo.get(0).city != null)
+            city.setText(userInfo.get(0).city);
+        if (userInfo.get(0).phone != null)
+            phone.setText(userInfo.get(0).phone);
+        login.setText(userInfo.get(0).login);
 
-        if (!Objects.equals(userInfo.optString("avatar"), "")) {
-            Picasso.get()
-                    .load(requests.urlRequestImg + userInfo.optString("avatar"))
-                    .into(image);
-        } else {
-            image.setImageResource(R.drawable.ic_launcher_foreground);
-        }
+        Picasso.get()
+                .load(R.drawable.noavatar)
+                .into(image);
     }
 
     private void updateUser() {
-        List<NameValuePair> params = new ArrayList<>(List.of(
-                new BasicNameValuePair("avatar", newAvatar),
-                new BasicNameValuePair("name", name.getText().toString()),
-                new BasicNameValuePair("surname", surname.getText().toString()),
-                new BasicNameValuePair("login", login.getText().toString())
-            )
-        );
+        Users user = Users.findById(Users.class, SignIn.user.get(0).getId());
+        user.user_name = name.getText().toString();
+        user.surname = surname.getText().toString();
+        user.login = login.getText().toString();
+        user.city = city.getText().toString();
+        user.phone = phone.getText().toString();
+        user.save();
 
-        Runnable runnable = () -> {
-            try {
-                JSONArray message = requests.setRequest(requests.urlRequest + "user/update", params);
-                JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
-                if (object.optString("success").equals("1")) {
-                    this.runOnUiThread(() -> {
-                        Toast.makeText(
-                                this,
-                                "Данные были успешно сохранены!", Toast.LENGTH_SHORT
-                        ).show();
-                    });
-                }
-            } catch (IOException | JSONException e) {
-                e.printStackTrace();
-            }
-        };
+        SignIn.user.get(0).user_name = name.getText().toString();
+        SignIn.user.get(0).surname = surname.getText().toString();
+        SignIn.user.get(0).login = login.getText().toString();
+        SignIn.user.get(0).city = city.getText().toString();
+        SignIn.user.get(0).phone = phone.getText().toString();
 
-        Thread thread = new Thread(runnable);
-        thread.start();
+        Toast.makeText(
+                getApplicationContext(),
+                "Данные были успешно сохранены", Toast.LENGTH_SHORT
+        ).show();
     }
 
     private void downloadImage() {

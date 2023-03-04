@@ -15,19 +15,12 @@ import com.example.myaquarium.server.Requests;
 import com.google.android.material.snackbar.Snackbar;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SignIn extends AppCompatActivity {
     private RelativeLayout root;
     private final Requests requests = new Requests();
+    public static List<Users> user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +38,6 @@ public class SignIn extends AppCompatActivity {
     private void showRegistrationWindow() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Регистрация");
-
         LayoutInflater inflater = LayoutInflater.from(this);
         View registrationWindow = inflater.inflate(R.layout.registration_window, null);
         dialog.setView(registrationWindow);
@@ -75,29 +67,11 @@ public class SignIn extends AppCompatActivity {
                 ).show();
                 return;
             }
+            Users user = new Users(login, password, name, "D:\\university\\vkr\\img\\noavatar.jpg");
+            user.save();
 
-            List<NameValuePair> params = new ArrayList<>(List.of(
-                    new BasicNameValuePair("login", login),
-                    new BasicNameValuePair("password", password),
-                    new BasicNameValuePair("name", name)
-                )
-            );
-
-            Runnable runnable = () -> {
-                try {
-                    JSONArray message = requests.setRequest(requests.urlRequest + "user/registration", params);
-                    JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
-                    if (object.optString("success").equals("1")) {
-                        dialogInterface.dismiss();
-                        getNotice("Вы были успешно зарегистрированы");
-                    }
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
-                }
-            };
-            Thread thread = new Thread(runnable);
-            thread.start();
-
+            dialogInterface.dismiss();
+            getNotice("Вы были успешно зарегистрированы");
         });
         dialog.show();
     }
@@ -109,7 +83,6 @@ public class SignIn extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(this);
         View signInWindow = inflater.inflate(R.layout.sign_in_window, null);
         dialog.setView(signInWindow);
-
         MaterialEditText loginField = signInWindow.findViewById(R.id.loginField);
         MaterialEditText passwordField = signInWindow.findViewById(R.id.passwordField);
 
@@ -121,29 +94,14 @@ public class SignIn extends AppCompatActivity {
                 Snackbar.make(root, "Введите логин", Snackbar.LENGTH_SHORT).show();
                 return;
             }
+           user = Users.find(Users.class, "login =?", login);
 
-            List<NameValuePair> params = new ArrayList<>(List.of(
-                    new BasicNameValuePair("login", login),
-                    new BasicNameValuePair("password", password)));
-
-            Runnable runnable = () -> {
-                try {
-                    JSONArray message = requests.setRequest(requests.urlRequest + "user/login", params);
-                    JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
-
-                    if (object.optString("success").equals("1")) {
-                        startActivity(new Intent(SignIn.this, Profile.class));
-                    } else {
-                        dialogInterface.dismiss();
-                        getNotice("Не верно введен логин или пароль");
-                    }
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
-                }
-            };
-
-            Thread thread = new Thread(runnable);
-            thread.start();
+            if (user.get(0).login.equals(login) && user.get(0).password.equals(password)) {
+                startActivity(new Intent(SignIn.this, Profile.class));
+            } else {
+                dialogInterface.dismiss();
+                getNotice("Не верно введен логин или пароль");
+            }
         });
         dialog.show();
     }

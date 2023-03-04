@@ -20,8 +20,6 @@ import com.example.myaquarium.adapter.FishListViewAdapter;
 import com.example.myaquarium.server.Requests;
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,7 +48,7 @@ public class Profile extends AppCompatActivity {
     private FishListViewAdapter fishListAdapter;
 
     private List<List<String>> fishListAll;
-    private Map<String, String> userInfo;
+    public static Map<String, String> userInfo;
     private List<String> fishList;
     private static List<List<String>> fishListCurrent;
 
@@ -71,14 +69,9 @@ public class Profile extends AppCompatActivity {
         volumeField = this.findViewById(R.id.volumeField);
         save = this.findViewById(R.id.save);
 
-        fishListCurrent = new ArrayList<>();
         userInfo = new HashMap<>();
-
+//
         this.getUser();
-        this.getUserFish();
-
-        this.getFishList();
-        this.searchAction();
 
         ImageButton settings = findViewById(R.id.settings);
         settings.setOnClickListener(view -> {
@@ -97,32 +90,15 @@ public class Profile extends AppCompatActivity {
     }
 
     private void saveProfile() {
-        JSONArray jsonArray = new JSONArray(fishListCurrent);
-        List<NameValuePair> params = new ArrayList<>(List.of(
-                new BasicNameValuePair("aquarium_volume", volumeField.getText().toString()),
-                new BasicNameValuePair("fish", jsonArray.toString())
-            )
-        );
+        Users user = Users.findById(Users.class, SignIn.user.get(0).getId());
+        user.aquarium_volume = volumeField.getText().toString();
+        user.save();
+        SignIn.user.get(0).aquarium_volume = volumeField.getText().toString();
+        Toast.makeText(
+                getApplicationContext(),
+                "Данные были успешно сохранены", Toast.LENGTH_SHORT
+        ).show();
 
-        Runnable runnable = () -> {
-            try {
-                JSONArray message = requests.setRequest(requests.urlRequest + "user/profile", params);
-                JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
-                if (object.optString("success").equals("1")) {
-                    this.runOnUiThread(() -> {
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "Данные были успешно сохранены", Toast.LENGTH_SHORT
-                        ).show();
-                    });
-                }
-            } catch (IOException | JSONException e) {
-                e.printStackTrace();
-            }
-        };
-
-        Thread thread = new Thread(runnable);
-        thread.start();
     }
 
     private void setToolbar() {
@@ -162,39 +138,22 @@ public class Profile extends AppCompatActivity {
     }
 
     private void getUser() {
-        Runnable runnable = () -> {
-            try {
-                JSONArray user = requests.setRequest(requests.urlRequest + "user", new ArrayList<>());
-                JSONObject object = new JSONObject(user.getJSONObject(0).toString());
-                requests.setUser(object);
-                userInfo.put("name", object.getString("user_name"));
-                userInfo.put("login", object.getString("login"));
+        userInfo.put("user_name", SignIn.user.get(0).user_name);
+        userInfo.put("login", SignIn.user.get(0).login);
 
-                userInfo.put("surname", !object.getString("surname").equals("null")
-                        ? object.getString("surname") : "");
+        userInfo.put("surname", SignIn.user.get(0).surname != null
+                ? SignIn.user.get(0).surname : "");
+        userInfo.put("aquarium_volume", SignIn.user.get(0).aquarium_volume != null
+                ? SignIn.user.get(0).aquarium_volume : "");
+        userInfo.put("avatar", SignIn.user.get(0).avatar != null
+                ? SignIn.user.get(0).avatar : "");
 
-                userInfo.put("aquarium_volume", !object.getString("aquarium_volume").equals("null")
-                        ? object.getString("aquarium_volume") : "");
-
-                userInfo.put("avatar", !object.getString("avatar").equals("null")
-                        ? object.getString("avatar") : "");
-
-                this.runOnUiThread(() -> {
-                    String name = userInfo.get("name") + " " + userInfo.get("surname");
-                    nameField.setText(name);
-                    volumeField.setText(userInfo.get("aquarium_volume"));
-
-                    Picasso.get()
-                            .load(requests.urlRequestImg + userInfo.get("avatar"))
-                            .into(image);
-
-                });
-            } catch (IOException | JSONException e) {
-                e.printStackTrace();
-            }
-        };
-        Thread thread = new Thread(runnable);
-        thread.start();
+        String name = userInfo.get("user_name") + " " + userInfo.get("surname");
+        nameField.setText(name);
+        volumeField.setText(userInfo.get("aquarium_volume"));
+        Picasso.get()
+                .load(R.drawable.noavatar)
+                .into(image);
     }
 
     private void getUserFish() {

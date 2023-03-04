@@ -71,7 +71,7 @@
     <string name="settings_password_field">Пароль</string>
     <string name="settings_password">изменить пароль</string>
     <string name="settings_security">Данные для входа</string>
-    <string name="settings_aquarium_data">Данные об аквариуме и рыбках</string>
+    <string name="settings_aquarium_data">Данные об аквариуме</string>
     <string name="settings_volume">Объем аквариума:</string>
     <string name="settings_my_fish">Мои рыбки</string>
     <string name="settings_add">Выберите рыбок для добавления</string>
