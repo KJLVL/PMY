@@ -63,16 +63,16 @@
     <!--    for profile settings-->
     <string name="settings_download">Загрузить изображение</string>
     <string name="settings_personal_data">Личные данные</string>
-    <string name="settings_name_field">*Имя</string>
+    <string name="settings_name_field">Имя</string>
     <string name="settings_surname_field">Фамилия</string>
     <string name="settings_city_field">Город</string>
     <string name="settings_phone_field">Номер телефона</string>
-    <string name="settings_login_field">*Логин</string>
+    <string name="settings_login_field">Логин</string>
     <string name="settings_password_field">Пароль</string>
     <string name="settings_password">изменить пароль</string>
     <string name="settings_security">Данные для входа</string>
     <string name="settings_aquarium_data">Данные об аквариуме и рыбках</string>
-    <string name="settings_volume">Объем аквариума:</string>
+    <string name="settings_volume">Объем аквариума (в литрах)</string>
     <string name="settings_my_fish">Мои рыбки</string>
     <string name="settings_add">Выберите рыбок для добавления</string>
     <string name="settings_save">Сохранить</string>

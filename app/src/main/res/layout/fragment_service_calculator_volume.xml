@@ -35,7 +35,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/service_calculator_volume"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/btnVol"
@@ -63,7 +63,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/service_volume_fish"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -134,7 +134,7 @@
                 android:layout_marginEnd="10dp"
                 android:text="@string/service_rec_vol"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="14sp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -142,11 +142,11 @@
 
             <TextView
                 android:id="@+id/volume"
-                android:layout_width="100dp"
-                android:layout_height="22dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="14sp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -160,7 +160,7 @@
             android:paddingBottom="15dp"
             android:text="@string/service_message"
             android:textColor="@color/black"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

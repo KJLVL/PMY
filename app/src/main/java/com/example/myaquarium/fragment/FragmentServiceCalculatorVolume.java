@@ -157,7 +157,7 @@ public class FragmentServiceCalculatorVolume extends Fragment {
                 ).show();
                 return;
             }
-            result.setText(String.valueOf(calculateFishByList(fishListCurrent)));
+            result.setText(calculateFishByList(fishListCurrent) + " л.");
             result.setVisibility(View.VISIBLE);
             volumeText.setVisibility(View.VISIBLE);
             message.setVisibility(View.VISIBLE);

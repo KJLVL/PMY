@@ -1,5 +1,6 @@
 package com.example.myaquarium.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.R;
-import com.example.myaquarium.adapter.view.ForumUserThemesAdapter;
+import com.example.myaquarium.ViewTheme;
+import com.example.myaquarium.adapter.ForumThemesAdapter;
+import com.example.myaquarium.adapter.ForumUserThemesAdapter;
 import com.example.myaquarium.server.Requests;
 
 import org.json.JSONArray;
@@ -27,17 +30,16 @@ import java.util.List;
 public class FragmentForumMy extends Fragment {
     private View inflatedView;
 
-    private Button newTheme;
     private RecyclerView themesRecycler;
-    private TextView showMyThemes;
+    private RecyclerView likedRecycler;
 
     private List<JSONObject> themesList;
+    private List<JSONObject> likedList;
 
     private Requests requests;
 
     private ForumUserThemesAdapter themesAdapter;
-    String[] DayOfWeek = {"Sunday", "Monday", "Tuesday",
-            "Wednesday", "Thursday", "Friday", "Saturday"};
+    private ForumThemesAdapter likedAdapter;
 
     public static FragmentForumMy newInstance() {
         return new FragmentForumMy();
@@ -53,12 +55,17 @@ public class FragmentForumMy extends Fragment {
         );
         requests = new Requests();
 
-        newTheme = inflatedView.findViewById(R.id.newTheme);
+        Button newTheme = inflatedView.findViewById(R.id.newTheme);
         themesRecycler = inflatedView.findViewById(R.id.themesRecycler);
-        showMyThemes = inflatedView.findViewById(R.id.showMyThemes);
+        likedRecycler = inflatedView.findViewById(R.id.likedRecycler);
+        TextView showMyThemes = inflatedView.findViewById(R.id.showMyThemes);
+        TextView showMyLiked = inflatedView.findViewById(R.id.showMyLiked);
 
         this.getUserThemes();
         this.setThemesList();
+
+        this.getUserLiked();
+        this.setLikedList();
 
         showMyThemes.setOnClickListener(view -> {
             if (themesRecycler.getVisibility() == View.GONE) {
@@ -67,7 +74,13 @@ public class FragmentForumMy extends Fragment {
                 themesRecycler.setVisibility(View.GONE);
             }
         });
-
+        showMyLiked.setOnClickListener(view -> {
+            if (likedRecycler.getVisibility() == View.GONE) {
+                likedRecycler.setVisibility(View.VISIBLE);
+            } else if (likedRecycler.getVisibility() == View.VISIBLE) {
+                likedRecycler.setVisibility(View.GONE);
+            }
+        });
         newTheme.setOnClickListener(view -> this.newTheme());
 
         return inflatedView;
@@ -82,7 +95,9 @@ public class FragmentForumMy extends Fragment {
                     JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
                     themesList.add(object);
                 }
-//                this.inflatedView.post(() -> themesAdapter.notifyDataSetChanged());
+                this.inflatedView.post(() -> {
+                    themesAdapter.notifyDataSetChanged();
+                });
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -114,6 +129,51 @@ public class FragmentForumMy extends Fragment {
             themesRecycler.setAdapter(themesAdapter);
         });
     }
+
+    private void getUserLiked() {
+        likedList = new ArrayList<>();
+        Runnable runnable = () -> {
+            try {
+                JSONArray list = requests.setRequest(requests.urlRequest + "user/forum/liked", new ArrayList<>());
+                for (int i = 0; i < list.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
+                    likedList.add(object);
+                }
+                this.inflatedView.post(() -> {
+                    likedAdapter.notifyDataSetChanged();
+                });
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+    private void setLikedList() {
+        likedRecycler.post(() -> {
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
+                    inflatedView.getContext(),
+                    RecyclerView.VERTICAL,
+                    false
+            );
+            likedRecycler.setLayoutManager(layoutManager);
+
+            ForumThemesAdapter.OnThemeClickListener onThemeClickListener = (theme, category) -> {
+                Intent intent = new Intent(inflatedView.getContext(), ViewTheme.class);
+                intent.putExtra("theme", theme.toString());
+                intent.putExtra("id", category);
+                this.startActivity(intent);
+            };
+
+            likedAdapter = new ForumThemesAdapter(
+                    inflatedView.getContext(),
+                    this.likedList,
+                    onThemeClickListener
+            );
+            likedRecycler.setAdapter(likedAdapter);
+        });
+    }
+
 
     private void newTheme() {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();

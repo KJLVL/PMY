@@ -35,7 +35,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/service_calculator_priming"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/btnPr"
@@ -60,10 +60,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:text="@string/service_rec_prim_length"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="14sp"
             tools:ignore="RtlSymmetry" />
 
         <EditText
@@ -73,17 +73,17 @@
             android:background="@drawable/calc_item"
             android:paddingStart="5dp"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="16sp"
             tools:ignore="RtlSymmetry" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:text="@string/service_rec_prim_width"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="14sp"
             tools:ignore="RtlSymmetry" />
 
         <EditText
@@ -93,17 +93,16 @@
             android:background="@drawable/calc_item"
             android:paddingStart="5dp"
             android:textColor="@color/black"
-            android:textSize="18sp" />
-
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:text="@string/service_rec_prim_thickness"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/thickness"
@@ -112,7 +111,7 @@
             android:background="@drawable/calc_item"
             android:paddingStart="5dp"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/calculationP"

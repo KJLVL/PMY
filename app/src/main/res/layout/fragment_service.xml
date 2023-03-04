@@ -47,8 +47,8 @@
 
                 <ImageView
                     android:id="@+id/fish"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:background="@drawable/calc_icon"
@@ -61,7 +61,7 @@
                     android:layout_marginTop="5dp"
                     android:text="Совместимость рыбок"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -73,8 +73,8 @@
 
                 <ImageView
                     android:id="@+id/volume"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:background="@drawable/calc_icon"
@@ -87,7 +87,7 @@
                     android:text="Калькулятор аквариума"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -99,8 +99,8 @@
 
                 <ImageView
                     android:id="@+id/priming"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:background="@drawable/calc_icon"
@@ -113,7 +113,7 @@
                     android:text="Калькулятор грунта"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -149,8 +149,8 @@
 
                 <ImageView
                     android:id="@+id/tips"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:background="@drawable/calc_icon"
@@ -163,7 +163,7 @@
                     android:text="Полезные статьи"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -175,8 +175,8 @@
 
                 <ImageView
                     android:id="@+id/calendar"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:background="@drawable/calc_icon"
@@ -189,7 +189,7 @@
                     android:text="Календарь аквариумиста"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
 

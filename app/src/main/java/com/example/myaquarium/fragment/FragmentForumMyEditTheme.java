@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.myaquarium.Forum;
@@ -71,6 +73,8 @@ public class FragmentForumMyEditTheme extends Fragment {
                 false
         );
 
+        this.setToolbar();
+
         description = inflatedView.findViewById(R.id.description);
         description.setText(theme.optString("content"));
         title = inflatedView.findViewById(R.id.title);
@@ -92,6 +96,17 @@ public class FragmentForumMyEditTheme extends Fragment {
         edit.setOnClickListener(view -> this.checkTheme());
 
         return inflatedView;
+    }
+
+    private void setToolbar() {
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(view -> {
+            this.startActivity(new Intent(inflatedView.getContext(), Forum.class));
+        });
+
+        ActionBar actionBar = ((Forum)getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
     }
 
     private void getImage(String image) {

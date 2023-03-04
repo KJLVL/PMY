@@ -199,7 +199,9 @@ public class ProfileSettings extends AppCompatActivity {
                 new BasicNameValuePair("avatar", newAvatar),
                 new BasicNameValuePair("name", name.getText().toString()),
                 new BasicNameValuePair("surname", surname.getText().toString()),
-                new BasicNameValuePair("login", login.getText().toString())
+                new BasicNameValuePair("login", login.getText().toString()),
+                new BasicNameValuePair("city", city.getText().toString()),
+                new BasicNameValuePair("phone", phone.getText().toString())
             )
         );
 
@@ -208,7 +210,7 @@ public class ProfileSettings extends AppCompatActivity {
                 JSONArray message = requests.setRequest(requests.urlRequest + "user/update", params);
                 JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
                 if (object.optString("success").equals("1")) {
-                    this.runOnUiThread(() -> {
+                    root.post(() -> {
                         Toast.makeText(
                                 this,
                                 "Данные были успешно сохранены!", Toast.LENGTH_SHORT

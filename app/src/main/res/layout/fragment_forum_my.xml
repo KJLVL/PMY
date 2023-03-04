@@ -24,6 +24,7 @@
             android:layout_gravity="end"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="15dp"
+            android:textSize="13sp"
             android:backgroundTint="@color/bthAll"
             android:text="Создать" />
 
@@ -51,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="15dp"
+                android:visibility="visible"
                 app:layout_constraintHeight_max="350dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/forum_my_sections_item"
@@ -58,13 +60,22 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
+            android:id="@+id/showMyLiked"
             android:layout_width="match_parent"
-            android:layout_height="22dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:paddingStart="10dp"
-            android:text="Избранное:"
-            android:textColor="@color/black"
+            android:background="@drawable/forum_item"
+            android:fontFamily="@font/montserrat_bold"
+            android:gravity="center_horizontal"
+            android:text="Избранное"
+            android:textColor="@color/bthAll"
             android:textSize="18sp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHeight_default="wrap"
+            app:layout_constraintHeight_max="450dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/likedRecycler"
@@ -72,9 +83,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="15dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/forum_my_sections_item" />
+            tools:listitem="@layout/forum_sections_item"
+            tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

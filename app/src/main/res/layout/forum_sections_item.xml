@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/sectionsItem"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="wrap_content"
         android:background="@color/menuColor"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -26,12 +26,12 @@
             <TextView
                 android:id="@+id/theme"
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:text="База совместимости рыб"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="17sp"
+                android:textSize="16sp"
                 tools:ignore="RtlCompat" />
 
             <LinearLayout

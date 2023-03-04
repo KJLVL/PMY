@@ -1,4 +1,4 @@
-package com.example.myaquarium.adapter.view;
+package com.example.myaquarium.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,27 +9,28 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.R;
+import com.example.myaquarium.adapter.view.ForumUserThemesViewHolder;
 
 import org.json.JSONObject;
 
 import java.util.List;
 
-public class ForumUserThemesAdapter extends RecyclerView.Adapter<ForumUserThemesViewHolder> {
+public class ForumUserLikedAdapter extends RecyclerView.Adapter<ForumUserThemesViewHolder> {
     private Context context;
-    private List<JSONObject> themesList;
+    private List<JSONObject> likedList;
     private final OnThemeClickListener onClickListener;
 
     public interface OnThemeClickListener {
         void onStateClick(JSONObject themeId);
     }
 
-    public ForumUserThemesAdapter(
+    public ForumUserLikedAdapter(
             Context context,
             List<JSONObject> themesList,
             OnThemeClickListener onClickListener
     ) {
         this.context = context;
-        this.themesList = themesList;
+        this.likedList = themesList;
         this.onClickListener = onClickListener;
     }
 
@@ -45,19 +46,19 @@ public class ForumUserThemesAdapter extends RecyclerView.Adapter<ForumUserThemes
 
     @Override
     public void onBindViewHolder(@NonNull ForumUserThemesViewHolder holder, int position) {
-        holder.theme.setText(themesList.get(position).optString("title"));
-        holder.date.setText("дата: " + themesList.get(position).optString("date"));
+        holder.theme.setText(likedList.get(position).optString("title"));
+        holder.date.setText("дата: " + likedList.get(position).optString("date"));
 
         holder.sectionsItem.setOnClickListener(
-                v -> onClickListener.onStateClick(themesList.get(position))
+                v -> onClickListener.onStateClick(likedList.get(position))
         );
         holder.edit.setOnClickListener(
-                v -> onClickListener.onStateClick(themesList.get(position))
+                v -> onClickListener.onStateClick(likedList.get(position))
         );
     }
 
     @Override
     public int getItemCount() {
-        return themesList.size();
+        return likedList.size();
     }
 }

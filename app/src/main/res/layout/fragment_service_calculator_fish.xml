@@ -35,7 +35,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/service_com_title"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/btnFish"
@@ -63,7 +63,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/service_com_text"
             android:textColor="@color/black"
-            android:textSize="18sp"/>
+            android:textSize="14sp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listview"
@@ -80,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="13dp"
             android:backgroundTint="@color/bthAll"
             android:text="@string/service_com_btn"
             android:textAlignment="center" />
@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/service_com_result_text"
                 android:textColor="@color/black"
-                android:textSize="18sp"/>
+                android:textSize="16sp"/>
 
             <Button
                 android:id="@+id/btnRes"
@@ -109,7 +109,7 @@
                 android:backgroundTint="@color/bthAll"
                 android:padding="0dp"
                 android:text="@string/service_question"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/result"
@@ -148,7 +148,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/service_com_result1"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -170,7 +170,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/service_com_result2"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -192,7 +192,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/service_com_result3"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
