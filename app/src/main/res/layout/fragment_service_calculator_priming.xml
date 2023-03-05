@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/primingView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".fragment.FragmentServiceCalculatorPriming">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/layout"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
         android:orientation="vertical"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
@@ -37,16 +37,16 @@
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
-            <Button
+            <TextView
                 android:id="@+id/btnPr"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="10dp"
-                android:background="@drawable/info_item"
-                android:backgroundTint="@color/bthAll"
-                android:padding="0dp"
+                android:textColor="@color/bthAll"
+                android:fontFamily="@font/montserrat_bold"
+                android:textAlignment="center"
                 android:text="@string/service_question"
-                android:textSize="12sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <View
@@ -74,6 +74,7 @@
             android:paddingStart="5dp"
             android:textColor="@color/black"
             android:textSize="16sp"
+            android:textAlignment="center"
             tools:ignore="RtlSymmetry" />
 
         <TextView
@@ -120,6 +121,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="15dp"
+            android:textColor="@color/white"
             android:backgroundTint="@color/bthAll"
             android:text="@string/service_calculate2"
             android:textAlignment="center" />
@@ -128,7 +130,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:background="@color/menuColor"
             android:orientation="horizontal">
 
             <TextView

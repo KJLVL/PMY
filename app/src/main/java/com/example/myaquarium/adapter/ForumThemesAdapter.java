@@ -50,7 +50,7 @@ public class ForumThemesAdapter extends RecyclerView.Adapter<ForumThemesViewHold
     public void onBindViewHolder(@NonNull ForumThemesViewHolder holder, int position) {
         holder.theme.setText(themesList.get(position).optString("title"));
         holder.author.setText("автор: " + themesList.get(position).optString("author"));
-        holder.date.setText("дата: " + themesList.get(position).optString("date"));
+        holder.date.setText(themesList.get(position).optString("date"));
 
         if (
                 !themesList.get(position).optString("city").equals("null")

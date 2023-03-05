@@ -25,13 +25,12 @@
         android:layout_marginTop="10dp"
         android:layout_above="@+id/include"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/layout"
+        android:background="@drawable/background"
         android:isScrollContainer="false">
         <LinearLayout
             android:id="@+id/scrollSections"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/layout"
             android:orientation="vertical">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView

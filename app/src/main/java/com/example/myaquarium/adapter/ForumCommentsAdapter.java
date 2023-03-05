@@ -60,7 +60,7 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
                     )
                     .into(holder.avatar);
             holder.author.setText("автор: " + jsonObject.optString("login_from"));
-            holder.date.setText("дата: " + jsonObject.optString("date"));
+            holder.date.setText(jsonObject.optString("date"));
 
             if (!jsonObject.getString("login_to").equals("null")) {
                 holder.response.setText("кому: " + jsonObject.optString("login_to"));

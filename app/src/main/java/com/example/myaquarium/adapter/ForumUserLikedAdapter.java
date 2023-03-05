@@ -47,7 +47,7 @@ public class ForumUserLikedAdapter extends RecyclerView.Adapter<ForumUserThemesV
     @Override
     public void onBindViewHolder(@NonNull ForumUserThemesViewHolder holder, int position) {
         holder.theme.setText(likedList.get(position).optString("title"));
-        holder.date.setText("дата: " + likedList.get(position).optString("date"));
+        holder.date.setText(likedList.get(position).optString("date"));
 
         holder.sectionsItem.setOnClickListener(
                 v -> onClickListener.onStateClick(likedList.get(position))

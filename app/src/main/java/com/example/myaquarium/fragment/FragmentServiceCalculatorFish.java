@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
@@ -113,7 +114,7 @@ public class FragmentServiceCalculatorFish extends Fragment {
     }
 
     private void setMessage() {
-        Button btnFish = inflatedView.findViewById(R.id.btnFish);
+        TextView btnFish = inflatedView.findViewById(R.id.btnFish);
         btnFish.setOnClickListener(view -> {
             AlertDialog.Builder dialog = new AlertDialog.Builder(inflatedView.getContext());
             dialog.setTitle("Расчет осовместимости рыбок");

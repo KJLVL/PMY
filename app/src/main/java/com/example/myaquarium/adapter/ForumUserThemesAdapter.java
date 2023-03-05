@@ -47,7 +47,7 @@ public class ForumUserThemesAdapter extends RecyclerView.Adapter<ForumUserThemes
     @Override
     public void onBindViewHolder(@NonNull ForumUserThemesViewHolder holder, int position) {
         holder.theme.setText(themesList.get(position).optString("title"));
-        holder.date.setText("дата: " + themesList.get(position).optString("date"));
+        holder.date.setText(themesList.get(position).optString("date"));
 
         holder.sectionsItem.setOnClickListener(
                 v -> onClickListener.onStateClick(themesList.get(position))

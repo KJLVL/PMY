@@ -10,7 +10,7 @@
     <color name="mainColor">#030316</color>
 <!--    <color name="mainColor">#25274D</color>-->
 <!--    <color name="menuColor">#4d4f53</color>-->
-    <color name="menuColor">#AAABB8</color>
+    <color name="menuColor">#27F3ED</color>
     <color name="menuColor2">#353333</color>
     <color name="btnColor">#605E5E</color>
     <color name="fieldColor">#4A4747</color>
@@ -18,7 +18,7 @@
     <color name="gray">#C5C5C5</color>
 <!--    <color name="ripple">#B3FFFFFF</color>-->
     <color name="calcIcon">#557A95</color>
-    <color name="ripple">#C5C6C7</color>
+    <color name="ripple">#B1D8ED</color>
     <color name="sign">#a10970</color>
     <color name="signPress">#FFDD49AD</color>
     <color name="reg">#1810a9</color>

@@ -24,12 +24,11 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:text="Аквариумные рыбки"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="19sp"
+            android:textSize="14sp"
             tools:ignore="RtlSymmetry" />
 
         <TextView
@@ -37,13 +36,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/calc_item"
             android:textColor="@color/black"

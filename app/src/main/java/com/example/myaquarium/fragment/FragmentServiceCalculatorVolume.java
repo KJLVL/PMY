@@ -118,7 +118,7 @@ public class FragmentServiceCalculatorVolume extends Fragment {
     }
 
     private void setMessage() {
-        Button btnVol = inflatedView.findViewById(R.id.btnVol);
+        TextView btnVol = inflatedView.findViewById(R.id.btnVol);
         btnVol.setOnClickListener(view -> {
             AlertDialog.Builder dialog = new AlertDialog.Builder(inflatedView.getContext());
             dialog.setTitle("Расчет объема аквариума");

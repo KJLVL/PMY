@@ -26,7 +26,7 @@
         android:layout_below="@+id/header"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/layout"
+        android:background="@drawable/background"
         android:isScrollContainer="false"
         android:paddingStart="15dp"
         android:paddingEnd="15dp">
@@ -34,14 +34,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/layout"
             android:paddingTop="10dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/menuColor"
                 android:gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal">
@@ -67,6 +65,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:backgroundTint="@color/bthAll"
+                android:textColor="@color/white"
                 android:text="@string/settings_download"
                 android:textSize="13sp" />
 
@@ -223,6 +222,7 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="10dp"
+                android:textColor="@color/white"
                 android:backgroundTint="@color/bthAll"
                 android:padding="10dp"
                 android:text="@string/settings_save"

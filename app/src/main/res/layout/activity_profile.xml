@@ -25,7 +25,7 @@
         android:layout_below="@+id/header"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/layout"
+        android:background="@drawable/background"
         android:paddingStart="15dp"
         android:paddingEnd="15dp">
 
@@ -33,7 +33,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
-            android:background="@drawable/layout"
             android:orientation="vertical">
 
             <ImageButton
@@ -41,13 +40,11 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_gravity="end"
-                android:background="@color/menuColor"
                 app:srcCompat="@drawable/settings" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/menuColor"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
@@ -89,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:gravity="center_horizontal"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:text="@string/settings_aquarium_data"
                 android:textColor="@color/black" />
 
@@ -108,7 +105,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/calc_item"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="RtlSymmetry" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -164,6 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginBottom="10dp"
+                android:textColor="@color/white"
                 android:backgroundTint="@color/bthAll"
                 android:text="@string/settings_save"
                 android:textSize="13sp" />

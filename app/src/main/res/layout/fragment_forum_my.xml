@@ -5,13 +5,11 @@
     android:id="@+id/my"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/layout"
     tools:context=".fragment.FragmentForumMy">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/layout"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,16 +22,20 @@
             android:layout_gravity="end"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="15dp"
-            android:textSize="13sp"
             android:backgroundTint="@color/bthAll"
-            android:text="Создать" />
+            android:text="Создать"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/showMyThemes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/forum_item"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/ripple"
             android:fontFamily="@font/montserrat_bold"
             android:gravity="center_horizontal"
             android:text="Мои темы"
@@ -53,18 +55,21 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="15dp"
                 android:visibility="visible"
-                app:layout_constraintHeight_max="350dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/forum_my_sections_item"
-                tools:ignore="MissingConstraints" />
+                app:layout_constraintHeight_max="350dp"
+                tools:ignore="MissingConstraints"
+                tools:listitem="@layout/forum_my_sections_item" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/showMyLiked"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/forum_item"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/ripple"
             android:fontFamily="@font/montserrat_bold"
             android:gravity="center_horizontal"
             android:text="Избранное"
@@ -77,16 +82,16 @@
             app:layout_constraintHeight_default="wrap"
             app:layout_constraintHeight_max="450dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/likedRecycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="15dp"
-            android:visibility="visible"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/forum_sections_item"
-            tools:ignore="MissingConstraints" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/likedRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:ignore="MissingConstraints"
+                tools:listitem="@layout/forum_sections_item" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

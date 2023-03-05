@@ -3,13 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp">
 
     <LinearLayout
         android:id="@+id/sectionsItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/menuColor"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="7dp"
+        android:background="@drawable/layout"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,54 +20,51 @@
         tools:ignore="UselessParent">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="8"
+            android:gravity="center"
+            android:layout_marginBottom="3dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/theme"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
                 android:text="База совместимости рыб"
-                android:textAlignment="textStart"
+                android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 tools:ignore="RtlCompat" />
 
             <TextView
                 android:id="@+id/date"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="2"
                 android:text="дата: 13.01.23"
-                android:textAlignment="textStart"
+                android:textAlignment="center"
                 android:textColor="@color/bthAll"
                 android:textSize="14sp"
                 tools:ignore="RtlCompat" />
 
-            <Button
-                android:id="@+id/edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_weight="10"
-                android:textSize="12sp"
-                android:layout_gravity="center_horizontal"
-                android:backgroundTint="@color/bthAll"
-                android:text="Редактировать" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="#605C5C" />
-
         </LinearLayout>
+
+        <Button
+            android:id="@+id/edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_weight="4"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="@color/bthAll"
+            android:text="открыть"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
     </LinearLayout>
 
 </RelativeLayout>

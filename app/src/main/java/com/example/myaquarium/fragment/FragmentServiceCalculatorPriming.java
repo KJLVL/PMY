@@ -57,7 +57,7 @@ public class FragmentServiceCalculatorPriming extends Fragment {
     }
 
     private void setMessage() {
-        Button btnPr = inflatedView.findViewById(R.id.btnPr);
+        TextView btnPr = inflatedView.findViewById(R.id.btnPr);
         btnPr.setOnClickListener(view -> {
             AlertDialog.Builder dialog = new AlertDialog.Builder(inflatedView.getContext());
             dialog.setTitle("Расчет грунта");

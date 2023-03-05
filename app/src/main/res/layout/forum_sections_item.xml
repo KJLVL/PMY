@@ -3,13 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp">
 
     <LinearLayout
         android:id="@+id/sectionsItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/menuColor"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="7dp"
+        android:background="@drawable/layout"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,8 +22,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -29,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:text="База совместимости рыб"
-                android:textAlignment="textStart"
+                android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 tools:ignore="RtlCompat" />
@@ -42,25 +48,24 @@
 
                 <TextView
                     android:id="@+id/city"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:text="город: Ростов-на-Дону"
-                    android:visibility="gone"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textColor="@color/bthAll"
                     android:textSize="14sp"
+                    android:visibility="gone"
                     tools:ignore="RtlCompat" />
 
                 <TextView
                     android:id="@+id/date"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:text="дата: 13.01.23"
-                    android:textAlignment="textStart"
                     android:textColor="@color/bthAll"
                     android:textSize="14sp"
                     tools:ignore="RtlCompat" />
@@ -74,17 +79,11 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="автор: juli"
-                android:textAlignment="textStart"
+                android:textAlignment="center"
                 android:textColor="@color/bthAll"
                 android:textSize="14sp"
+                android:paddingBottom="3dp"
                 tools:ignore="RtlCompat" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
-                android:background="#605C5C" />
 
         </LinearLayout>
     </LinearLayout>
