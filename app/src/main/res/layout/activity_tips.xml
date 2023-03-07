@@ -26,7 +26,7 @@
         android:layout_above="@+id/include"
         android:layout_below="@+id/header"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="1dp"
         android:background="@color/mainColor"
         tools:ignore="MissingConstraints,UnknownIdInLayout">
 
