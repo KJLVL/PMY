@@ -32,17 +32,11 @@
         android:paddingEnd="10dp"
         tools:ignore="UselessParent">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="5dp"
-            android:background="#7b7b7b" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginTop="15dp"
             android:gravity="center_horizontal|center_vertical"
             android:orientation="horizontal">
 
@@ -61,7 +55,7 @@
             android:layout_height="1dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:background="#7b7b7b" />
+            android:background="@color/bthAll" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,10 +67,10 @@
                 android:id="@+id/calendarView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:abbreviationsBarColor="@color/menuColor"
-                app:headerColor="@color/menuColor"
+                app:abbreviationsBarColor="@color/ripple"
+                app:headerColor="@color/ripple"
                 app:headerLabelColor="@color/black"
-                app:pagesColor="@color/menuColor"
+                app:pagesColor="@color/ripple"
                 app:selectionColor="@color/reg" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -84,7 +78,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
-                android:backgroundTint="@color/regPress"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/menuColor"
                 android:src="@android:drawable/ic_input_add"
                 tools:ignore="ContentDescription" />
         </LinearLayout>

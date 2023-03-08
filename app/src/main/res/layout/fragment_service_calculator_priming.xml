@@ -4,6 +4,7 @@
     android:id="@+id/primingView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".fragment.FragmentServiceCalculatorPriming">
 
     <LinearLayout
@@ -15,17 +16,11 @@
         android:paddingEnd="15dp"
         tools:ignore="UselessParent">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="5dp"
-            android:background="#7b7b7b" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginTop="15dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -42,10 +37,10 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="10dp"
-                android:textColor="@color/bthAll"
                 android:fontFamily="@font/montserrat_bold"
-                android:textAlignment="center"
                 android:text="@string/service_question"
+                android:textAlignment="center"
+                android:textColor="@color/bthAll"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -54,7 +49,7 @@
             android:layout_height="1dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="15dp"
-            android:background="#7b7b7b" />
+            android:background="@color/bthAll" />
 
         <TextView
             android:layout_width="match_parent"
@@ -74,7 +69,6 @@
             android:paddingStart="5dp"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:textAlignment="center"
             tools:ignore="RtlSymmetry" />
 
         <TextView
@@ -121,10 +115,10 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="15dp"
-            android:textColor="@color/white"
             android:backgroundTint="@color/bthAll"
             android:text="@string/service_calculate2"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/white" />
 
         <LinearLayout
             android:layout_width="match_parent"

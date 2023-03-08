@@ -7,7 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="mainColor">#030316</color>
+    <color name="mainColor">#08082C</color>
 <!--    <color name="mainColor">#25274D</color>-->
 <!--    <color name="menuColor">#4d4f53</color>-->
     <color name="menuColor">#27F3ED</color>
@@ -26,4 +26,16 @@
 <!--    <color name="bthAll">#002663</color>-->
     <color name="bthAll">#25274D</color>
     <color name="bthAll1">#6625274D</color>
+
+<!--    for themes-->
+    <color name="general_issues">#14FF5500</color>
+    <color name="aquarium_fish">#14C64AFF</color>
+    <color name="diseases">#1A06BF3E</color>
+    <color name="design">#1AFFEB3B</color>
+    <color name="aquarium_equipment_other">#302264E0</color>
+
+    <color name="marine_aquariums_equipment">#14FF5500</color>
+    <color name="food_fish">#1A06BF3E</color>
+    <color name="aquarium_plants">#1AFFEB3B</color>
+
 </resources>

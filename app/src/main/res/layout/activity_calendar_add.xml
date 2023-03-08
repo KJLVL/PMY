@@ -36,22 +36,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            app:abbreviationsBarColor="@color/menuColor"
+            app:abbreviationsBarColor="@color/ripple"
             app:datePicker="true"
-            app:headerColor="@color/menuColor"
+            app:headerColor="@color/ripple"
             app:headerLabelColor="@color/black"
-            app:pagesColor="@color/menuColor"
+            app:pagesColor="@color/ripple"
             app:selectionColor="@color/bthAll" />
 
         <EditText
             android:id="@+id/noteEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/white"
+            android:enabled="false"
             android:hint="@string/service_calendar_note"
             android:inputType="textMultiLine"
-            android:enabled="false"
             android:textColor="@color/black"
+            android:textColorHint="@color/white"
             android:textSize="18sp" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -59,8 +59,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/bthAll"
-            android:text="@string/service_calendar_save"
             android:enabled="false"
+            android:text="@string/service_calendar_save"
             android:textColor="@color/white"
             android:textSize="17sp" />
 

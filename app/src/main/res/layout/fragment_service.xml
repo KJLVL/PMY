@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/service"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/service"
     tools:context=".fragment.FragmentService">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
         android:isScrollContainer="false"
         android:orientation="vertical"
         android:paddingStart="15dp"
@@ -22,12 +23,14 @@
             android:text="Калькуляторы"
             android:textColor="@color/black"
             android:textSize="18sp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:background="@color/bthAll" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,21 +50,22 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/calc_icon"
                     android:orientation="vertical">
-                <ImageView
-                    android:id="@+id/fish"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="@drawable/calc_fish_icon"
-                    android:src="@drawable/fish" />
+
+                    <ImageView
+                        android:id="@+id/fish"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/calc_fish_icon"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:src="@drawable/fish" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
                     android:layout_marginTop="5dp"
+                    android:gravity="center_horizontal"
                     android:text="Совместимость\nрыбок"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
@@ -79,22 +83,23 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/calc_icon"
                     android:orientation="vertical">
-                <ImageView
-                    android:id="@+id/volume"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="@drawable/calc_volume_icon"
-                    android:src="@drawable/volume" />
+
+                    <ImageView
+                        android:id="@+id/volume"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/calc_volume_icon"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:src="@drawable/volume" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:gravity="center_horizontal"
                     android:text="Калькулятор\nаквариума"
-                    android:layout_marginTop="5dp"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -111,22 +116,23 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/calc_icon"
                     android:orientation="vertical">
-                <ImageView
-                    android:id="@+id/priming"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="@drawable/calc_prim_icon"
-                    android:src="@drawable/calc_pr" />
+
+                    <ImageView
+                        android:id="@+id/priming"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/calc_prim_icon"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:src="@drawable/calc_pr" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:gravity="center_horizontal"
                     android:text="Калькулятор\nгрунта"
-                    android:layout_marginTop="5dp"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -136,8 +142,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
             android:text="Разное"
             android:textColor="@color/black"
             android:textSize="18sp" />
@@ -168,22 +174,23 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/calc_icon"
                     android:orientation="vertical">
-                <ImageView
-                    android:id="@+id/tips"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="@drawable/calc_tips_icon"
-                    android:src="@drawable/other_tips" />
+
+                    <ImageView
+                        android:id="@+id/tips"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/calc_tips_icon"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:src="@drawable/other_tips" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:gravity="center_horizontal"
                     android:text="Полезные\nстатьи"
-                    android:layout_marginTop="5dp"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -200,30 +207,35 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/calc_icon"
                     android:orientation="vertical">
-                <ImageView
-                    android:id="@+id/calendar"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="@drawable/calc_calendar_icon"
-                    android:src="@drawable/other_calendar" />
+
+                    <ImageView
+                        android:id="@+id/calendar"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/calc_calendar_icon"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:src="@drawable/other_calendar" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:gravity="center_horizontal"
                     android:text="Календарь\nаквариумиста"
-                    android:layout_marginTop="5dp"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
             </LinearLayout>
-
-
         </LinearLayout>
-
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:scaleType="fitXY"
+            android:layout_gravity="bottom"
+            android:src="@drawable/wow" />
     </LinearLayout>
-
 
 </FrameLayout>

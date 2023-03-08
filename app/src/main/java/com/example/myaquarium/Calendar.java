@@ -45,7 +45,7 @@ public class Calendar extends AppCompatActivity {
         setContentView(R.layout.activity_calendar);
         this.setToolbar();
 
-        calendarView = (CalendarView) findViewById(R.id.calendarView);
+        calendarView = findViewById(R.id.calendarView);
         this.getEvents();
 
         try {
@@ -69,6 +69,7 @@ public class Calendar extends AppCompatActivity {
     }
 
     private void getEvents() {
+        events = new ArrayList<>();
         Runnable runnable = () -> {
             try {
                 JSONArray eventsList = requests.setRequest(requests.urlRequest + "user/getCalendar", new ArrayList<>());
@@ -116,15 +117,13 @@ public class Calendar extends AppCompatActivity {
 
             LayoutInflater inflater = LayoutInflater.from(this);
             View window = inflater.inflate(R.layout.calendar_window, null);
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            window.setBackgroundColor(getResources().getColor(R.color.ripple));
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
             dialog.setView(window);
 
             EditText event = window.findViewById(R.id.event);
             event.setText(eventText);
 
-            dialog.setNegativeButton("Закрыть", (dialogInterface, i) -> {
-                dialogInterface.dismiss();
-            });
             dialog.setPositiveButton("Сохранить", (dialogInterface, i) -> {
                 if (!event.getText().toString().equals(eventText)) {
                     this.saveEvent(simpleDateFormat.format(date), event.getText().toString());
@@ -134,6 +133,9 @@ public class Calendar extends AppCompatActivity {
                             "Нет изменений для сохранения", Toast.LENGTH_SHORT
                     ).show();
                 }
+            });
+            dialog.setNegativeButton("Удалить", (dialogInterface, i) -> {
+                this.deleteEvent(simpleDateFormat.format(date));
             });
             dialog.show();
         }
@@ -168,6 +170,34 @@ public class Calendar extends AppCompatActivity {
         thread.start();
     }
 
+    private void deleteEvent(String date) {
+        List<NameValuePair> params = new ArrayList<>(List.of(
+                new BasicNameValuePair("date", date)
+            )
+        );
+
+        Runnable runnable = () -> {
+            try {
+                JSONArray message = requests.setRequest(requests.urlRequest + "user/deleteCalendar", params);
+                JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
+                if (object.optString("success").equals("1")) {
+                    this.runOnUiThread(() -> {
+                        Toast.makeText(
+                                getApplicationContext(),
+                                "Заметка была успешно удалена", Toast.LENGTH_SHORT
+                        ).show();
+                        this.getEvents();
+                    });
+                }
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+        };
+
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+
     private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -177,7 +207,7 @@ public class Calendar extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         TextView textView = findViewById(R.id.title);
-        textView.setText(getApplicationContext().getString(R.string.calendar_text));
+        textView.setText(getApplicationContext().getString(R.string.service_text));
 
         toolbar.setNavigationOnClickListener(view -> {
             this.startActivity(new Intent(this, Service.class));

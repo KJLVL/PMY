@@ -62,9 +62,41 @@ public class ForumThemesAdapter extends RecyclerView.Adapter<ForumThemesViewHold
             holder.city.setVisibility(View.GONE);
         }
 
+        this.setBackground(holder, position);
+
         holder.sectionsItem.setOnClickListener(
                 v -> onClickListener.onStateClick(themesList.get(position), themesList.get(position).optString("category_id"))
         );
+    }
+
+    private void setBackground(ForumThemesViewHolder holder, int position) {
+        switch (themesList.get(position).optString("sections")) {
+            case "Общие вопросы содержания":
+                holder.sectionsItem.setBackgroundColor(context.getResources().getColor(R.color.general_issues));
+                break;
+            case "Аквариумные рыбки":
+                holder.sectionsItem.setBackgroundColor(context.getResources().getColor(R.color.aquarium_fish));
+                break;
+            case "Болезни":
+                holder.sectionsItem.setBackgroundColor(context.getResources().getColor(R.color.diseases));
+                break;
+            case "Дизайн":
+                holder.sectionsItem.setBackgroundColor(context.getResources().getColor(R.color.design));
+                break;
+            case "Аквариумное оборудование и прочее":
+            case "Аквариумы и оборудование":
+                holder.sectionsItem.setBackgroundColor(context.getResources().getColor(R.color.aquarium_equipment_other));
+                break;
+            case "Морские аквариумы и оборудование":
+                holder.sectionsItem.setBackgroundColor(context.getResources().getColor(R.color.marine_aquariums_equipment));
+                break;
+            case "Корма для рыбок и креветок":
+                holder.sectionsItem.setBackgroundColor(context.getResources().getColor(R.color.food_fish));
+                break;
+            case "Аквариумные растения":
+                holder.sectionsItem.setBackgroundColor(context.getResources().getColor(R.color.aquarium_plants));
+                break;
+        }
     }
 
     @Override

@@ -157,6 +157,7 @@ public class FragmentForumNewTheme extends Fragment {
                     RadioButton radioButton = new RadioButton(inflatedView.getContext());
                     radioButton.setId(Integer.parseInt(entry.getKey()));
                     radioButton.setText(entry.getValue());
+                    radioButton.setTextColor(getResources().getColor(R.color.black));
                     category.addView(radioButton);
                 }
             }
@@ -200,6 +201,7 @@ public class FragmentForumNewTheme extends Fragment {
                     RadioButton radioButton = new RadioButton(inflatedView.getContext());
                     radioButton.setId(Integer.parseInt(entry.getKey()));
                     radioButton.setText(entry.getValue());
+                    radioButton.setTextColor(getResources().getColor(R.color.black));
                     section.addView(radioButton);
                 }
             }

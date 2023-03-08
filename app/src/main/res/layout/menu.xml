@@ -11,7 +11,7 @@
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
         android:foregroundGravity="bottom"
-        android:background="@color/menuColor"
+        android:background="@color/mainColor"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +26,7 @@
             android:linksClickable="true"
             android:layout_weight="1"
             android:text="@string/service_text"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="17sp" />
 
         <TextView
@@ -37,7 +37,7 @@
             android:linksClickable="true"
             android:layout_weight="1"
             android:text="@string/forum_text"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="17sp" />
 
         <TextView
@@ -48,7 +48,7 @@
             android:linksClickable="true"
             android:layout_weight="1"
             android:text="@string/profile_text"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="17sp" />
     </LinearLayout>
 

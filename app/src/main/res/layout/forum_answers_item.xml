@@ -9,8 +9,9 @@
         android:id="@+id/sectionsItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/menuColor"
+        android:background="@drawable/layout"
         android:gravity="center_vertical"
+        android:padding="15dp"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -108,18 +109,13 @@
                 android:id="@+id/answer"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:background="@color/bthAll"
+                android:textColor="@color/white"
                 android:layout_gravity="end"
                 android:text="ответить"
                 />
 
         </LinearLayout>
-
     </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="5dp"
-        android:background="#605C5C" />
 
 </RelativeLayout>

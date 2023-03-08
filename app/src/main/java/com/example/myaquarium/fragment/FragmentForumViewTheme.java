@@ -66,7 +66,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
         );
 
         TextView title = inflatedView.findViewById(R.id.title);
-        title.setText( theme.optString("sections"));
+        title.setText(theme.optString("sections"));
         TextView themeTitle = inflatedView.findViewById(R.id.themeTitle);
         themeTitle.setText(theme.optString("title"));
         TextView content = inflatedView.findViewById(R.id.content);
@@ -95,8 +95,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
 
         if (theme.optString("images").equals("null") || theme.optString("images").equals("")) {
             imagesLayout.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             this.setImages();
             buttonLeft.setOnClickListener(
                     view -> {
@@ -132,7 +131,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
         List<NameValuePair> params = new ArrayList<>(List.of(
                 new BasicNameValuePair("theme_id", theme.optString("id")),
                 new BasicNameValuePair("like", String.valueOf(likeButton.isLiked()))
-            )
+        )
         );
 
         Runnable runnable = () -> {
@@ -168,7 +167,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
     private void getLike(LikeButton likeButton) {
         List<NameValuePair> params = new ArrayList<>(List.of(
                 new BasicNameValuePair("theme_id", theme.optString("id"))
-            )
+        )
         );
 
         Runnable runnable = () -> {
@@ -191,8 +190,8 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
 
     private void getComments() {
         List<NameValuePair> params = new ArrayList<>(List.of(
-                        new BasicNameValuePair("theme_id", theme.optString("id"))
-                        )
+                new BasicNameValuePair("theme_id", theme.optString("id"))
+        )
         );
 
         Runnable runnable = () -> {

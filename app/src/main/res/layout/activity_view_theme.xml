@@ -18,7 +18,7 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-    <ScrollView
+    <LinearLayout
         android:id="@+id/scrollViewTheme"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,7 +26,8 @@
         android:layout_below="@+id/header"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/layout" />
+        android:orientation="vertical"
+        android:background="@drawable/background" />
 
     <include
         android:id="@+id/include"
