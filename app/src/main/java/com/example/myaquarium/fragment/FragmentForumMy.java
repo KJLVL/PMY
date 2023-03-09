@@ -115,7 +115,14 @@ public class FragmentForumMy extends Fragment {
             );
             themesRecycler.setLayoutManager(layoutManager);
 
-            ForumUserThemesAdapter.OnThemeClickListener onThemeClickListener = (theme) -> {
+            ForumUserThemesAdapter.OnThemeClickListener onThemeClickListener = (theme, category) -> {
+                Intent intent = new Intent(inflatedView.getContext(), ViewTheme.class);
+                intent.putExtra("theme", theme.toString());
+                intent.putExtra("id", category);
+                this.startActivity(intent);
+            };
+
+            ForumUserThemesAdapter.OnEditClickListener onEditClickListener = (theme) -> {
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.my, FragmentForumMyEditTheme.newInstance(theme));
                 ft.commit();
@@ -124,7 +131,8 @@ public class FragmentForumMy extends Fragment {
             themesAdapter = new ForumUserThemesAdapter(
                     inflatedView.getContext(),
                     this.themesList,
-                    onThemeClickListener
+                    onThemeClickListener,
+                    onEditClickListener
             );
             themesRecycler.setAdapter(themesAdapter);
         });

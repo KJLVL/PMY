@@ -1,6 +1,7 @@
 package com.example.myaquarium.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -72,6 +74,8 @@ public class FragmentForumSections extends Fragment {
         );
 
         search = inflatedView.findViewById(R.id.search);
+        this.setColorSearch();
+
         sectionsFilter = inflatedView.findViewById(R.id.sectionsFilter);
         themesRecycler = inflatedView.findViewById(R.id.themesRecycler);
         Button filters = inflatedView.findViewById(R.id.filters);
@@ -110,6 +114,12 @@ public class FragmentForumSections extends Fragment {
         });
 
         return inflatedView;
+    }
+
+    private void setColorSearch() {
+        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = search.findViewById(id);
+        textView.setTextColor(Color.BLACK);
     }
 
     private void setThemesListItems(List<String> themesListItems, boolean check) {

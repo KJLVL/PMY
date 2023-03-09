@@ -86,7 +86,7 @@ public class FragmentServiceCalculatorFish extends Fragment {
                 LinearLayout textResult = inflatedView.findViewById(R.id.textResult);
                 textResult.setVisibility(View.VISIBLE);
                 listviewResult.setVisibility(View.VISIBLE);
-                Button btnRes = inflatedView.findViewById(R.id.btnRes);
+                TextView btnRes = inflatedView.findViewById(R.id.btnRes);
                 btnRes.setOnClickListener(view -> {
                     LinearLayout layout = inflatedView.findViewById(R.id.result);
                     if (layout.getVisibility() == View.GONE) {

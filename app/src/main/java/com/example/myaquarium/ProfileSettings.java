@@ -83,7 +83,7 @@ public class ProfileSettings extends AppCompatActivity {
         password.setOnClickListener(view -> this.changePassword());
         save.setOnClickListener(view -> this.updateUser());
 
-        Button download = findViewById(R.id.download);
+        TextView download = findViewById(R.id.download);
         download.setOnClickListener(view -> downloadImage());
 
         TextView calculator = findViewById(R.id.service);

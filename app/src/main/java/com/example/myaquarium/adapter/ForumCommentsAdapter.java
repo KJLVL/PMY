@@ -49,7 +49,6 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
 
     @Override
     public void onBindViewHolder(@NonNull ForumCommentsViewHolder holder, int position) {
-
         try {
             JSONObject jsonObject = commentsList.getJSONObject(position);
 
@@ -77,11 +76,11 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
                 holder.images.setVisibility(View.GONE);
             } else {
                 Picasso.get()
-                        .load(
-                                requests.urlRequestImg +
-                                        jsonObject.optString("images")
-                        )
+                        .load(requests.urlRequestImg + jsonObject.optString("images"))
                         .into(holder.switcher);
+                holder.switcher.setOnClickListener(view -> {
+
+                });
             }
             holder.answer.setOnClickListener(view -> {
                 onClickListener.onStateClick(jsonObject.optString("user_id"));
@@ -92,6 +91,7 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
         }
 
     }
+
 
 
     @Override

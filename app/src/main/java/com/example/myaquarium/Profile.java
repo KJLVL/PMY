@@ -1,6 +1,7 @@
 package com.example.myaquarium;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -66,6 +67,8 @@ public class Profile extends AppCompatActivity {
         listView = this.findViewById(R.id.listview);
         fishRecycler = this.findViewById(R.id.fishListItems);
         search = this.findViewById(R.id.search);
+        this.setColorSearch();
+
         nameField = this.findViewById(R.id.nameField);
         image = this.findViewById(R.id.image);
         volumeField = this.findViewById(R.id.volumeField);
@@ -94,6 +97,12 @@ public class Profile extends AppCompatActivity {
         calculator.setOnClickListener(view -> this.startActivity(new Intent(this, Service.class)));
         forum.setOnClickListener(view -> this.startActivity(new Intent(this, Forum.class)));
         profile.setOnClickListener(view -> this.startActivity(new Intent(this, Profile.class)));
+    }
+
+    private void setColorSearch() {
+        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = search.findViewById(id);
+        textView.setTextColor(Color.BLACK);
     }
 
     private void saveProfile() {

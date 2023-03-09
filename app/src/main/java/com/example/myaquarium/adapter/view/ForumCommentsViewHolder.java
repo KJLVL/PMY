@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.R;
 
+
 public class ForumCommentsViewHolder extends RecyclerView.ViewHolder {
     public ImageView avatar;
     public TextView author;

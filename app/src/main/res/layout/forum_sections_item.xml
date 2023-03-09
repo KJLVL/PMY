@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:layout_marginBottom="5dp">
+    android:layout_marginBottom="5dp"
+    android:background="@drawable/layout_back">
 
     <LinearLayout
         android:id="@+id/sectionsItem"
@@ -79,11 +79,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
+                android:paddingBottom="3dp"
                 android:text="автор: juli"
                 android:textAlignment="center"
                 android:textColor="@color/bthAll"
                 android:textSize="14sp"
-                android:paddingBottom="3dp"
                 tools:ignore="RtlCompat" />
 
         </LinearLayout>

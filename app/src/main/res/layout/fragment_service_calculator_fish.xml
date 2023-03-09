@@ -97,16 +97,16 @@
                 android:textColor="@color/black"
                 android:textSize="16sp"/>
 
-            <Button
+            <TextView
                 android:id="@+id/btnRes"
-                android:layout_width="30dp"
-                android:layout_height="37dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginStart="10dp"
-                android:backgroundTint="@color/bthAll"
-                android:textColor="@color/white"
-                android:padding="0dp"
+                android:textColor="@color/bthAll"
+                android:fontFamily="@font/montserrat_bold"
+                android:textAlignment="center"
                 android:text="@string/service_question"
-                android:textSize="15sp" />
+                android:textSize="16sp" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/result"

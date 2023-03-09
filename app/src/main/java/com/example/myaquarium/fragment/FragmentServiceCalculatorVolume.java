@@ -1,6 +1,7 @@
 package com.example.myaquarium.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,6 +84,7 @@ public class FragmentServiceCalculatorVolume extends Fragment {
         message = inflatedView.findViewById(R.id.message);
         useMyFish = inflatedView.findViewById(R.id.useMyFish);
         search = inflatedView.findViewById(R.id.search);
+        this.setColorSearch();
 
         this.getFishList();
         this.searchAction();
@@ -104,6 +106,12 @@ public class FragmentServiceCalculatorVolume extends Fragment {
         });
 
         return inflatedView;
+    }
+
+    private void setColorSearch() {
+        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = search.findViewById(id);
+        textView.setTextColor(Color.BLACK);
     }
 
     private void setToolbar() {
