@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,15 +12,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.R;
 import com.example.myaquarium.adapter.view.FishListViewHolder;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 public class FishListAdapter extends RecyclerView.Adapter<FishListViewHolder> {
     private Context context;
-    private static List<List<String>> fishList;
+    private TextView myFish;
+    private static List<JSONObject> fishList;
 
-    public FishListAdapter(Context context, List<List<String>> fishList) {
+    public FishListAdapter(Context context, List<JSONObject> fishList, TextView myFish) {
         this.context = context;
         this.fishList = fishList;
+        this.myFish = myFish;
     }
 
     @NonNull
@@ -34,13 +40,17 @@ public class FishListAdapter extends RecyclerView.Adapter<FishListViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull FishListViewHolder holder, int position) {
-        holder.nameView.setText(fishList.get(position).get(0));
-        holder.countView.setText(fishList.get(position).get(1));
+        holder.nameView.setText(fishList.get(position).optString("fish"));
+        holder.countView.setText(fishList.get(position).optString("count"));
 
         holder.addButton.setOnClickListener(view -> {
             int count = Integer.parseInt(holder.countView.getText().toString()) + 1;
             holder.countView.setText(String.valueOf(count));
-            fishList.get(position).set(1, String.valueOf(count));
+            try {
+                fishList.get(position).put("count", String.valueOf(count));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         });
 
         holder.removeButton.setOnClickListener(view -> {
@@ -48,12 +58,20 @@ public class FishListAdapter extends RecyclerView.Adapter<FishListViewHolder> {
           if (count < 0) count = 0;
 
           holder.countView.setText(String.valueOf(count));
-          fishList.get(position).set(1, String.valueOf(count));
-
+            try {
+                fishList.get(position).put("count", String.valueOf(count));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         });
 
         holder.deleteButton.setOnClickListener(view -> {
             fishList.remove(position);
+            if (fishList.size() == 0) {
+                myFish.setVisibility(View.VISIBLE);
+            } else {
+                myFish.setVisibility(View.GONE);
+            }
             notifyDataSetChanged();
         });
     }

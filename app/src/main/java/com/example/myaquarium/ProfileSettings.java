@@ -238,25 +238,33 @@ public class ProfileSettings extends AppCompatActivity {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
                     Uri uri = data.getData();
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                        image.setImageBitmap(bitmap);
-                        generateImage();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    Runnable runnable = () -> {
+                        try {
+                            this.bitmap = Picasso.get().load(uri).resize(500, 0).get();
+                            image.post(() -> {
+                                this.generateImage(bitmap);
+                            });
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    };
+                    Thread thread = new Thread(runnable);
+                    thread.start();
+
+                    Picasso.get().load(uri).resize(500, 0).into(image);
                 }
             });
 
-    private void generateImage() {
+    private void generateImage(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         if (bitmap != null) {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
             byte[] bytes = byteArrayOutputStream.toByteArray();
-            newAvatar = Base64.encodeToString(bytes, Base64.DEFAULT);
+            this.newAvatar = Base64.encodeToString(bytes, Base64.DEFAULT);
         } else {
-            newAvatar = "";
+            this.newAvatar = "";
         }
     }
 

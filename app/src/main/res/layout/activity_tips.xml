@@ -33,7 +33,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tipsMenu"
             android:layout_width="match_parent"
-            android:layout_height="23dp"
+            android:layout_height="wrap_content"
             app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/information_category_item" />
 

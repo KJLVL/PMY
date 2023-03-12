@@ -30,8 +30,8 @@ public class Tips extends AppCompatActivity {
     static TipsAdapter tipsAdapter;
     private TipsMenuAdapter tipsMenuAdapter;
 
-    static List<List<String>> tipsList;
-    static List<List<String>> fullTipsList;
+    static List<JSONObject> tipsList;
+    static List<JSONObject> fullTipsList;
 
     private Requests requests;
 
@@ -104,17 +104,11 @@ public class Tips extends AppCompatActivity {
     private void getTips() {
         Runnable runnable = () -> {
             try {
-                JSONArray list = requests.setRequest(requests.urlRequest + "tips/tips", new ArrayList<>());
-                for (int i = 0; i < list.length(); i++) {
-                    JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
-                    List<String> itemTips = new ArrayList<>(List.of(
-                            object.getString("tips_title_id"),
-                            object.getString("title"),
-                            object.getString("content"),
-                            object.getString("image")
-                    ));
-                    tipsList.add(itemTips);
-                    fullTipsList.add(itemTips);
+                JSONArray result = requests.setRequest(requests.urlRequest + "tips/tips", new ArrayList<>());
+                for (int i = 0; i < result.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(result.getJSONObject(i)));
+                    tipsList.add(object);
+                    fullTipsList.add(object);
                 }
                 this.runOnUiThread(() -> tipsAdapter.notifyDataSetChanged());
             } catch (IOException | JSONException e) {
@@ -147,10 +141,10 @@ public class Tips extends AppCompatActivity {
         tipsList.clear();
         tipsList.addAll(fullTipsList);
 
-        List<List<String>> filterTips = new ArrayList<>();
+        List<JSONObject> filterTips = new ArrayList<>();
         if (tipsMenuId != 0) {
-            for (List<String> category: tipsList) {
-                if (Integer.parseInt(category.get(0)) == tipsMenuId + 1) {
+            for (JSONObject category: tipsList) {
+                if (Integer.parseInt(category.optString("tips_title_id")) == tipsMenuId + 1) {
                     filterTips.add(category);
                 }
             }

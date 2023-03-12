@@ -44,16 +44,17 @@ public class Profile extends AppCompatActivity {
 
     private TextView nameField;
     private TextView volumeField;
+    private TextView myFish;
     private ImageView image;
     private Button save;
 
     private FishListAdapter fishAdapter;
     private FishListViewAdapter fishListAdapter;
 
-    private List<List<String>> fishListAll;
+    private List<JSONObject> fishListAll;
     private Map<String, String> userInfo;
     private List<String> fishList;
-    private static List<List<String>> fishListCurrent;
+    private static List<JSONObject> fishListCurrent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +71,18 @@ public class Profile extends AppCompatActivity {
         this.setColorSearch();
 
         nameField = this.findViewById(R.id.nameField);
+        myFish = this.findViewById(R.id.myFish);
         image = this.findViewById(R.id.image);
         volumeField = this.findViewById(R.id.volumeField);
         save = this.findViewById(R.id.save);
 
         fishListCurrent = new ArrayList<>();
         userInfo = new HashMap<>();
+        if (fishListCurrent.size() == 0) {
+            myFish.setVisibility(View.VISIBLE);
+        } else {
+            myFish.setVisibility(View.GONE);
+        }
 
         this.getUser();
         this.getUserFish();
@@ -106,10 +113,9 @@ public class Profile extends AppCompatActivity {
     }
 
     private void saveProfile() {
-        JSONArray jsonArray = new JSONArray(fishListCurrent);
         List<NameValuePair> params = new ArrayList<>(List.of(
                 new BasicNameValuePair("aquarium_volume", volumeField.getText().toString()),
-                new BasicNameValuePair("fish", jsonArray.toString())
+                new BasicNameValuePair("fish", String.valueOf(new JSONArray(fishListCurrent)))
             )
         );
 
@@ -195,6 +201,7 @@ public class Profile extends AppCompatActivity {
 
                     Picasso.get()
                             .load(requests.urlRequestImg + userInfo.get("avatar"))
+                            .resize(350, 0)
                             .into(image);
 
                 });
@@ -211,13 +218,14 @@ public class Profile extends AppCompatActivity {
             try {
                 JSONArray userFish = requests.setRequest(requests.urlRequest + "user/fish", new ArrayList<>());
                 for (int i = 0; i < userFish.length(); i++) {
-                    JSONObject object = new JSONObject(String.valueOf(userFish.getJSONObject(i)));
-                    List<String> fish = new ArrayList<>(List.of(
-                            object.getString("fish"),
-                            object.getString("count")
-
-                    ));
-                    fishListCurrent.add(fish);
+                    JSONObject result = new JSONObject(String.valueOf(userFish.getJSONObject(i)));
+                    if (result.optString("success").equals("0")) {
+                        myFish.post(() -> {
+                            myFish.setVisibility(View.VISIBLE);
+                        });
+                        return;
+                    }
+                    fishListCurrent.add(result);
                 }
                 setFishList(fishListCurrent);
 
@@ -237,13 +245,8 @@ public class Profile extends AppCompatActivity {
                 JSONArray list = requests.setRequest(requests.urlRequest + "fish/list", new ArrayList<>());
                 for (int i = 0; i < list.length(); i++) {
                     JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
-                    List<String> fish = new ArrayList<>(List.of(
-                            object.getString("fish_name"),
-                            object.getString("liter")
-
-                    ));
                     fishList.add(object.getString("fish_name"));
-                    fishListAll.add(fish);
+                    fishListAll.add(object);
                 }
                 setSelectedFishList(fishList);
             } catch (IOException | JSONException e) {
@@ -258,13 +261,15 @@ public class Profile extends AppCompatActivity {
         listView.post(() -> {
             RecyclerView fishRecycler = this.findViewById(R.id.listview);
             FishListViewAdapter.OnFishClickListener onFishClickListener = (fish) -> {
-                for (List<String> item : fishListCurrent) {
-                    if (item.get(0).equals(fish)) {
+                for (JSONObject item : fishListCurrent) {
+                    if (item.optString("fish").equals(fish)) {
                         return;
                     }
                 }
 
-                List<String> curFish = new ArrayList<>(List.of(fish, "1"));
+                JSONObject curFish = new JSONObject();
+                curFish.put("fish", fish);
+                curFish.put("count", "1");
                 fishListCurrent.add(curFish);
                 setFishList(fishListCurrent);
             };
@@ -274,8 +279,13 @@ public class Profile extends AppCompatActivity {
         });
     }
 
-    private void setFishList(List<List<String>> items) {
+    private void setFishList(List<JSONObject> items) {
         fishRecycler.post(() -> {
+            if (fishListCurrent.size() == 0) {
+                myFish.setVisibility(View.VISIBLE);
+            } else {
+                myFish.setVisibility(View.GONE);
+            }
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
                     this,
                     RecyclerView.VERTICAL,
@@ -284,7 +294,7 @@ public class Profile extends AppCompatActivity {
             fishRecycler.setVisibility(View.VISIBLE);
             fishRecycler.setLayoutManager(layoutManager);
 
-            fishAdapter = new FishListAdapter(this, items);
+            fishAdapter = new FishListAdapter(this, items, myFish);
             fishRecycler.setAdapter(fishAdapter);
         });
     }

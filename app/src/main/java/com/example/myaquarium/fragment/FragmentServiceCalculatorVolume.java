@@ -55,9 +55,9 @@ public class FragmentServiceCalculatorVolume extends Fragment {
     private FishListAdapter fishAdapter;
     private FishListViewAdapter fishListAdapter;
 
-    private List<List<String>> fishListAll;
+    private List<JSONObject> fishListAll;
     private List<String> fishList;
-    private static List<List<String>> fishListCurrent;
+    private static List<JSONObject> fishListCurrent;
 
     public static FragmentServiceCalculatorVolume newInstance() {
         return new FragmentServiceCalculatorVolume();
@@ -172,16 +172,16 @@ public class FragmentServiceCalculatorVolume extends Fragment {
         });
     }
 
-    private int calculateFishByList(List<List<String>> fishListCurrent) {
+    private int calculateFishByList(List<JSONObject> fishListCurrent) {
         int volume = 0;
 
-        for (List<String> currentFish : fishListCurrent) {
-            String fishName = currentFish.get(0);
-            int fishCount = Integer.parseInt(currentFish.get(1));
+        for (JSONObject currentFish : fishListCurrent) {
+            String fishName = currentFish.optString("fish");
+            int fishCount = Integer.parseInt(currentFish.optString("count"));
 
-            for (List<String> fish : fishListAll) {
-                if (fish.get(0).equals(fishName)) {
-                    volume += fishCount * Integer.parseInt(fish.get(1));
+            for (JSONObject fish : fishListAll) {
+                if (fish.optString("fish_name").equals(fishName)) {
+                    volume += fishCount * Integer.parseInt(fish.optString("liter"));
                     break;
                 }
             }
@@ -207,12 +207,14 @@ public class FragmentServiceCalculatorVolume extends Fragment {
         listView.post(() -> {
             RecyclerView fishRecycler = inflatedView.findViewById(R.id.listview);
             FishListViewAdapter.OnFishClickListener onFishClickListener = (fish) -> {
-                for (List<String> item : fishListCurrent) {
-                    if (item.get(0).equals(fish)) {
+                for (JSONObject item : fishListCurrent) {
+                    if (item.optString("fish").equals(fish)) {
                         return;
                     }
                 }
-                List<String> curFish = new ArrayList<>(List.of(fish, "1"));
+                JSONObject curFish = new JSONObject();
+                curFish.put("fish", fish);
+                curFish.put("count", "1");
                 fishListCurrent.add(curFish);
                 setFishList(fishListCurrent);
             };
@@ -230,13 +232,8 @@ public class FragmentServiceCalculatorVolume extends Fragment {
                 JSONArray list = requests.setRequest(requests.urlRequest + "fish/list", new ArrayList<>());
                 for (int i = 0; i < list.length(); i++) {
                     JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
-                    List<String> fish = new ArrayList<>(List.of(
-                            object.getString("fish_name"),
-                            object.getString("liter")
-
-                    ));
                     fishList.add(object.getString("fish_name"));
-                    fishListAll.add(fish);
+                    fishListAll.add(object);
                 }
                 setSelectedFishList(fishList);
             } catch (IOException | JSONException e) {
@@ -265,12 +262,7 @@ public class FragmentServiceCalculatorVolume extends Fragment {
                         return;
                     }
 
-                    List<String> fish = new ArrayList<>(List.of(
-                            object.getString("fish"),
-                            object.getString("count")
-
-                    ));
-                    fishListCurrent.add(fish);
+                    fishListCurrent.add(object);
                 }
                 setFishList(fishListCurrent);
 
@@ -282,7 +274,7 @@ public class FragmentServiceCalculatorVolume extends Fragment {
         thread.start();
     }
 
-    private void setFishList(List<List<String>> items) {
+    private void setFishList(List<JSONObject> items) {
         fishRecycler.post(() -> {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
                     inflatedView.getContext(),
@@ -292,7 +284,7 @@ public class FragmentServiceCalculatorVolume extends Fragment {
             fishRecycler.setVisibility(View.VISIBLE);
             fishRecycler.setLayoutManager(layoutManager);
 
-            fishAdapter = new FishListAdapter(inflatedView.getContext(), items);
+            fishAdapter = new FishListAdapter(inflatedView.getContext(), items, new TextView(this.getContext()));
             fishRecycler.setAdapter(fishAdapter);
         });
     }

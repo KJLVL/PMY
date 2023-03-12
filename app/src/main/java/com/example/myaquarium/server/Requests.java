@@ -18,13 +18,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class Requests {
-//    public String urlRequest = "http://192.168.0.106/";
-//    public String urlRequestImg = "http://192.168.0.106/img/";
-    public String urlRequest = "https://4340-46-147-110-227.ngrok.io/";
-    public String urlRequestImg = "https://4340-46-147-110-227.ngrok.io/img/";
+    public String urlRequest = "https://523d-46-147-110-227.ngrok.io/";
+    public String urlRequestImg = "https://523d-46-147-110-227.ngrok.io/img/";
     public static JSONObject user;
-//    public String urlRequestImg = "http://172.20.10.2/img/";
-//    public String urlRequest = "http://172.20.10.2/";
 
     public JSONArray setRequest(String url, List<NameValuePair> params) throws IOException, JSONException {
         HttpClient httpclient = new DefaultHttpClient();
