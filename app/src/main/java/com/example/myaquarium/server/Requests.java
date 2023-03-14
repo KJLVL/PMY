@@ -18,8 +18,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class Requests {
-    public String urlRequest = "https://523d-46-147-110-227.ngrok.io/";
-    public String urlRequestImg = "https://523d-46-147-110-227.ngrok.io/img/";
+    public String urlRequest = "https://1ac4-46-147-110-227.ngrok.io/";
+    public String urlRequestImg = "https://1ac4-46-147-110-227.ngrok.io/img/";
     public static JSONObject user;
 
     public JSONArray setRequest(String url, List<NameValuePair> params) throws IOException, JSONException {

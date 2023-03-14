@@ -134,9 +134,8 @@ public class Calendar extends AppCompatActivity {
                     ).show();
                 }
             });
-            dialog.setNegativeButton("Удалить", (dialogInterface, i) -> {
-                this.deleteEvent(simpleDateFormat.format(date));
-            });
+            dialog.setNegativeButton("Удалить", (dialogInterface, i) ->
+                    this.deleteEvent(simpleDateFormat.format(date)));
             dialog.show();
         }
     }
@@ -209,8 +208,8 @@ public class Calendar extends AppCompatActivity {
         TextView textView = findViewById(R.id.title);
         textView.setText(getApplicationContext().getString(R.string.service_text));
 
-        toolbar.setNavigationOnClickListener(view -> {
-            this.startActivity(new Intent(this, Service.class));
-        });
+        toolbar.setNavigationOnClickListener(
+                view -> this.startActivity(new Intent(this, Service.class))
+        );
     }
 }
