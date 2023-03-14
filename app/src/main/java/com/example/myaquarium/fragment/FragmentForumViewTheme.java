@@ -1,12 +1,23 @@
 package com.example.myaquarium.fragment;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,8 +25,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,13 +37,23 @@ import com.example.myaquarium.server.Requests;
 import com.like.LikeButton;
 import com.squareup.picasso.Picasso;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +65,16 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
     private int position = 0;
     private List<Bitmap> images;
     private JSONArray comments;
+    private LinearLayout linearLayout;
+    private Bitmap bitmap;
+    private EditText comment;
+    private LinearLayout layoutPhoto;
+
+    private List<String> photoNames;
+    private List<String> photoList;
+    private int count = 0;
+    private String loginTo = "";
+    private String idLoginTo = "";
 
     private final JSONObject theme;
     private final Requests requests = new Requests();
@@ -71,24 +103,41 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
         themeTitle.setText(theme.optString("title"));
         TextView content = inflatedView.findViewById(R.id.content);
         content.setText(theme.optString("content"));
+        photoNames = new ArrayList<>();
+        photoList = new ArrayList<>();
+        linearLayout = inflatedView.findViewById(R.id.layout);
 
-        Button comment = inflatedView.findViewById(R.id.comment);
+        ImageButton send = inflatedView.findViewById(R.id.send);
+        ImageButton attach = inflatedView.findViewById(R.id.attach);
         commentsRecycler = inflatedView.findViewById(R.id.commentsRecycler);
         Button buttonLeft = inflatedView.findViewById(R.id.buttonLeft);
         Button buttonRight = inflatedView.findViewById(R.id.buttonRight);
         LinearLayout imagesLayout = inflatedView.findViewById(R.id.images);
         switcher = inflatedView.findViewById(R.id.imageSwitcher);
         switcher.setFactory(this);
+        comment = inflatedView.findViewById(R.id.comment);
 
-        comment.setOnClickListener(view -> {
-            FragmentForumCommentDialog dialog = new FragmentForumCommentDialog(
-                    "",
-                    theme.optString("id"),
-                    theme
-            );
-            FragmentManager manager = getParentFragmentManager();
-            dialog.show(manager, "myDialog");
-
+        send.setOnClickListener(view -> {
+            if (comment.getText().toString().equals("")) {
+                Toast.makeText(
+                        inflatedView.getContext(),
+                        "Введите комментарий", Toast.LENGTH_LONG
+                ).show();
+            } else {
+                this.sendComment();
+            }
+        });
+        attach.setOnClickListener(view -> {
+            if (count < 1) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                someActivityResultLauncher.launch(intent);
+            } else {
+                Toast.makeText(
+                        inflatedView.getContext(),
+                        "Вы не можете добавить более 1 изображения", Toast.LENGTH_LONG
+                ).show();
+            }
         });
 
         this.getComments();
@@ -125,6 +174,74 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
         likeButton.setOnClickListener(view -> this.likeAction(likeButton));
 
         return inflatedView;
+    }
+
+    private void sendComment() {
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost http = new HttpPost(requests.urlRequest + "user/forum/comment");
+
+        List<String> author = List.of(comment.getText().toString().split(","));
+
+        List<NameValuePair> params = new ArrayList<>(List.of(
+                new BasicNameValuePair("theme_id", theme.optString("id")),
+                new BasicNameValuePair(
+                        "response_user_id",
+                        author.get(0).equals(loginTo) ? idLoginTo : ""
+                ),
+                new BasicNameValuePair("comment", comment.getText().toString())
+        ));
+
+        if (!photoNames.isEmpty()) {
+            params.add(new BasicNameValuePair("imageName", photoNames.toString()));
+            params.add(new BasicNameValuePair("image", photoList.toString()));
+        }
+
+        Runnable runnable = () -> {
+            try {
+                http.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+                HttpResponse httpResponse = httpclient.execute(http);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                BufferedReader bufferedReader = new BufferedReader(
+                        new InputStreamReader(httpEntity.getContent(), StandardCharsets.UTF_8),
+                        8
+                );
+                StringBuilder stringBuilder = new StringBuilder();
+                while (bufferedReader.readLine() != null) {
+                    stringBuilder.append(bufferedReader.readLine());
+                }
+
+                JSONObject object = new JSONObject(stringBuilder.toString());
+                String success = object.getString("success");
+                if (success.equals("1")) {
+                    inflatedView.post(() -> {
+                        comment.setText("");
+                        if (count == 1) {
+                            layoutPhoto.removeAllViewsInLayout();
+                        }
+                        count = 0;
+                        Toast.makeText(
+                                inflatedView.getContext(),
+                                "Комментарий был успешно добавлен", Toast.LENGTH_LONG
+                        ).show();
+                        InputMethodManager imm = (InputMethodManager) getActivity()
+                                .getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(
+                                getActivity()
+                                        .getWindow()
+                                        .getDecorView()
+                                        .getWindowToken(),
+                                0
+                        );
+                        this.getComments();
+                    });
+                }
+
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
     private void likeAction(LikeButton likeButton) {
@@ -191,7 +308,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
     private void getComments() {
         List<NameValuePair> params = new ArrayList<>(List.of(
                 new BasicNameValuePair("theme_id", theme.optString("id"))
-        )
+            )
         );
 
         Runnable runnable = () -> {
@@ -219,14 +336,14 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
             );
             commentsRecycler.setLayoutManager(layoutManager);
 
-            ForumCommentsAdapter.onAnswerClickListener onAnswerClickListener = (author) -> {
-                FragmentForumCommentDialog dialog = new FragmentForumCommentDialog(
-                        author,
-                        theme.optString("id"),
-                        theme
-                );
-                FragmentManager manager = getParentFragmentManager();
-                dialog.show(manager, "myDialog");
+            ForumCommentsAdapter.onAnswerClickListener onAnswerClickListener = (author, loginAuthor) -> {
+                InputMethodManager imm = (InputMethodManager)
+                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(comment, InputMethodManager.SHOW_IMPLICIT);
+                comment.requestFocus();
+                comment.setText(loginAuthor + ", ");
+                loginTo = loginAuthor;
+                idLoginTo = author;
             };
 
             forumCommentsAdapter = new ForumCommentsAdapter(
@@ -275,6 +392,88 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
                 ImageSwitcher.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         return imageView;
+    }
+
+    private ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    count++;
+                    Intent data = result.getData();
+                    Uri uri = data.getData();
+
+                    photoNames.add(uri.getLastPathSegment());
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(
+                                inflatedView.getContext().getApplicationContext().getContentResolver(),
+                                uri
+                        );
+
+                        layoutPhoto = new LinearLayout(inflatedView.getContext());
+
+                        layoutPhoto.setOrientation(LinearLayout.HORIZONTAL);
+                        layoutPhoto.setLayoutParams(new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT)
+                        );
+
+                        ImageView newImage = new ImageView(inflatedView.getContext());
+                        Picasso.get()
+                                .load(uri)
+                                .resize(0, 100)
+                                .centerCrop()
+                                .into(newImage);
+
+                        generateImage();
+
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                200,
+                                200
+                        );
+                        lp.setMargins(10,5,0,5);
+
+                        Button button = new Button(inflatedView.getContext());
+
+                        LinearLayout.LayoutParams lpBtn = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                70
+                        );
+                        lpBtn.setMargins(30, 0, 0, 0);
+                        button.setText("удалить");
+                        button.setTextSize(10);
+                        button.setTextColor(Color.WHITE);
+                        button.setLayoutParams(lpBtn);
+                        button.setPadding(0,0,0,0);
+                        button.setBackgroundResource(R.color.bthAll);
+                        button.setOnClickListener(view -> {
+                            layoutPhoto.removeAllViews();
+                            int index = photoNames.indexOf(uri.getLastPathSegment());
+                            photoNames.remove(uri.getLastPathSegment());
+                            photoList.remove(index);
+                        });
+
+                        newImage.setLayoutParams(lp);
+                        layoutPhoto.setGravity(Gravity.CENTER_VERTICAL);
+                        layoutPhoto.addView(newImage);
+                        layoutPhoto.addView(button);
+                        linearLayout.addView(layoutPhoto);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+    private void generateImage() {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        if (bitmap != null) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+            byte[] bytes = byteArrayOutputStream.toByteArray();
+            photoList.add(Base64.encodeToString(bytes, Base64.DEFAULT));
+        } else {
+            photoList.add("");
+        }
     }
 
 }

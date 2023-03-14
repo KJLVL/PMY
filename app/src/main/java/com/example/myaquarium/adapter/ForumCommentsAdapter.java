@@ -24,10 +24,10 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
     private final ForumCommentsAdapter.onAnswerClickListener onClickListener;
 
     public interface onAnswerClickListener {
-        void onStateClick(String author);
+        void onStateClick(String author, String loginAuthor);
     }
 
-    public ForumCommentsAdapter(
+    public ForumCommentsAdapter (
             Context context,
             JSONArray commentsList,
             ForumCommentsAdapter.onAnswerClickListener onClickListener
@@ -58,14 +58,8 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
                                     + jsonObject.getString("avatar")
                     )
                     .into(holder.avatar);
-            holder.author.setText("автор: " + jsonObject.optString("login_from"));
+            holder.author.setText(jsonObject.optString("login_from"));
             holder.date.setText(jsonObject.optString("date"));
-
-            if (!jsonObject.getString("login_to").equals("null")) {
-                holder.response.setText("кому: " + jsonObject.optString("login_to"));
-            } else {
-                holder.response.setVisibility(View.GONE);
-            }
 
             holder.comment.setText(jsonObject.optString("comment"));
 
@@ -83,7 +77,7 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
                 });
             }
             holder.answer.setOnClickListener(view -> {
-                onClickListener.onStateClick(jsonObject.optString("user_id"));
+                onClickListener.onStateClick(jsonObject.optString("user_id"), jsonObject.optString("login_from"));
             });
 
         } catch (JSONException e) {

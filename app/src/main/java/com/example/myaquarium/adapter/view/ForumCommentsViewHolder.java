@@ -15,7 +15,6 @@ public class ForumCommentsViewHolder extends RecyclerView.ViewHolder {
     public ImageView avatar;
     public TextView author;
     public TextView date;
-    public TextView response;
     public TextView comment;
     public LinearLayout images;
     public ImageView switcher;
@@ -26,7 +25,6 @@ public class ForumCommentsViewHolder extends RecyclerView.ViewHolder {
         avatar = view.findViewById(R.id.avatar);
         author = view.findViewById(R.id.author);
         date = view.findViewById(R.id.date);
-        response = view.findViewById(R.id.response);
         comment = view.findViewById(R.id.comment);
         images = view.findViewById(R.id.images);
         switcher = view.findViewById(R.id.switcher);

@@ -2,12 +2,15 @@ package com.example.myaquarium.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.text.LineBreaker;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +49,7 @@ public class FragmentServiceCalculatorVolume extends Fragment {
 
     private CheckBox useMyFish;
 
-    private TextView volumeText;
+    private LinearLayout resultView;
     private TextView result;
     private TextView message;
 
@@ -78,10 +81,10 @@ public class FragmentServiceCalculatorVolume extends Fragment {
         fishListCurrent = new ArrayList<>();
 
         listView = inflatedView.findViewById(R.id.listview);
+        message = inflatedView.findViewById(R.id.message);
         fishRecycler = inflatedView.findViewById(R.id.fishListItems);
         result = inflatedView.findViewById(R.id.volume);
-        volumeText = inflatedView.findViewById(R.id.volumeText);
-        message = inflatedView.findViewById(R.id.message);
+        resultView = inflatedView.findViewById(R.id.resultView);
         useMyFish = inflatedView.findViewById(R.id.useMyFish);
         search = inflatedView.findViewById(R.id.search);
         this.setColorSearch();
@@ -92,7 +95,6 @@ public class FragmentServiceCalculatorVolume extends Fragment {
         if (fishListCurrent.size() != 0) {
             setFishList(fishListCurrent);
         }
-
         calcVolume = inflatedView.findViewById(R.id.calculationV);
         this.calculateVolume();
 
@@ -101,9 +103,12 @@ public class FragmentServiceCalculatorVolume extends Fragment {
                 this.getUserFish();
             } else if (!useMyFish.isChecked()) {
                 fishListCurrent.clear();
+                resultView.setVisibility(View.GONE);
+                message.setVisibility(View.GONE);
                 this.setFishList(fishListCurrent);
             }
         });
+
 
         return inflatedView;
     }
@@ -156,8 +161,7 @@ public class FragmentServiceCalculatorVolume extends Fragment {
     private void calculateVolume() {
         calcVolume.setOnClickListener(view -> {
             if (calculateFishByList(fishListCurrent) == 0) {
-                result.setVisibility(View.GONE);
-                volumeText.setVisibility(View.GONE);
+                resultView.setVisibility(View.GONE);
                 message.setVisibility(View.GONE);
                 Toast.makeText(
                         inflatedView.getContext(),
@@ -166,9 +170,13 @@ public class FragmentServiceCalculatorVolume extends Fragment {
                 return;
             }
             result.setText(calculateFishByList(fishListCurrent) + " л.");
-            result.setVisibility(View.VISIBLE);
-            volumeText.setVisibility(View.VISIBLE);
+            resultView.setVisibility(View.VISIBLE);
             message.setVisibility(View.VISIBLE);
+            message.requestFocus();
+            resultView.requestFocus();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                message.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
+            }
         });
     }
 
@@ -245,8 +253,13 @@ public class FragmentServiceCalculatorVolume extends Fragment {
     }
 
     private void getUserFish() {
+        resultView.setVisibility(View.GONE);
+        message.setVisibility(View.GONE);
+
         Runnable runnable = () -> {
             try {
+                fishListCurrent = new ArrayList<>();
+
                 JSONArray list = requests.setRequest(requests.urlRequest + "user/fish", new ArrayList<>());
                 for (int i = 0; i < list.length(); i++) {
                     JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));

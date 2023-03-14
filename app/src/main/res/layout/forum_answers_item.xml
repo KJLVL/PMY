@@ -69,17 +69,6 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/response"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="ответ @dima"
-                android:textAlignment="textStart"
-                android:textColor="@color/bthAll"
-                android:textSize="14sp"
-                tools:ignore="RtlCompat" />
-
-            <TextView
                 android:id="@+id/comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,6 +96,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/answer"
+                android:layout_marginTop="7dp"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:background="@color/bthAll"
