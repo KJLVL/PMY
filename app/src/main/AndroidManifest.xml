@@ -25,6 +25,13 @@
         android:theme="@style/Theme.MyAquarium"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ImageViewer"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -41,7 +48,6 @@
             android:name=".Calendar"
             android:exported="true"
             android:screenOrientation="portrait">
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -70,7 +76,6 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -82,8 +87,10 @@
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -92,8 +99,6 @@
             android:name=".Service"
             android:exported="true"
             android:screenOrientation="portrait">
-
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -110,7 +115,6 @@
             android:name=".Tips"
             android:exported="true"
             android:screenOrientation="portrait">
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -128,4 +132,5 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
+
 </manifest>

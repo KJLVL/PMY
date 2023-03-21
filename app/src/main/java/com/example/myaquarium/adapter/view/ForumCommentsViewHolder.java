@@ -9,6 +9,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.R;
+import com.github.chrisbanes.photoview.PhotoView;
 
 
 public class ForumCommentsViewHolder extends RecyclerView.ViewHolder {
@@ -17,7 +18,7 @@ public class ForumCommentsViewHolder extends RecyclerView.ViewHolder {
     public TextView date;
     public TextView comment;
     public LinearLayout images;
-    public ImageView switcher;
+    public PhotoView switcher;
     public AppCompatButton answer;
 
     public ForumCommentsViewHolder(View view){

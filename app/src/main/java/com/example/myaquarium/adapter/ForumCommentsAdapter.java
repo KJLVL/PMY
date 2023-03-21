@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.R;
 import com.example.myaquarium.adapter.view.ForumCommentsViewHolder;
 import com.example.myaquarium.server.Requests;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -22,19 +23,26 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
     private JSONArray commentsList;
     private Requests requests = new Requests();
     private final ForumCommentsAdapter.onAnswerClickListener onClickListener;
+    private final ForumCommentsAdapter.onClickImageListener imageClickListener;
 
     public interface onAnswerClickListener {
         void onStateClick(String author, String loginAuthor);
     }
 
+    public interface onClickImageListener {
+        void onImageClick(String uri, PhotoView image);
+    }
+
     public ForumCommentsAdapter (
             Context context,
             JSONArray commentsList,
-            ForumCommentsAdapter.onAnswerClickListener onClickListener
+            ForumCommentsAdapter.onAnswerClickListener onClickListener,
+            ForumCommentsAdapter.onClickImageListener imageClickListener
     ) {
         this.context = context;
         this.commentsList = commentsList;
         this.onClickListener = onClickListener;
+        this.imageClickListener = imageClickListener;
     }
 
     @NonNull
@@ -65,7 +73,7 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
 
             if (
                     jsonObject.optString("images").equals("null")
-                            || jsonObject.optString("images").equals("")
+                    || jsonObject.optString("images").equals("")
             ) {
                 holder.images.setVisibility(View.GONE);
             } else {
@@ -73,7 +81,7 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
                         .load(requests.urlRequestImg + jsonObject.optString("images"))
                         .into(holder.switcher);
                 holder.switcher.setOnClickListener(view -> {
-
+                    imageClickListener.onImageClick(requests.urlRequestImg + jsonObject.optString("images"), holder.switcher);
                 });
             }
             holder.answer.setOnClickListener(view -> {

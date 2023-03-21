@@ -31,9 +31,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myaquarium.ImageViewer;
 import com.example.myaquarium.R;
 import com.example.myaquarium.adapter.ForumCommentsAdapter;
 import com.example.myaquarium.server.Requests;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.like.LikeButton;
 import com.squareup.picasso.Picasso;
 
@@ -77,15 +79,17 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
     private String idLoginTo = "";
 
     private final JSONObject theme;
+    private final String id;
     private final Requests requests = new Requests();
     private ForumCommentsAdapter forumCommentsAdapter;
 
-    public FragmentForumViewTheme(JSONObject theme) {
+    public FragmentForumViewTheme(JSONObject theme, String id) {
         this.theme = theme;
+        this.id = id;
     }
 
-    public static FragmentForumViewTheme newInstance(JSONObject theme) {
-        return new FragmentForumViewTheme(theme);
+    public static FragmentForumViewTheme newInstance(JSONObject theme, String id) {
+        return new FragmentForumViewTheme(theme, id);
     }
 
     @Override
@@ -346,10 +350,22 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
                 idLoginTo = author;
             };
 
+            ForumCommentsAdapter.onClickImageListener onClickImageListener = (uri, image) -> {
+                image.setOnClickListener(view -> {
+                    Intent intent = new Intent(this.getContext(), ImageViewer.class);
+                    intent.putExtra("image", uri);
+                    intent.putExtra("theme", theme.toString());
+                    intent.putExtra("id", id);
+                    intent.putExtra("class", "ViewTheme");
+                    startActivity(intent);
+                });
+            };
+
             forumCommentsAdapter = new ForumCommentsAdapter(
                     inflatedView.getContext(),
                     comments,
-                    onAnswerClickListener
+                    onAnswerClickListener,
+                    onClickImageListener
             );
             commentsRecycler.setAdapter(forumCommentsAdapter);
         });
@@ -386,11 +402,12 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
 
     @Override
     public View makeView() {
-        ImageView imageView = new ImageView(inflatedView.getContext());
+        PhotoView imageView = new PhotoView(inflatedView.getContext());
         imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         imageView.setLayoutParams(new
                 ImageSwitcher.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+
         return imageView;
     }
 

@@ -69,7 +69,6 @@
                 android:id="@+id/nameField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:gravity="center_horizontal"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
@@ -109,15 +108,37 @@
                 android:textSize="16sp"
                 tools:ignore="RtlSymmetry" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/bthAll" />
             <TextView
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:gravity="center_horizontal"
                 android:text="@string/settings_my_fish"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
+            <LinearLayout
+                android:id="@+id/define"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <TextView
+                android:id="@+id/downloadDefine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/bthAll"
+                android:text="@string/settings_download_define"
+                android:textColor="@color/bthAll"
+                android:textSize="16sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/myFish"
@@ -138,6 +159,12 @@
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/fish_item" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/bthAll" />
 
             <TextView
                 android:id="@+id/addFish"

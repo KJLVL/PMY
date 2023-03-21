@@ -203,6 +203,12 @@ public class Profile extends AppCompatActivity {
                             .load(requests.urlRequestImg + userInfo.get("avatar"))
                             .resize(350, 0)
                             .into(image);
+                    image.setOnClickListener(view -> {
+                        Intent intent = new Intent(this, ImageViewer.class);
+                        intent.putExtra("image",  requests.urlRequestImg + userInfo.get("avatar"));
+                        intent.putExtra("class", "Profile");
+                        startActivity(intent);
+                    });
 
                 });
             } catch (IOException | JSONException e) {

@@ -3,6 +3,7 @@ package com.example.myaquarium;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -192,6 +193,13 @@ public class ProfileSettings extends AppCompatActivity {
         } else {
             image.setImageResource(R.drawable.ic_launcher_foreground);
         }
+
+        image.setOnClickListener(view -> {
+            Intent intent = new Intent(this, ImageViewer.class);
+            intent.putExtra("image", requests.urlRequestImg + userInfo.optString("avatar"));
+            intent.putExtra("class", "ProfileSettings");
+            startActivity(intent);
+        });
     }
 
     private void updateUser() {
@@ -237,22 +245,31 @@ public class ProfileSettings extends AppCompatActivity {
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
-                    Uri uri = data.getData();
-                    Runnable runnable = () -> {
-                        try {
-                            this.bitmap = Picasso.get().load(uri).resize(500, 0).get();
-                            image.post(() -> {
-                                this.generateImage(bitmap);
-                            });
 
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                    Uri uri = data.getData();
+                    ImageView img = new ImageView(this);
+                    img.setImageURI(uri);
+                    BitmapDrawable bd = (BitmapDrawable) img.getDrawable();
+
+                    if (img.getRotation() == 0) img.setRotation(90);
+                    Runnable runnable = () -> {
+                        this.bitmap = bd.getBitmap();
+                        image.post(() -> {
+                            this.generateImage(bitmap);
+                        });
+
                     };
                     Thread thread = new Thread(runnable);
                     thread.start();
 
-                    Picasso.get().load(uri).resize(500, 0).into(image);
+                    Picasso.get().load(uri).into(image);
+                    if (image.getRotation() == 0) image.setRotation(90);
+                    image.setOnClickListener(view -> {
+                        Intent intent = new Intent(this, ImageViewer.class);
+                        intent.putExtra("image",  uri);
+                        intent.putExtra("class", ProfileSettings.class);
+                        startActivity(intent);
+                    });
                 }
             });
 

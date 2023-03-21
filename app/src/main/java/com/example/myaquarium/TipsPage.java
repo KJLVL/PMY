@@ -74,7 +74,7 @@ public class TipsPage extends AppCompatActivity {
                 JSONArray list = requests.setRequest(requests.urlRequest + "tips/view", params);
                 JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(0)));
                 tipsList.add(object);
-                this.runOnUiThread(this::generateTips);
+                this.runOnUiThread(() -> this.generateTips(id));
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -84,7 +84,7 @@ public class TipsPage extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void generateTips() {
+    private void generateTips(String id) {
         List<String> titles = List.of(tipsList.get(0).optString("titles").split(";"));
         List<String> content = List.of(tipsList.get(0).optString("content").split(";"));
         List<String> images = List.of(tipsList.get(0).optString("images").split(";"));
@@ -108,7 +108,16 @@ public class TipsPage extends AppCompatActivity {
                             400
                     );
                     image.setLayoutParams(params);
-                    Picasso.get().load(requests.urlRequestImg + images.get(countImage)).into(image);
+                    String uri = requests.urlRequestImg + images.get(countImage);
+                    Picasso.get().load(uri).into(image);
+                    image.setOnClickListener(view -> {
+                        Intent intent = new Intent(this, ImageViewer.class);
+                        intent.putExtra("image",  uri);
+                        intent.putExtra("class", "TipsPage");
+                        intent.putExtra("id", id);
+                        startActivity(intent);
+                    });
+
                     countImage++;
                     layout.addView(image);
                     break;

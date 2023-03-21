@@ -35,7 +35,7 @@ public class ViewTheme extends AppCompatActivity {
         }
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.scrollViewTheme, FragmentForumViewTheme.newInstance(theme));
+        ft.replace(R.id.scrollViewTheme, FragmentForumViewTheme.newInstance(theme, id));
         ft.commit();
 
         TextView calculator = findViewById(R.id.service);
