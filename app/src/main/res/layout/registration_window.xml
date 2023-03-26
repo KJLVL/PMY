@@ -3,61 +3,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardElevation="10dp">
+    android:background="@drawable/calc_item">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:background="@drawable/calc_item"
         android:orientation="vertical">
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/loginField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Логин"
-            android:inputType=""
-            android:text=""
+            android:layout_margin="5dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="10dp"
             android:textColor="@color/black"
             android:textColorHint="@color/gray"
-            android:textSize="20sp"
-            app:met_floatingLabel="highlight"
-            app:met_baseColor="#000000"
-            app:met_primaryColor="#000000"
-            app:met_singleLineEllipsis="true"
-            />
+            android:textSize="17sp" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/passwordField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:hint="Пароль"
             android:inputType="textPassword"
-            android:text=""
+            android:paddingLeft="10dp"
             android:textColor="@color/black"
             android:textColorHint="@color/gray"
-            android:textSize="20sp"
-            app:met_floatingLabel="highlight"
-            app:met_baseColor="#000000"
-            app:met_primaryColor="#000000"
-            app:met_singleLineEllipsis="true"
-            />
+            android:textSize="17sp" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/nameField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Введите имя"
+            android:layout_margin="5dp"
+            android:hint="Ваше имя"
             android:inputType="text"
-            android:text=""
+            android:paddingLeft="10dp"
             android:textColor="@color/black"
             android:textColorHint="@color/gray"
-            android:textSize="20sp"
-            app:met_floatingLabel="highlight"
-            app:met_baseColor="#000000"
-            app:met_primaryColor="#000000"
-            app:met_singleLineEllipsis="true"
-            />
+            android:textSize="17sp" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

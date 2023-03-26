@@ -26,7 +26,7 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
     private final ForumCommentsAdapter.onClickImageListener imageClickListener;
 
     public interface onAnswerClickListener {
-        void onStateClick(String author, String loginAuthor);
+        void onStateClick(String author, String loginAuthor, String name);
     }
 
     public interface onClickImageListener {
@@ -66,7 +66,7 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
                                     + jsonObject.getString("avatar")
                     )
                     .into(holder.avatar);
-            holder.author.setText(jsonObject.optString("login_from"));
+            holder.author.setText(jsonObject.optString("name"));
             holder.date.setText(jsonObject.optString("date"));
 
             holder.comment.setText(jsonObject.optString("comment"));
@@ -85,7 +85,7 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
                 });
             }
             holder.answer.setOnClickListener(view -> {
-                onClickListener.onStateClick(jsonObject.optString("user_id"), jsonObject.optString("login_from"));
+                onClickListener.onStateClick(jsonObject.optString("user_id"), jsonObject.optString("login_from"), jsonObject.optString("name"));
             });
 
         } catch (JSONException e) {
@@ -93,8 +93,6 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
         }
 
     }
-
-
 
     @Override
     public int getItemCount() {

@@ -18,8 +18,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class Requests {
-    public String urlRequest = "https://6d05-37-112-39-150.ngrok.io/";
-    public String urlRequestImg = "https://6d05-37-112-39-150.ngrok.io/img/";
+    public String urlRequest = "https://10ff-46-147-104-206.ngrok.io/";
+    public String urlRequestImg = "https://10ff-46-147-104-206.ngrok.io/img/";
     public static JSONObject user;
 
     public JSONArray setRequest(String url, List<NameValuePair> params) throws IOException, JSONException {
@@ -37,10 +37,9 @@ public class Requests {
         while (bufferedReader.readLine() != null) {
             stringBuilder.append(bufferedReader.readLine());
         }
-
-        return new JSONArray(stringBuilder.toString());
+        String str = stringBuilder.toString().replace("</html>", "");
+        return new JSONArray(str);
     }
-
     public JSONObject getUser() {
         return user;
     }

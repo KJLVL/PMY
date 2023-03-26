@@ -184,14 +184,9 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost http = new HttpPost(requests.urlRequest + "user/forum/comment");
 
-        List<String> author = List.of(comment.getText().toString().split(","));
-
         List<NameValuePair> params = new ArrayList<>(List.of(
                 new BasicNameValuePair("theme_id", theme.optString("id")),
-                new BasicNameValuePair(
-                        "response_user_id",
-                        author.get(0).equals(loginTo) ? idLoginTo : ""
-                ),
+                new BasicNameValuePair("response_user_id", idLoginTo),
                 new BasicNameValuePair("comment", comment.getText().toString())
         ));
 
@@ -340,12 +335,12 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
             );
             commentsRecycler.setLayoutManager(layoutManager);
 
-            ForumCommentsAdapter.onAnswerClickListener onAnswerClickListener = (author, loginAuthor) -> {
+            ForumCommentsAdapter.onAnswerClickListener onAnswerClickListener = (author, loginAuthor, nameAuthor) -> {
                 InputMethodManager imm = (InputMethodManager)
                         getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(comment, InputMethodManager.SHOW_IMPLICIT);
                 comment.requestFocus();
-                comment.setText(loginAuthor + ", ");
+                comment.setText(nameAuthor + ", ");
                 loginTo = loginAuthor;
                 idLoginTo = author;
             };
