@@ -66,6 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/calc_item"
+            android:inputType="numberDecimal"
             android:paddingStart="5dp"
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -86,9 +87,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/calc_item"
+            android:inputType="numberDecimal"
             android:paddingStart="5dp"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:ignore="RtlSymmetry" />
 
         <TextView
             android:layout_width="match_parent"
@@ -105,8 +108,10 @@
             android:layout_height="wrap_content"
             android:background="@drawable/calc_item"
             android:paddingStart="5dp"
+            android:inputType="numberDecimal"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:autofillHints="" />
 
         <Button
             android:id="@+id/calculationP"
@@ -121,28 +126,32 @@
             android:textColor="@color/white" />
 
         <LinearLayout
+            android:id="@+id/result"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/calc_item"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/recPrimText"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
                 android:text="@string/service_rec_prim"
                 android:textColor="@color/black"
-                android:textSize="17sp"
-                android:visibility="invisible" />
+                android:textAlignment="center"
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/priming"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="17sp"
-                android:visibility="invisible" />
+                android:textSize="17sp" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

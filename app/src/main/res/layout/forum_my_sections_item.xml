@@ -32,7 +32,7 @@
 
             <TextView
                 android:id="@+id/theme"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="База совместимости рыб"
                 android:textAlignment="center"
@@ -42,10 +42,10 @@
 
             <TextView
                 android:id="@+id/date"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="дата: 13.01.23"
-                android:textAlignment="center"
+                android:textAlignment="textEnd"
                 android:textColor="@color/bthAll"
                 android:textSize="14sp"
                 tools:ignore="RtlCompat" />

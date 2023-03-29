@@ -87,8 +87,10 @@ public class FragmentForumMyEditTheme extends Fragment {
         photoNames = new ArrayList<>();
         photoList = new ArrayList<>();
 
-        for (String image: theme.optString("images").split(";")) {
-            this.getImage(image);
+        if (!theme.optString("images").equals("null") && !theme.optString("images").equals("")) {
+            for (String image : theme.optString("images").split(";")) {
+                this.getImage(image);
+            }
         }
 
         addPhoto.setOnClickListener(view -> this.addPhoto());

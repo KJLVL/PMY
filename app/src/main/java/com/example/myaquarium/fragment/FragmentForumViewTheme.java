@@ -70,6 +70,8 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
     private LinearLayout linearLayout;
     private Bitmap bitmap;
     private EditText comment;
+    private TextView phone;
+    private TextView city;
     private LinearLayout layoutPhoto;
 
     private List<String> photoNames;
@@ -103,6 +105,22 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
 
         TextView title = inflatedView.findViewById(R.id.title);
         title.setText(theme.optString("sections"));
+
+        TextView phone = inflatedView.findViewById(R.id.phone);
+        if (!theme.optString("user_phone").equals("") && !theme.optString("user_phone").equals("null")) {
+            phone.setText("Номер телефона: " + theme.optString("user_phone"));
+        } else {
+            phone.setVisibility(View.GONE);
+        }
+
+        TextView city = inflatedView.findViewById(R.id.city);
+        if (!theme.optString("city").equals("") && !theme.optString("city").equals("null")) {
+            city.setText("Город: " + theme.optString("city"));
+        } else {
+            city.setVisibility(View.GONE);
+        }
+
+
         TextView themeTitle = inflatedView.findViewById(R.id.themeTitle);
         themeTitle.setText(theme.optString("title"));
         TextView content = inflatedView.findViewById(R.id.content);

@@ -182,7 +182,6 @@ public class FragmentForumMy extends Fragment {
         });
     }
 
-
     private void newTheme() {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.my, new FragmentForumNewTheme());

@@ -52,16 +52,6 @@ public class ForumThemesAdapter extends RecyclerView.Adapter<ForumThemesViewHold
         holder.author.setText("автор: " + themesList.get(position).optString("author"));
         holder.date.setText(themesList.get(position).optString("date"));
 
-        if (
-                !themesList.get(position).optString("city").equals("null")
-                && !themesList.get(position).optString("city").equals("")
-        ) {
-            holder.city.setText("город: " + themesList.get(position).optString("city"));
-            holder.city.setVisibility(View.VISIBLE);
-        } else {
-            holder.city.setVisibility(View.GONE);
-        }
-
         this.setBackground(holder, position);
 
         holder.sectionsItem.setOnClickListener(

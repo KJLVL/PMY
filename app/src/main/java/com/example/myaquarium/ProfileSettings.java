@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -41,10 +42,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import pl.utkala.searchablespinner.SearchableSpinner;
+
 public class ProfileSettings extends AppCompatActivity {
     private EditText name;
     private EditText surname;
-    private EditText city;
+    private SearchableSpinner spinner;
     private EditText phone;
     private EditText login;
 
@@ -73,12 +76,13 @@ public class ProfileSettings extends AppCompatActivity {
         image = this.findViewById(R.id.image);
         name = findViewById(R.id.name);
         surname = findViewById(R.id.surname);
-        city = findViewById(R.id.city);
+        spinner = findViewById(R.id.spinner);
         phone = findViewById(R.id.phone);
         login = findViewById(R.id.login);
         password = findViewById(R.id.password);
         save = findViewById(R.id.save);
 
+        this.getCities();
         this.getUser();
 
         password.setOnClickListener(view -> this.changePassword());
@@ -94,6 +98,36 @@ public class ProfileSettings extends AppCompatActivity {
         calculator.setOnClickListener(view -> this.startActivity(new Intent(this, Service.class)));
         forum.setOnClickListener(view -> this.startActivity(new Intent(this, Forum.class)));
         profile.setOnClickListener(view -> this.startActivity(new Intent(this, Profile.class)));
+    }
+
+    private void getCities() {
+        List<String> cities = new ArrayList<>();
+        cities.add("");
+        Runnable runnable = () -> {
+            try {
+                JSONArray result = requests.setRequest(requests.urlRequest + "city", new ArrayList<>());
+                for (int i = 0; i < result.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(result.getJSONObject(i)));
+                    cities.add(object.optString("city"));
+                }
+
+                this.runOnUiThread(() -> {
+                    android.widget.ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                            this,
+                            android.R.layout.simple_spinner_item,
+                            cities
+                    );
+                    this.spinner.setAdapter(adapter);
+                    if (!userInfo.optString("city").equals("null"))
+                        this.spinner.setSelection(adapter.getPosition(userInfo.optString("city")));
+                    else this.spinner.setSelection(adapter.getPosition(""));
+                });
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
     private void setToolbar() {
@@ -175,31 +209,40 @@ public class ProfileSettings extends AppCompatActivity {
     }
 
     private void getUser() {
-        userInfo = requests.getUser();
+        Runnable runnable = () -> {
+            try {
+                JSONArray user = requests.setRequest(requests.urlRequest + "user", new ArrayList<>());
+                userInfo = new JSONObject(user.getJSONObject(0).toString());
 
-        name.setText(userInfo.optString("user_name"));
-        if (!userInfo.optString("surname").equals("null"))
-            surname.setText(userInfo.optString("surname"));
-        if (!userInfo.optString("city").equals("null"))
-            city.setText(userInfo.optString("city"));
-        if (!userInfo.optString("phone").equals("null"))
-            phone.setText(userInfo.optString("phone"));
-        login.setText(userInfo.optString("login"));
+                this.runOnUiThread(() -> {
+                    name.setText(userInfo.optString("user_name"));
+                    if (!userInfo.optString("surname").equals("null"))
+                        surname.setText(userInfo.optString("surname"));
+                    if (!userInfo.optString("phone").equals("null"))
+                        phone.setText(userInfo.optString("phone"));
+                    login.setText(userInfo.optString("login"));
 
-        if (!Objects.equals(userInfo.optString("avatar"), "")) {
-            Picasso.get()
-                    .load(requests.urlRequestImg + userInfo.optString("avatar"))
-                    .into(image);
-        } else {
-            image.setImageResource(R.drawable.ic_launcher_foreground);
-        }
+                    if (!Objects.equals(userInfo.optString("avatar"), "")) {
+                        Picasso.get()
+                                .load(requests.urlRequestImg + userInfo.optString("avatar"))
+                                .into(image);
+                    } else {
+                        image.setImageResource(R.drawable.ic_launcher_foreground);
+                    }
 
-        image.setOnClickListener(view -> {
-            Intent intent = new Intent(this, ImageViewer.class);
-            intent.putExtra("image", requests.urlRequestImg + userInfo.optString("avatar"));
-            intent.putExtra("class", "ProfileSettings");
-            startActivity(intent);
-        });
+                    image.setOnClickListener(view -> {
+                        Intent intent = new Intent(this, ImageViewer.class);
+                        intent.putExtra("image", requests.urlRequestImg + userInfo.optString("avatar"));
+                        intent.putExtra("class", "ProfileSettings");
+                        startActivity(intent);
+                    });
+                });
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
     private void updateUser() {
@@ -208,7 +251,7 @@ public class ProfileSettings extends AppCompatActivity {
                 new BasicNameValuePair("name", name.getText().toString()),
                 new BasicNameValuePair("surname", surname.getText().toString()),
                 new BasicNameValuePair("login", login.getText().toString()),
-                new BasicNameValuePair("city", city.getText().toString()),
+                new BasicNameValuePair("city", spinner.getSelectedItem().toString()),
                 new BasicNameValuePair("phone", phone.getText().toString())
             )
         );

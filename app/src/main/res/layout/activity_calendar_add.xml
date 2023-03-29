@@ -51,19 +51,22 @@
             android:hint="@string/service_calendar_note"
             android:inputType="textMultiLine"
             android:textColor="@color/black"
-            android:textColorHint="@color/white"
-            android:textSize="18sp" />
+            android:textColorHint="@color/gray"
+            android:textSize="15sp" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/save"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="5dp"
             android:background="@color/bthAll"
             android:enabled="false"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
             android:text="@string/service_calendar_save"
             android:textColor="@color/white"
-            android:textSize="17sp" />
-
+            android:textSize="15sp" />
     </LinearLayout>
 
     <include

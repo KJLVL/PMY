@@ -17,13 +17,14 @@
 
         <Button
             android:id="@+id/newTheme"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="15dp"
             android:backgroundTint="@color/bthAll"
-            android:text="Создать"
+            android:text="Создать новую тему"
             android:textColor="@color/white"
             android:textSize="13sp" />
 
@@ -49,7 +50,9 @@
                 android:id="@+id/themesRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="3dp"
                 android:layout_marginBottom="15dp"
                 android:visibility="visible"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -87,7 +90,9 @@
                 android:id="@+id/likedRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="3dp"
                 android:layout_marginBottom="15dp"
                 android:visibility="visible"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

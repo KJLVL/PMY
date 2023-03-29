@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,9 +21,7 @@ import com.example.myaquarium.Service;
 
 public class FragmentServiceCalculatorPriming extends Fragment {
     private View inflatedView;
-
     private Button calcPriming;
-    private TextView recPrimText;
 
     public static FragmentServiceCalculatorPriming newInstance() {
         return new FragmentServiceCalculatorPriming();
@@ -60,11 +59,10 @@ public class FragmentServiceCalculatorPriming extends Fragment {
         TextView btnPr = inflatedView.findViewById(R.id.btnPr);
         btnPr.setOnClickListener(view -> {
             AlertDialog.Builder dialog = new AlertDialog.Builder(inflatedView.getContext());
-            dialog.setTitle("Расчет грунта");
-            dialog.setMessage("Перед покупкой грунта в аквариум необходимо определить его количество, чтобы не остался лишний или наоборот, не хватило. Калькулятор поможет вам в этом! Просто введите указанные данные!");
-            dialog.setPositiveButton("Закрыть", (dialogInterface, i) -> {
-                dialogInterface.dismiss();
-            });
+            dialog.setTitle(R.string.service_title_priming);
+            dialog.setMessage(R.string.service_msg_priming);
+
+            dialog.setPositiveButton("Закрыть", (dialogInterface, i) -> dialogInterface.dismiss());
             dialog.show();
         });
     }
@@ -74,15 +72,16 @@ public class FragmentServiceCalculatorPriming extends Fragment {
             EditText length = inflatedView.findViewById(R.id.length);
             EditText width = inflatedView.findViewById(R.id.width);
             EditText thickness = inflatedView.findViewById(R.id.thickness);
+
             TextView resultText = inflatedView.findViewById(R.id.priming);
-            recPrimText = inflatedView.findViewById(R.id.recPrimText);
+
+            LinearLayout resultLayout = inflatedView.findViewById(R.id.result);
 
             if (length.getText().toString().equals("")
                     || width.getText().toString().equals("")
                     || thickness.getText().toString().equals("")
             ) {
-                resultText.setVisibility(View.GONE);
-                recPrimText.setVisibility(View.GONE);
+                resultLayout.setVisibility(View.GONE);
                 Toast.makeText(
                         inflatedView.getContext(),
                         "Заполните все поля", Toast.LENGTH_SHORT
@@ -90,17 +89,15 @@ public class FragmentServiceCalculatorPriming extends Fragment {
                 return;
             }
 
-            recPrimText.setVisibility(View.VISIBLE);
             double result =
-                    Integer.parseInt(length.getText().toString()) *
-                            Integer.parseInt(width.getText().toString()) *
-                            Integer.parseInt(thickness.getText().toString()) * 1.4 / 1000;
+                    Double.parseDouble(length.getText().toString()) *
+                            Double.parseDouble(width.getText().toString()) *
+                            Double.parseDouble(thickness.getText().toString()) * 1.4 / 1000;
 
 
             String resultMessage = String.format("%.2f", result) + " кг.";
-            resultText.setVisibility(View.VISIBLE);
             resultText.setText(resultMessage);
-
+            resultLayout.setVisibility(View.VISIBLE);
         });
     }
 }

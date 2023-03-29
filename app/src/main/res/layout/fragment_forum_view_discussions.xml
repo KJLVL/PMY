@@ -50,6 +50,26 @@
                 android:textSize="18sp"
                 tools:ignore="RtlSymmetry" />
 
+            <TextView
+                android:id="@+id/city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/calc_item"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                tools:ignore="RtlSymmetry" />
+
+            <TextView
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/calc_item"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                tools:ignore="RtlSymmetry" />
+
             <LinearLayout
                 android:id="@+id/images"
                 android:layout_width="match_parent"

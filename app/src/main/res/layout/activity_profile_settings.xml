@@ -134,14 +134,19 @@
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
-            <EditText
-                android:id="@+id/city"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/calc_item"
-                android:paddingStart="5dp"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
+
+                <pl.utkala.searchablespinner.SearchableSpinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:closeText="закрыть"
+                    app:dialogTitle="Выберите ваш город" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"

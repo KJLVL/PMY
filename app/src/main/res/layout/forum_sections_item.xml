@@ -11,8 +11,6 @@
         android:id="@+id/sectionsItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_marginEnd="3dp"
         android:background="@drawable/layout"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -48,25 +46,13 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/city"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="2"
-                    android:text="город: Ростов-на-Дону"
-                    android:textAlignment="center"
-                    android:textColor="@color/bthAll"
-                    android:textSize="14sp"
-                    android:visibility="gone"
-                    tools:ignore="RtlCompat" />
-
-                <TextView
                     android:id="@+id/date"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:text="дата: 13.01.23"
+                    android:textAlignment="textEnd"
                     android:textColor="@color/bthAll"
                     android:textSize="14sp"
                     tools:ignore="RtlCompat" />
@@ -81,7 +67,7 @@
                 android:layout_weight="1"
                 android:paddingBottom="3dp"
                 android:text="автор: juli"
-                android:textAlignment="center"
+                android:textAlignment="textEnd"
                 android:textColor="@color/bthAll"
                 android:textSize="14sp"
                 tools:ignore="RtlCompat" />

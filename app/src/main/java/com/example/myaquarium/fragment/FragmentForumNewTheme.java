@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
@@ -42,12 +44,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import pl.utkala.searchablespinner.SearchableSpinner;
+
 public class FragmentForumNewTheme extends Fragment {
     private View inflatedView;
 
     private RadioGroup category;
     private TextView sectionText;
+    private AppCompatCheckBox viewMyPhone;
     private RadioGroup section;
+    private SearchableSpinner spinner;
     private TextView title;
     private TextView description;
     private LinearLayout theme;
@@ -57,6 +63,7 @@ public class FragmentForumNewTheme extends Fragment {
 
     private List<Map<String, String>> categoryList;
     private List<Map<String, String>> sectionsList;
+    private JSONObject userInfo;
 
     private Requests requests;
     private String categoryId;
@@ -82,6 +89,8 @@ public class FragmentForumNewTheme extends Fragment {
         this.setToolbar();
 
         category = inflatedView.findViewById(R.id.category);
+        viewMyPhone = inflatedView.findViewById(R.id.myPhone);
+        spinner = inflatedView.findViewById(R.id.spinner);
         sectionText = inflatedView.findViewById(R.id.sectionText);
         section = inflatedView.findViewById(R.id.section);
         title = inflatedView.findViewById(R.id.title);
@@ -90,6 +99,8 @@ public class FragmentForumNewTheme extends Fragment {
         create = inflatedView.findViewById(R.id.create);
         addPhoto = inflatedView.findViewById(R.id.addPhoto);
         linearLayout = inflatedView.findViewById(R.id.layout);
+
+        this.getCities();
 
         requests = new Requests();
         photoNames = new ArrayList<>();
@@ -115,6 +126,37 @@ public class FragmentForumNewTheme extends Fragment {
         create.setOnClickListener(view -> this.checkTheme());
 
         return inflatedView;
+    }
+
+    private void getCities() {
+        List<String> cities = new ArrayList<>();
+        Runnable runnable = () -> {
+            try {
+                JSONArray result = requests.setRequest(requests.urlRequest + "city", new ArrayList<>());
+                for (int i = 0; i < result.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(result.getJSONObject(i)));
+                    cities.add(object.optString("city"));
+                }
+
+                JSONArray user = requests.setRequest(requests.urlRequest + "user", new ArrayList<>());
+                userInfo = new JSONObject(user.getJSONObject(0).toString());
+
+                inflatedView.post(() -> {
+                    android.widget.ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                            inflatedView.getContext(),
+                            android.R.layout.simple_spinner_item,
+                            cities
+                    );
+                    this.spinner.setAdapter(adapter);
+                    if (!userInfo.optString("city").equals("null"))
+                        this.spinner.setSelection(adapter.getPosition(userInfo.optString("city")));
+                });
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
     private void setToolbar() {
@@ -315,6 +357,8 @@ public class FragmentForumNewTheme extends Fragment {
                 new BasicNameValuePair("category_id", this.categoryId),
                 new BasicNameValuePair("sections_id", this.sectionId),
                 new BasicNameValuePair("title", title.getText().toString()),
+                new BasicNameValuePair("city", spinner.getSelectedItem().toString()),
+                new BasicNameValuePair("phone", viewMyPhone.isChecked() ? userInfo.optString("phone") : ""),
                 new BasicNameValuePair("content", description.getText().toString())
         ));
 

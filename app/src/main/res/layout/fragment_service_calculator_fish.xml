@@ -19,8 +19,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginTop="15dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -37,10 +37,10 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="10dp"
-                android:textColor="@color/bthAll"
                 android:fontFamily="@font/montserrat_bold"
-                android:textAlignment="center"
                 android:text="@string/service_question"
+                android:textAlignment="center"
+                android:textColor="@color/bthAll"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -59,17 +59,17 @@
             android:layout_marginBottom="5dp"
             android:text="@string/service_com_text"
             android:textColor="@color/black"
-            android:textSize="15sp"/>
+            android:textSize="15sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listview"
             android:layout_width="match_parent"
-            android:padding="20dp"
-            android:background="@drawable/calc_item"
             android:layout_height="200dp"
+            android:background="@drawable/calc_item"
+            android:padding="20dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/fish_list_item_by_comp"
-            tools:ignore="RtlSymmetry" />
+            tools:ignore="RtlSymmetry"
+            tools:listitem="@layout/fish_list_item_by_comp" />
 
         <Button
             android:id="@+id/calculationFish"
@@ -78,43 +78,44 @@
             android:layout_gravity="center"
             android:layout_marginTop="13dp"
             android:backgroundTint="@color/bthAll"
-            android:textColor="@color/white"
             android:text="@string/service_com_btn"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/white" />
 
         <LinearLayout
             android:id="@+id/textResult"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center_horizontal"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/service_com_result_text"
                 android:textColor="@color/black"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/btnRes"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="10dp"
-                android:textColor="@color/bthAll"
                 android:fontFamily="@font/montserrat_bold"
-                android:textAlignment="center"
                 android:text="@string/service_question"
+                android:textAlignment="center"
+                android:textColor="@color/bthAll"
                 android:textSize="16sp" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/result"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="match_parent"
@@ -123,8 +124,7 @@
                 android:layout_marginBottom="10dp"
                 android:text="@string/service_com_result_decoding"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -133,11 +133,13 @@
                 android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
-                <ImageView
+                <com.github.siyamed.shapeimageview.CircularImageView
                     android:layout_width="0dp"
-                    android:layout_height="24dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/match"
+                    android:src="@drawable/match"
+                    app:siBorderColor="#1BB24A"
+                    app:siBorderWidth="2dp"
                     tools:ignore="MissingConstraints" />
 
                 <TextView
@@ -148,18 +150,22 @@
                     android:textColor="@color/black"
                     android:textSize="14sp" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <ImageView
+                <com.github.siyamed.shapeimageview.CircularImageView
                     android:layout_width="0dp"
-                    android:layout_height="24dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/overlap"
+                    android:src="@drawable/overlap"
+                    app:siBorderColor="#FFF200"
+                    app:siBorderWidth="2dp"
                     tools:ignore="MissingConstraints" />
 
                 <TextView
@@ -170,6 +176,7 @@
                     android:textColor="@color/black"
                     android:textSize="14sp" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -177,11 +184,13 @@
                 android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
-                <ImageView
+                <com.github.siyamed.shapeimageview.CircularImageView
                     android:layout_width="0dp"
-                    android:layout_height="24dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/notmatch"
+                    android:src="@drawable/notmatch"
+                    app:siBorderColor="#EE161E"
+                    app:siBorderWidth="2dp"
                     tools:ignore="MissingConstraints" />
 
                 <TextView
@@ -193,15 +202,18 @@
                     android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listviewResult"
-            android:visibility="gone"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/calc_item"
+            android:paddingTop="5dp"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/fish_list_item_by_comp_result"/>
+            tools:listitem="@layout/fish_list_item_by_comp_result" />
 
     </LinearLayout>
 

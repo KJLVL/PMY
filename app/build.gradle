@@ -36,6 +36,8 @@ android {
 }
 
 dependencies {
+    implementation 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
+    implementation 'com.github.DonMat:searchablespinner:v1.0.1'
     implementation 'com.github.chrisbanes:PhotoView:2.1.4'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'me.biubiubiu.justifytext:library:1.1'

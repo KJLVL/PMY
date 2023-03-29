@@ -1,13 +1,13 @@
 package com.example.myaquarium;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.adapter.FishListAdapter;
-import com.example.myaquarium.adapter.FishListViewAdapter;
 import com.example.myaquarium.server.Requests;
 import com.squareup.picasso.Picasso;
 
@@ -31,14 +30,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-public class Profile extends AppCompatActivity {
-    private RecyclerView listView;
-    private RecyclerView fishRecycler;
+import pl.utkala.searchablespinner.SearchableSpinner;
 
-    private SearchView search;
+public class Profile extends AppCompatActivity {
+    private RecyclerView fishRecycler;
+    private SearchableSpinner fishSpinner;
 
     private Requests requests;
 
@@ -46,12 +44,9 @@ public class Profile extends AppCompatActivity {
     private TextView volumeField;
     private TextView myFish;
     private ImageView image;
-    private Button save;
 
     private FishListAdapter fishAdapter;
-    private FishListViewAdapter fishListAdapter;
 
-    private List<JSONObject> fishListAll;
     private Map<String, String> userInfo;
     private List<String> fishList;
     private static List<JSONObject> fishListCurrent;
@@ -64,17 +59,15 @@ public class Profile extends AppCompatActivity {
         this.setToolbar();
 
         requests = new Requests();
-
-        listView = this.findViewById(R.id.listview);
         fishRecycler = this.findViewById(R.id.fishListItems);
-        search = this.findViewById(R.id.search);
-        this.setColorSearch();
+
+        fishSpinner = this.findViewById(R.id.fishSpinner);
 
         nameField = this.findViewById(R.id.nameField);
         myFish = this.findViewById(R.id.myFish);
         image = this.findViewById(R.id.image);
         volumeField = this.findViewById(R.id.volumeField);
-        save = this.findViewById(R.id.save);
+        Button save = this.findViewById(R.id.save);
 
         fishListCurrent = new ArrayList<>();
         userInfo = new HashMap<>();
@@ -88,7 +81,6 @@ public class Profile extends AppCompatActivity {
         this.getUserFish();
 
         this.getFishList();
-        this.searchAction();
 
         ImageButton settings = findViewById(R.id.settings);
         settings.setOnClickListener(view -> {
@@ -104,12 +96,6 @@ public class Profile extends AppCompatActivity {
         calculator.setOnClickListener(view -> this.startActivity(new Intent(this, Service.class)));
         forum.setOnClickListener(view -> this.startActivity(new Intent(this, Forum.class)));
         profile.setOnClickListener(view -> this.startActivity(new Intent(this, Profile.class)));
-    }
-
-    private void setColorSearch() {
-        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-        TextView textView = search.findViewById(id);
-        textView.setTextColor(Color.BLACK);
     }
 
     private void saveProfile() {
@@ -146,34 +132,6 @@ public class Profile extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.title);
         textView.setText(getApplicationContext().getString(R.string.profile_text));
-    }
-
-    private void searchAction() {
-        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                searchFishByEditText(s);
-                return true;
-            }
-        });
-    }
-
-    private void searchFishByEditText(String search) {
-        List<String> currentFish = new ArrayList<>();
-        List<String> startFish = new ArrayList<>(fishList);
-        String searchText = search.toLowerCase(Locale.ROOT);
-        for (String item : fishList) {
-            if (!item.toLowerCase(Locale.ROOT).contains(searchText)) {
-                currentFish.add(item);
-            }
-        }
-        startFish.removeAll(currentFish);
-        setSelectedFishList(startFish);
     }
 
     private void getUser() {
@@ -244,17 +202,17 @@ public class Profile extends AppCompatActivity {
     }
 
     private void getFishList() {
-        fishListAll = new ArrayList<>();
         fishList = new ArrayList<>();
+        fishList.add("");
         Runnable runnable = () -> {
             try {
                 JSONArray list = requests.setRequest(requests.urlRequest + "fish/list", new ArrayList<>());
                 for (int i = 0; i < list.length(); i++) {
                     JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
                     fishList.add(object.getString("fish_name"));
-                    fishListAll.add(object);
                 }
-                setSelectedFishList(fishList);
+                runOnUiThread(() -> this.setSpinnerActions(fishList));
+
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -263,25 +221,42 @@ public class Profile extends AppCompatActivity {
         thread.start();
     }
 
-    private void setSelectedFishList(List<String> items) {
-        listView.post(() -> {
-            RecyclerView fishRecycler = this.findViewById(R.id.listview);
-            FishListViewAdapter.OnFishClickListener onFishClickListener = (fish) -> {
-                for (JSONObject item : fishListCurrent) {
-                    if (item.optString("fish").equals(fish)) {
+    private void setSpinnerActions(List<String> fishList) {
+        android.widget.ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                fishList
+        );
+        this.fishSpinner.setAdapter(adapter);
+        this.fishSpinner.setSelection(adapter.getPosition(""));
+
+        this.fishSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                try {
+                    if (adapterView.getSelectedItem() == "") {
                         return;
                     }
-                }
 
-                JSONObject curFish = new JSONObject();
-                curFish.put("fish", fish);
-                curFish.put("count", "1");
-                fishListCurrent.add(curFish);
-                setFishList(fishListCurrent);
-            };
-            fishListAdapter
-                    = new FishListViewAdapter(this, items, onFishClickListener);
-            fishRecycler.setAdapter(fishListAdapter);
+                    for (JSONObject item : fishListCurrent) {
+                        if (item.optString("fish").equals(adapterView.getSelectedItem())) {
+                            return;
+                        }
+                    }
+
+                    JSONObject curFish = new JSONObject();
+                    curFish.put("fish", adapterView.getSelectedItem());
+                    curFish.put("count", "1");
+                    fishListCurrent.add(curFish);
+                    setFishList(fishListCurrent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
         });
     }
 

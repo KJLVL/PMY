@@ -31,18 +31,24 @@
     <string name="service_menu_calendar">Календарь</string>
     <string name="service_calculator_volume">Калькулятор объема аквариума</string>
     <string name="service_calculator_priming">Калькулятор объема грунта</string>
-    <string name="service_volume_fish">Выберите рыбок, которые живут в вашем аквариуме</string>
+    <string name="service_volume_fish">Выберите рыбок, которые живут в вашем аквариуме:</string>
     <string name="service_calculator_search">Поиск</string>
     <string name="service_use_my_fish">Расчитать для рыбок, указанных в профиле</string>
     <string name="service_calculate">Рассчитать объем аквариума</string>
     <string name="service_rec_vol">Необходимый объем аквариума:</string>
-    <string name="service_rec_prim_length">Длина аквариума:</string>
-    <string name="service_rec_prim_width">Ширина аквариума:</string>
-    <string name="service_rec_prim_height">Высота аквариума:</string>
-    <string name="service_rec_prim_thickness"> Желаемый слой грунта:</string>
+    <string name="service_rec_prim_length">Длина аквариума (в см.):</string>
+    <string name="service_rec_prim_width">Ширина аквариума  (в см.):</string>
+    <string name="service_rec_prim_height">Высота аквариума (в см.):</string>
+    <string name="service_rec_prim_thickness"> Желаемый слой грунта (в см.):</string>
     <string name="service_calculate2">Рассичтать объем грунта</string>
     <string name="service_rec_prim">Необходимое количество грунта:</string>
     <string name="service_question">?</string>
+    <string name="service_msg_fish"></string>
+    <string name="service_title_fish"></string>
+    <string name="service_msg_priming">Перед покупкой грунта в аквариум необходимо определить его количество, чтобы не остался лишний или наоборот, не хватило. Калькулятор поможет вам в этом! Просто введите указанные данные!</string>
+    <string name="service_title_priming">Расчет объема аквариума</string>
+    <string name="service_title_volume">Расчет объема аквариума</string>
+    <string name="service_msg_volume">При создании своего собственного водного мира недостаточно просто закупить планируемые составляющие. Необходимо точно рассчитать их количество, чтобы аквариум функционировал долго и стабильно, а обитающие в нем рыбки чувствовали себя комфортно. Калькулятор поможет вам в этом! Просто введите указанные данные!</string>
     <string name="service_message">*Данные рассчитаны из количества выбранных рыбок и необходимого минимума объема воды для каждой. Для еще более комфортного проживания рыбок в аквариуме рекомедуется добавить к полученному результату ~10–30 литров!</string>
 
     <!--    for compatibility-->
@@ -62,7 +68,7 @@
 
     <!--    for profile settings-->
     <string name="settings_download">Загрузить изображение</string>
-    <string name="settings_download_define">Определить рыбок по фото</string>
+    <string name="settings_download_define">Определить рыбку по фото</string>
     <string name="settings_personal_data">Личные данные</string>
     <string name="settings_name_field">Имя</string>
     <string name="settings_surname_field">Фамилия</string>
@@ -75,7 +81,7 @@
     <string name="settings_aquarium_data">Данные об аквариуме и рыбках</string>
     <string name="settings_volume">Объем аквариума (в литрах)</string>
     <string name="settings_my_fish">Мои рыбки</string>
-    <string name="settings_add">Выберите рыбок для добавления</string>
+    <string name="settings_add">Выберите рыбок для добавления:</string>
     <string name="settings_save">Сохранить</string>
 
     <!--    for profile-->

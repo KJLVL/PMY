@@ -117,11 +117,10 @@ public class FragmentServiceCalculatorFish extends Fragment {
         TextView btnFish = inflatedView.findViewById(R.id.btnFish);
         btnFish.setOnClickListener(view -> {
             AlertDialog.Builder dialog = new AlertDialog.Builder(inflatedView.getContext());
-            dialog.setTitle("Расчет осовместимости рыбок");
-            dialog.setMessage("Аквариумных рыбок - великое множество. И далеко не все рыбки совместимы между собой, даже если на глаз они кажутся мирными. Под совместимостью мы понимаем не только отсутствие взаимной агресси у разных видов, но и близкие параметры воды, обустройства, рациона питания и прочих условий содержания.");
-            dialog.setPositiveButton("Закрыть", (dialogInterface, i) -> {
-                dialogInterface.dismiss();
-            });
+            dialog.setTitle(R.string.service_title_fish);
+            dialog.setMessage(R.string.service_msg_fish);
+
+            dialog.setPositiveButton("Закрыть", (dialogInterface, i) -> dialogInterface.dismiss());
             dialog.show();
         });
     }
