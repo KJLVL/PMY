@@ -332,9 +332,9 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
             try {
                 comments = requests.setRequest(requests.urlRequest + "user/forum/comments", params);
 
-                this.inflatedView.post(() -> {
-                    this.setCommentsList(comments);
-                });
+                if (!comments.getJSONObject(0).toString().contains("success")) {
+                    this.inflatedView.post(() -> this.setCommentsList(comments));
+                }
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();

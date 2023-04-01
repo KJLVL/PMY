@@ -292,21 +292,20 @@ public class ProfileSettings extends AppCompatActivity {
                     Uri uri = data.getData();
                     ImageView img = new ImageView(this);
                     img.setImageURI(uri);
+                    img.setRotation(90);
+
                     BitmapDrawable bd = (BitmapDrawable) img.getDrawable();
 
-                    if (img.getRotation() == 0) img.setRotation(90);
                     Runnable runnable = () -> {
                         this.bitmap = bd.getBitmap();
-                        image.post(() -> {
-                            this.generateImage(bitmap);
-                        });
+                        image.post(() -> this.generateImage(bitmap));
 
                     };
                     Thread thread = new Thread(runnable);
                     thread.start();
 
                     Picasso.get().load(uri).into(image);
-                    if (image.getRotation() == 0) image.setRotation(90);
+                    image.setRotation(90);
                     image.setOnClickListener(view -> {
                         Intent intent = new Intent(this, ImageViewer.class);
                         intent.putExtra("image",  uri);

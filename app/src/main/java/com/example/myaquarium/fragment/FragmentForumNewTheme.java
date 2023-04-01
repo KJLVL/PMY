@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -31,6 +32,7 @@ import androidx.fragment.app.Fragment;
 import com.example.myaquarium.Forum;
 import com.example.myaquarium.R;
 import com.example.myaquarium.server.Requests;
+import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -271,64 +273,64 @@ public class FragmentForumNewTheme extends Fragment {
                     Intent data = result.getData();
                     Uri uri = data.getData();
                     photoNames.add(uri.getLastPathSegment());
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(inflatedView.getContext().getApplicationContext().getContentResolver(), uri);
 
-                        LinearLayout layout = new LinearLayout(inflatedView.getContext());
-                        layout.setId(countPhoto);
+                    ImageView img = new ImageView(inflatedView.getContext());
+                    img.setImageURI(uri);
 
-                        layout.setOrientation(LinearLayout.HORIZONTAL);
-                        layout.setLayoutParams(new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT)
-                        );
+                    BitmapDrawable bd = (BitmapDrawable) img.getDrawable();
+                    Runnable runnable = () -> {
+                        this.bitmap = bd.getBitmap();
+                        img.post(() -> this.generateImage(bitmap));
 
-                        ImageView newImage = new ImageView(inflatedView.getContext());
-                        newImage.setImageBitmap(bitmap);
-                        generateImage();
+                    };
+                    Thread thread = new Thread(runnable);
+                    thread.start();
 
-                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                                200,
-                                200
-                        );
+                    Picasso.get().load(uri).into(img);
+                    img.setRotation(90);
 
-                        Button button = new Button(inflatedView.getContext());
+                    LinearLayout layout = new LinearLayout(inflatedView.getContext());
+                    layout.setOrientation(LinearLayout.HORIZONTAL);
+                    layout.setLayoutParams(new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT)
+                    );
 
-                        LinearLayout.LayoutParams lpBtn = new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.WRAP_CONTENT,
-                                70
-                        );
-                        lpBtn.setMargins(30, 0, 0, 0);
-                        button.setText("удалить");
-                        button.setTextSize(10);
-                        button.setTextColor(Color.WHITE);
-                        button.setLayoutParams(lpBtn);
-                        button.setPadding(0,0,0,0);
-                        button.setBackgroundResource(R.color.bthAll);
-                        button.setOnClickListener(view -> {
-                            layout.removeAllViews();
-                            int index = photoNames.indexOf(uri.getLastPathSegment());
-                            photoNames.remove(uri.getLastPathSegment());
-                            photoList.remove(index);
-                            countPhoto--;
-                        });
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                            200,
+                            200
+                    );
 
-                        newImage.setLayoutParams(lp);
-                        newImage.setOnClickListener(view -> {
+                    Button button = new Button(inflatedView.getContext());
+                    LinearLayout.LayoutParams lpBtn = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            70
+                    );
 
-                        });
-                        layout.setGravity(Gravity.CENTER_VERTICAL);
-                        layout.addView(newImage);
-                        layout.addView(button);
-                        linearLayout.addView(layout);
+                    lpBtn.setMargins(30, 0, 0, 0);
+                    button.setText("удалить");
+                    button.setTextSize(10);
+                    button.setTextColor(Color.WHITE);
+                    button.setLayoutParams(lpBtn);
+                    button.setPadding(0,0,0,0);
+                    button.setBackgroundResource(R.color.bthAll);
+                    button.setOnClickListener(view -> {
+                        layout.removeAllViews();
+                        int index = photoNames.indexOf(uri.getLastPathSegment());
+                        photoNames.remove(uri.getLastPathSegment());
+                        photoList.remove(index);
+                        countPhoto--;
+                    });
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    img.setLayoutParams(lp);
+                    layout.setGravity(Gravity.CENTER_VERTICAL);
+                    layout.addView(img);
+                    layout.addView(button);
+                    linearLayout.addView(layout);
                 }
             });
 
-    private void generateImage() {
+    private void generateImage(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         if (bitmap != null) {

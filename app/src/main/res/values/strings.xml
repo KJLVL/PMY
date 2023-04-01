@@ -68,7 +68,9 @@
 
     <!--    for profile settings-->
     <string name="settings_download">Загрузить изображение</string>
-    <string name="settings_download_define">Определить рыбку по фото</string>
+    <string name="settings_download_define">Определение рыбки по фото</string>
+    <string name="settings_not_result">На ваших фото не обнаружено рыбок</string>
+    <string name="settings_yes_result">На ваших фото обнаружены рыбки:</string>
     <string name="settings_personal_data">Личные данные</string>
     <string name="settings_name_field">Имя</string>
     <string name="settings_surname_field">Фамилия</string>
