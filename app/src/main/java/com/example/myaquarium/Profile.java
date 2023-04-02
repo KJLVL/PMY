@@ -24,12 +24,13 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.adapter.FishListAdapter;
-import com.example.myaquarium.server.Requests;
+import com.example.myaquarium.service.Navigation;
+import com.example.myaquarium.service.Requests;
+import com.example.myaquarium.service.UserData;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.picasso.Picasso;
@@ -80,13 +81,18 @@ public class Profile extends AppCompatActivity {
     private List<String> photoNames;
     private List<String> photoList;
     private Bitmap bitmap;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
-        this.setToolbar();
+        Navigation.setToolbar(
+                this,
+                getApplicationContext().getString(R.string.profile_text),
+                null
+        );
+        Navigation.setMenuNavigation(this);
 
         requests = new Requests();
         fishRecycler = this.findViewById(R.id.fishListItems);
@@ -137,20 +143,13 @@ public class Profile extends AppCompatActivity {
         sendFish.setOnClickListener(view -> this.getRecognitionResult());
 
         save.setOnClickListener(view -> this.saveProfile());
-
-        TextView calculator = findViewById(R.id.service);
-        TextView profile = findViewById(R.id.profile);
-        TextView forum = findViewById(R.id.forum);
-
-        calculator.setOnClickListener(view -> this.startActivity(new Intent(this, Service.class)));
-        forum.setOnClickListener(view -> this.startActivity(new Intent(this, Forum.class)));
-        profile.setOnClickListener(view -> this.startActivity(new Intent(this, Profile.class)));
     }
 
     private void saveProfile() {
         List<NameValuePair> params = new ArrayList<>(List.of(
                 new BasicNameValuePair("aquarium_volume", volumeField.getText().toString()),
-                new BasicNameValuePair("fish", String.valueOf(new JSONArray(fishListCurrent)))
+                new BasicNameValuePair("fish", String.valueOf(new JSONArray(fishListCurrent))),
+                new BasicNameValuePair("id", UserData.getUserData(this))
         )
         );
 
@@ -175,20 +174,15 @@ public class Profile extends AppCompatActivity {
         thread.start();
     }
 
-    private void setToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-
-        TextView textView = findViewById(R.id.title);
-        textView.setText(getApplicationContext().getString(R.string.profile_text));
-    }
-
     private void getUser() {
+        List<NameValuePair> params = new ArrayList<>(List.of(
+                new BasicNameValuePair("id", UserData.getUserData(this))
+            )
+        );
         Runnable runnable = () -> {
             try {
-                JSONArray user = requests.setRequest(requests.urlRequest + "user", new ArrayList<>());
+                JSONArray user = requests.setRequest(requests.urlRequest + "user", params);
                 JSONObject object = new JSONObject(user.getJSONObject(0).toString());
-                requests.setUser(object);
                 userInfo.put("name", object.getString("user_name"));
                 userInfo.put("login", object.getString("login"));
 
@@ -227,9 +221,13 @@ public class Profile extends AppCompatActivity {
     }
 
     private void getUserFish() {
+        List<NameValuePair> params = new ArrayList<>(List.of(
+                new BasicNameValuePair("id", UserData.getUserData(this))
+        )
+        );
         Runnable runnable = () -> {
             try {
-                JSONArray userFish = requests.setRequest(requests.urlRequest + "user/fish", new ArrayList<>());
+                JSONArray userFish = requests.setRequest(requests.urlRequest + "user/fish", params);
                 for (int i = 0; i < userFish.length(); i++) {
                     JSONObject result = new JSONObject(String.valueOf(userFish.getJSONObject(i)));
                     if (result.optString("success").equals("0")) {
@@ -380,9 +378,7 @@ public class Profile extends AppCompatActivity {
                     )
                 );
                 JSONArray resFish = requests.setRequest(requests.urlRequest + "user/fish/recognize", parameters);
-                runOnUiThread(() -> {
-                    this.progressBar.setVisibility(View.GONE);
-                });
+                runOnUiThread(() -> this.progressBar.setVisibility(View.GONE));
                 for (int i = 0; i < resFish.length(); i++) {
                     JSONObject result = new JSONObject(String.valueOf(resFish.getJSONObject(i)));
                     if (result.optString("success").equals("0")) {

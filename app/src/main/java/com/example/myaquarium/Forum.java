@@ -1,6 +1,5 @@
 package com.example.myaquarium;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -11,22 +10,22 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myaquarium.fragment.FragmentForumMy;
 import com.example.myaquarium.fragment.FragmentForumSections;
+import com.example.myaquarium.service.Navigation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;
 
 public class Forum extends AppCompatActivity {
-    private BottomNavigationView bottomNavigationView;
     private String sectionsId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum);
-
         this.setToolbar();
+        Navigation.setMenuNavigation(this);
 
-        bottomNavigationView = findViewById(R.id.navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.navigation_sections:
@@ -51,14 +50,12 @@ public class Forum extends AppCompatActivity {
             if (sectionsId.equals("2")) bottomNavigationView.setSelectedItemId(R.id.navigation_swap);
             loadFragment(FragmentForumSections.newInstance(Integer.parseInt(sectionsId)));
         }
+    }
 
-        TextView calculator = findViewById(R.id.service);
-        TextView profile = findViewById(R.id.profile);
-        TextView forum = findViewById(R.id.forum);
-
-        calculator.setOnClickListener(view -> this.startActivity(new Intent(this, Service.class)));
-        forum.setOnClickListener(view -> this.startActivity(new Intent(this, Forum.class)));
-        profile.setOnClickListener(view -> this.startActivity(new Intent(this, Profile.class)));
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.scrollSections, fragment);
+        ft.commit();
     }
 
     private void setToolbar() {
@@ -71,11 +68,5 @@ public class Forum extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.title);
         textView.setText(getApplicationContext().getString(R.string.forum_text));
-    }
-
-    private void loadFragment(Fragment fragment) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.scrollSections, fragment);
-        ft.commit();
     }
 }

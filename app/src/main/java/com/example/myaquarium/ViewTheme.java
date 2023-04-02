@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myaquarium.fragment.FragmentForumViewTheme;
+import com.example.myaquarium.service.Navigation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +23,7 @@ public class ViewTheme extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_theme);
+        Navigation.setMenuNavigation(this);
 
         this.setToolbar();
 
@@ -37,14 +39,6 @@ public class ViewTheme extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.scrollViewTheme, FragmentForumViewTheme.newInstance(theme, id));
         ft.commit();
-
-        TextView calculator = findViewById(R.id.service);
-        TextView profile = findViewById(R.id.profile);
-        TextView forum = findViewById(R.id.forum);
-
-        calculator.setOnClickListener(view -> this.startActivity(new Intent(this, Service.class)));
-        forum.setOnClickListener(view -> this.startActivity(new Intent(this, Forum.class)));
-        profile.setOnClickListener(view -> this.startActivity(new Intent(this, Profile.class)));
     }
 
     private void setToolbar() {

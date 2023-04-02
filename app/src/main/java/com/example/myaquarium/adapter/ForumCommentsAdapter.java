@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.R;
 import com.example.myaquarium.adapter.view.ForumCommentsViewHolder;
-import com.example.myaquarium.server.Requests;
+import com.example.myaquarium.service.Requests;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
 

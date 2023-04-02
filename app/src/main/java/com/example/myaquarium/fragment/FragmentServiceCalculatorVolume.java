@@ -1,6 +1,8 @@
 package com.example.myaquarium.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.text.LineBreaker;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,8 +27,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.R;
 import com.example.myaquarium.Service;
 import com.example.myaquarium.adapter.FishListAdapter;
-import com.example.myaquarium.server.Requests;
+import com.example.myaquarium.service.Requests;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -235,11 +239,16 @@ public class FragmentServiceCalculatorVolume extends Fragment {
         resultView.setVisibility(View.GONE);
         message.setVisibility(View.GONE);
 
+        SharedPreferences sharedpreferences = getActivity().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
+        List<NameValuePair> params = new ArrayList<>(List.of(
+                new BasicNameValuePair("id", sharedpreferences.getString("id", null))
+            )
+        );
         Runnable runnable = () -> {
             try {
                 fishListCurrent = new ArrayList<>();
 
-                JSONArray list = requests.setRequest(requests.urlRequest + "user/fish", new ArrayList<>());
+                JSONArray list = requests.setRequest(requests.urlRequest + "user/fish", params);
                 for (int i = 0; i < list.length(); i++) {
                     JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
                     if (object.toString().contains("success")) {

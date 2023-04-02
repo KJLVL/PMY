@@ -1,6 +1,8 @@
 package com.example.myaquarium.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +19,10 @@ import com.example.myaquarium.R;
 import com.example.myaquarium.ViewTheme;
 import com.example.myaquarium.adapter.ForumThemesAdapter;
 import com.example.myaquarium.adapter.ForumUserThemesAdapter;
-import com.example.myaquarium.server.Requests;
+import com.example.myaquarium.service.Requests;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +45,9 @@ public class FragmentForumMy extends Fragment {
     private ForumUserThemesAdapter themesAdapter;
     private ForumThemesAdapter likedAdapter;
 
+    private SharedPreferences sharedpreferences;
+    private List<NameValuePair> params;
+
     public static FragmentForumMy newInstance() {
         return new FragmentForumMy();
     }
@@ -54,6 +61,11 @@ public class FragmentForumMy extends Fragment {
                 false
         );
         requests = new Requests();
+        SharedPreferences sharedpreferences = this.getActivity().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
+        this.params = new ArrayList<>(List.of(
+                new BasicNameValuePair("id", sharedpreferences.getString("id", null))
+            )
+        );
 
         Button newTheme = inflatedView.findViewById(R.id.newTheme);
         themesRecycler = inflatedView.findViewById(R.id.themesRecycler);
@@ -90,9 +102,10 @@ public class FragmentForumMy extends Fragment {
         themesList = new ArrayList<>();
         Runnable runnable = () -> {
             try {
-                JSONArray list = requests.setRequest(requests.urlRequest + "user/forum/themes", new ArrayList<>());
+                JSONArray list = requests.setRequest(requests.urlRequest + "user/forum/themes", this.params);
                 for (int i = 0; i < list.length(); i++) {
                     JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
+                    if (object.optString("success").equals("0")) return;
                     themesList.add(object);
                 }
                 this.inflatedView.post(() -> {
@@ -123,9 +136,9 @@ public class FragmentForumMy extends Fragment {
             };
 
             ForumUserThemesAdapter.OnEditClickListener onEditClickListener = (theme) -> {
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.my, FragmentForumMyEditTheme.newInstance(theme));
-                ft.commit();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.my, FragmentForumMyEditTheme.newInstance(theme));
+                transaction.commit();
             };
 
             themesAdapter = new ForumUserThemesAdapter(
@@ -142,9 +155,10 @@ public class FragmentForumMy extends Fragment {
         likedList = new ArrayList<>();
         Runnable runnable = () -> {
             try {
-                JSONArray list = requests.setRequest(requests.urlRequest + "user/forum/liked", new ArrayList<>());
+                JSONArray list = requests.setRequest(requests.urlRequest + "user/forum/liked", this.params);
                 for (int i = 0; i < list.length(); i++) {
                     JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
+                    if (object.optString("success").equals("0")) return;
                     likedList.add(object);
                 }
                 this.inflatedView.post(() -> {
@@ -157,6 +171,7 @@ public class FragmentForumMy extends Fragment {
         Thread thread = new Thread(runnable);
         thread.start();
     }
+
     private void setLikedList() {
         likedRecycler.post(() -> {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
@@ -183,10 +198,8 @@ public class FragmentForumMy extends Fragment {
     }
 
     private void newTheme() {
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.my, new FragmentForumNewTheme());
-        transaction.addToBackStack(null);
-
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.my, FragmentForumNewTheme.newInstance());
         transaction.commit();
     }
 }

@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.R;
 import com.example.myaquarium.TipsPage;
 import com.example.myaquarium.adapter.view.TipsViewHolder;
-import com.example.myaquarium.server.Requests;
+import com.example.myaquarium.service.Requests;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;

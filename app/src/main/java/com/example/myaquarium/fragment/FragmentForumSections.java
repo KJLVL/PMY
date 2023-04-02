@@ -20,7 +20,7 @@ import com.example.myaquarium.R;
 import com.example.myaquarium.ViewTheme;
 import com.example.myaquarium.adapter.ForumThemesAdapter;
 import com.example.myaquarium.adapter.ForumThemesListAdapter;
-import com.example.myaquarium.server.Requests;
+import com.example.myaquarium.service.Requests;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;

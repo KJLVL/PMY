@@ -7,7 +7,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +25,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import com.example.myaquarium.server.Requests;
+import com.example.myaquarium.service.Navigation;
+import com.example.myaquarium.service.Requests;
+import com.example.myaquarium.service.UserData;
 import com.google.android.material.snackbar.Snackbar;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
@@ -54,6 +57,7 @@ public class ProfileSettings extends AppCompatActivity {
     private TextView password;
     private ImageView image;
     private Button save;
+    private TextView exit;
 
     private RelativeLayout root;
 
@@ -67,8 +71,12 @@ public class ProfileSettings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_settings);
-
-        this.setToolbar();
+        Navigation.setToolbar(
+                this,
+                getApplicationContext().getString(R.string.settings_text),
+                Profile.class
+        );
+        Navigation.setMenuNavigation(this);
 
         requests = new Requests();
         root = findViewById(R.id.root);
@@ -81,23 +89,20 @@ public class ProfileSettings extends AppCompatActivity {
         login = findViewById(R.id.login);
         password = findViewById(R.id.password);
         save = findViewById(R.id.save);
+        exit = findViewById(R.id.exit);
 
         this.getCities();
         this.getUser();
 
         password.setOnClickListener(view -> this.changePassword());
         save.setOnClickListener(view -> this.updateUser());
+        exit.setOnClickListener(view -> {
+            UserData.clearUserData(this);
+            startActivity(new Intent(ProfileSettings.this, SignIn.class));
+        });
 
         TextView download = findViewById(R.id.download);
         download.setOnClickListener(view -> downloadImage());
-
-        TextView calculator = findViewById(R.id.service);
-        TextView profile = findViewById(R.id.profile);
-        TextView forum = findViewById(R.id.forum);
-
-        calculator.setOnClickListener(view -> this.startActivity(new Intent(this, Service.class)));
-        forum.setOnClickListener(view -> this.startActivity(new Intent(this, Forum.class)));
-        profile.setOnClickListener(view -> this.startActivity(new Intent(this, Profile.class)));
     }
 
     private void getCities() {
@@ -130,22 +135,6 @@ public class ProfileSettings extends AppCompatActivity {
         thread.start();
     }
 
-    private void setToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        TextView textView = findViewById(R.id.title);
-        textView.setText(getApplicationContext().getString(R.string.settings_text));
-
-        toolbar.setNavigationOnClickListener(view -> {
-            this.startActivity(new Intent(this, Profile.class));
-        });
-    }
-
     private void changePassword() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Изменение пароля");
@@ -173,7 +162,9 @@ public class ProfileSettings extends AppCompatActivity {
 
             List<NameValuePair> params = new ArrayList<>(List.of(
                     new BasicNameValuePair("oldPassword", oldPassword),
-                    new BasicNameValuePair("newPassword", newPassword)
+                    new BasicNameValuePair("oldPassword", oldPassword),
+                    new BasicNameValuePair("id", UserData.getUserData(this))
+
                 )
             );
 
@@ -209,9 +200,13 @@ public class ProfileSettings extends AppCompatActivity {
     }
 
     private void getUser() {
+        List<NameValuePair> params = new ArrayList<>(List.of(
+                new BasicNameValuePair("id", UserData.getUserData(this))
+        )
+        );
         Runnable runnable = () -> {
             try {
-                JSONArray user = requests.setRequest(requests.urlRequest + "user", new ArrayList<>());
+                JSONArray user = requests.setRequest(requests.urlRequest + "user", params);
                 userInfo = new JSONObject(user.getJSONObject(0).toString());
 
                 this.runOnUiThread(() -> {
@@ -243,6 +238,36 @@ public class ProfileSettings extends AppCompatActivity {
         };
         Thread thread = new Thread(runnable);
         thread.start();
+        this.validateEmail(login);
+    }
+
+    private void validateEmail(EditText loginField) {
+        loginField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (loginField.getText().toString().equals("")) {
+                    loginField.setError("введите email");
+                    notValid();
+                } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(loginField.getText().toString()).matches()) {
+                    loginField.setError("введите коррекртный email");
+                    notValid();
+                } else {
+                    valid();
+                }
+            }
+        });
+    }
+
+    private void notValid() {
+        this.save.setEnabled(false);
+    }
+
+    private void valid() {
+        this.save.setEnabled(true);
     }
 
     private void updateUser() {
@@ -252,7 +277,8 @@ public class ProfileSettings extends AppCompatActivity {
                 new BasicNameValuePair("surname", surname.getText().toString()),
                 new BasicNameValuePair("login", login.getText().toString()),
                 new BasicNameValuePair("city", spinner.getSelectedItem().toString()),
-                new BasicNameValuePair("phone", phone.getText().toString())
+                new BasicNameValuePair("phone", phone.getText().toString()),
+                new BasicNameValuePair("id", UserData.getUserData(this))
             )
         );
 

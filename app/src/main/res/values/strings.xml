@@ -76,7 +76,7 @@
     <string name="settings_surname_field">Фамилия</string>
     <string name="settings_city_field">Город</string>
     <string name="settings_phone_field">Номер телефона</string>
-    <string name="settings_login_field">Логин</string>
+    <string name="settings_login_field">Email</string>
     <string name="settings_password_field">Пароль</string>
     <string name="settings_password">изменить пароль</string>
     <string name="settings_security">Данные для входа</string>

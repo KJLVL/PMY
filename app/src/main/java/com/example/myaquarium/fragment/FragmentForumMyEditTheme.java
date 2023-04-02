@@ -26,7 +26,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.myaquarium.Forum;
 import com.example.myaquarium.R;
-import com.example.myaquarium.server.Requests;
+import com.example.myaquarium.service.Requests;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
@@ -45,8 +45,6 @@ public class FragmentForumMyEditTheme extends Fragment {
 
     private TextView description;
     private TextView title;
-    private Button edit;
-    private Button addPhoto;
     private LinearLayout linearLayout;
 
     private Requests requests;
@@ -54,7 +52,7 @@ public class FragmentForumMyEditTheme extends Fragment {
     private List<String> photoList;
     private Bitmap bitmap;
     private int countPhoto = 0;
-    private JSONObject theme;
+    private final JSONObject theme;
 
     public FragmentForumMyEditTheme(JSONObject theme) {
         this.theme = theme;
@@ -79,8 +77,8 @@ public class FragmentForumMyEditTheme extends Fragment {
         description.setText(theme.optString("content"));
         title = inflatedView.findViewById(R.id.title);
         title.setText(theme.optString("title"));
-        edit = inflatedView.findViewById(R.id.edit);
-        addPhoto = inflatedView.findViewById(R.id.addPhoto);
+        Button edit = inflatedView.findViewById(R.id.edit);
+        Button addPhoto = inflatedView.findViewById(R.id.addPhoto);
         linearLayout = inflatedView.findViewById(R.id.layout);
 
         requests = new Requests();
@@ -102,9 +100,9 @@ public class FragmentForumMyEditTheme extends Fragment {
 
     private void setToolbar() {
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(view -> {
-            this.startActivity(new Intent(inflatedView.getContext(), Forum.class));
-        });
+        toolbar.setNavigationOnClickListener(
+                view -> this.startActivity(new Intent(inflatedView.getContext(), Forum.class))
+        );
 
         ActionBar actionBar = ((Forum)getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);

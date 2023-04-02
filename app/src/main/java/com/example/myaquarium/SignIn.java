@@ -15,7 +15,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myaquarium.server.Requests;
+import com.example.myaquarium.service.Requests;
+import com.example.myaquarium.service.UserData;
 import com.google.android.material.snackbar.Snackbar;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -41,6 +42,10 @@ public class SignIn extends AppCompatActivity {
         Button btnSignIn = findViewById(R.id.btnSignIn);
         Button btnRegistration = findViewById(R.id.btnRegistration);
         root = findViewById(R.id.root);
+
+        if (UserData.getUserData(this) != null) {
+            startActivity(new Intent(SignIn.this, Profile.class));
+        }
 
         btnRegistration.setOnClickListener(view -> showRegistrationWindow());
         btnSignIn.setOnClickListener(view -> showSignInWindow());
@@ -208,7 +213,8 @@ public class SignIn extends AppCompatActivity {
                     JSONArray message = requests.setRequest(requests.urlRequest + "user/login", params);
                     JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
 
-                    if (object.optString("success").equals("1")) {
+                    if (!object.optString("success").equals("0")) {
+                        UserData.setUserData(this, object.optString("success"));
                         startActivity(new Intent(SignIn.this, Profile.class));
                     } else {
                         dialogInterface.dismiss();

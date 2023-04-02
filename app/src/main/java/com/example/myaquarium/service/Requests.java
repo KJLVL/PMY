@@ -1,4 +1,4 @@
-package com.example.myaquarium.server;
+package com.example.myaquarium.service;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -9,7 +9,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,11 +17,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class Requests {
-    public String urlRequest = "https://d931-46-147-104-206.ngrok.io/";
-    public String urlRequestImg = "https://d931-46-147-104-206.ngrok.io/img/";
-    public static JSONObject user;
+    public String urlRequest = "https://a27f-46-147-104-206.ngrok.io/";
+    public String urlRequestImg = "https://a27f-46-147-104-206.ngrok.io/img/";
 
-    public JSONArray setRequest(String url, List<NameValuePair> params) throws IOException, JSONException {
+    public JSONArray setRequest(
+            String url,
+            List<NameValuePair> params
+    ) throws IOException, JSONException {
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost http = new HttpPost(url);
 
@@ -37,14 +38,8 @@ public class Requests {
             stringBuilder.append(bufferedReader.readLine());
         }
         String str = stringBuilder.toString().replace("</html>", "");
+        str = str.replace("<br />", "");
         return new JSONArray(str);
-    }
-    public JSONObject getUser() {
-        return user;
-    }
-
-    public void setUser(JSONObject user) {
-        Requests.user = user;
     }
 
 }

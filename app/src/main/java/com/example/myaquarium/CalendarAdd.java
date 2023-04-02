@@ -4,16 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
-import com.example.myaquarium.server.Requests;
+import com.example.myaquarium.service.Navigation;
+import com.example.myaquarium.service.Requests;
+import com.example.myaquarium.service.UserData;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -26,12 +26,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 public class CalendarAdd extends AppCompatActivity {
     private CalendarView calendar;
-    private List<String> events = new ArrayList<>();
-    private Requests requests = new Requests();
+    private final List<String> events = new ArrayList<>();
+    private final Requests requests = new Requests();
     private SimpleDateFormat simpleDateFormat;
 
     private Button save;
@@ -41,8 +40,12 @@ public class CalendarAdd extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_add);
-
-        this.setToolbar();
+        Navigation.setToolbar(
+                this,
+                getApplicationContext().getString(R.string.service_calendar_add_text),
+                Calendar.class
+        );
+        Navigation.setMenuNavigation(this);
 
         calendar = findViewById(R.id.calendar);
         try {
@@ -69,21 +72,14 @@ public class CalendarAdd extends AppCompatActivity {
                 ).show();
             }
         });
-
-        TextView calculator = findViewById(R.id.service);
-        TextView profile = findViewById(R.id.profile);
-        TextView forum = findViewById(R.id.forum);
-
-        calculator.setOnClickListener(view -> this.startActivity(new Intent(this, Service.class)));
-        forum.setOnClickListener(view -> this.startActivity(new Intent(this, Forum.class)));
-        profile.setOnClickListener(view -> this.startActivity(new Intent(this, Profile.class)));
     }
 
     private void saveEvent(String content) {
 
         List<NameValuePair> params = new ArrayList<>(List.of(
                 new BasicNameValuePair("date", simpleDateFormat.format(calendar.getFirstSelectedDate().getTime())),
-                new BasicNameValuePair("content", content)
+                new BasicNameValuePair("content", content),
+                new BasicNameValuePair("id", UserData.getUserData(this))
             )
         );
 
@@ -126,9 +122,13 @@ public class CalendarAdd extends AppCompatActivity {
     }
 
     private void getEvents() {
+        List<NameValuePair> params = new ArrayList<>(List.of(
+                new BasicNameValuePair("id", UserData.getUserData(this))
+            )
+        );
         Runnable runnable = () -> {
             try {
-                JSONArray eventsList = requests.setRequest(requests.urlRequest + "user/getCalendar", new ArrayList<>());
+                JSONArray eventsList = requests.setRequest(requests.urlRequest + "user/getCalendar", params);
                 for (int i = 0; i < eventsList.length(); i++) {
                     JSONObject object = new JSONObject(String.valueOf(eventsList.getJSONObject(i)));
                     events.add(object.getString("date"));
@@ -141,19 +141,4 @@ public class CalendarAdd extends AppCompatActivity {
         thread.start();
     }
 
-    private void setToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        TextView textView = findViewById(R.id.title);
-        textView.setText(getApplicationContext().getString(R.string.service_calendar_add_text));
-
-        toolbar.setNavigationOnClickListener(view -> {
-            this.startActivity(new Intent(this, Calendar.class));
-        });
-    }
 }

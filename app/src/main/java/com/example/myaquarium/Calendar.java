@@ -5,17 +5,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
-import com.example.myaquarium.server.Requests;
+import com.example.myaquarium.service.Navigation;
+import com.example.myaquarium.service.Requests;
+import com.example.myaquarium.service.UserData;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.apache.http.NameValuePair;
@@ -31,19 +31,31 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class Calendar extends AppCompatActivity {
     private CalendarView calendarView;
+
+    private final Map<String, String> contents = new HashMap<>();
+    private final Requests requests = new Requests();
     private List<String> events = new ArrayList<>();
-    private Map<String, String> contents = new HashMap<>();
-    private Requests requests = new Requests();
+    private List<NameValuePair> params;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-        this.setToolbar();
+        Navigation.setToolbar(
+                this,
+                getApplicationContext().getString(R.string.service_text),
+                Service.class
+        );
+        Navigation.setMenuNavigation(this);
+
+        this.params = new ArrayList<>(List.of(
+                new BasicNameValuePair("id", UserData.getUserData(this))
+            )
+        );
 
         calendarView = findViewById(R.id.calendarView);
         this.getEvents();
@@ -58,21 +70,13 @@ public class Calendar extends AppCompatActivity {
         floatingActionButton.setOnClickListener(v -> addNote());
 
         calendarView.setOnDayClickListener(this::previewNote);
-
-        TextView calculator = findViewById(R.id.service);
-        TextView profile = findViewById(R.id.profile);
-        TextView forum = findViewById(R.id.forum);
-
-        calculator.setOnClickListener(view -> this.startActivity(new Intent(this, Service.class)));
-        forum.setOnClickListener(view -> this.startActivity(new Intent(this, Forum.class)));
-        profile.setOnClickListener(view -> this.startActivity(new Intent(this, Profile.class)));
     }
 
     private void getEvents() {
         events = new ArrayList<>();
         Runnable runnable = () -> {
             try {
-                JSONArray eventsList = requests.setRequest(requests.urlRequest + "user/getCalendar", new ArrayList<>());
+                JSONArray eventsList = requests.setRequest(requests.urlRequest + "user/getCalendar", this.params);
                 for (int i = 0; i < eventsList.length(); i++) {
                     JSONObject object = new JSONObject(String.valueOf(eventsList.getJSONObject(i)));
                     events.add(object.getString("date"));
@@ -143,10 +147,10 @@ public class Calendar extends AppCompatActivity {
     private void saveEvent(String date, String content) {
         List<NameValuePair> params = new ArrayList<>(List.of(
                 new BasicNameValuePair("date", date),
-                new BasicNameValuePair("content", content)
+                new BasicNameValuePair("content", content),
+                new BasicNameValuePair("id", UserData.getUserData(this))
             )
         );
-
         Runnable runnable = () -> {
             try {
                 JSONArray message = requests.setRequest(requests.urlRequest + "user/updateCalendar", params);
@@ -171,7 +175,8 @@ public class Calendar extends AppCompatActivity {
 
     private void deleteEvent(String date) {
         List<NameValuePair> params = new ArrayList<>(List.of(
-                new BasicNameValuePair("date", date)
+                new BasicNameValuePair("date", date),
+                new BasicNameValuePair("id", UserData.getUserData(this))
             )
         );
 
@@ -195,21 +200,5 @@ public class Calendar extends AppCompatActivity {
 
         Thread thread = new Thread(runnable);
         thread.start();
-    }
-
-    private void setToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        TextView textView = findViewById(R.id.title);
-        textView.setText(getApplicationContext().getString(R.string.service_text));
-
-        toolbar.setNavigationOnClickListener(
-                view -> this.startActivity(new Intent(this, Service.class))
-        );
     }
 }

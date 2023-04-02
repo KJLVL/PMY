@@ -1,7 +1,9 @@
 package com.example.myaquarium.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -31,7 +33,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.myaquarium.Forum;
 import com.example.myaquarium.R;
-import com.example.myaquarium.server.Requests;
+import com.example.myaquarium.service.Requests;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
@@ -87,7 +89,6 @@ public class FragmentForumNewTheme extends Fragment {
                 container,
                 false
         );
-
         this.setToolbar();
 
         category = inflatedView.findViewById(R.id.category);
@@ -163,9 +164,9 @@ public class FragmentForumNewTheme extends Fragment {
 
     private void setToolbar() {
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(view -> {
-            this.startActivity(new Intent(inflatedView.getContext(), Forum.class));
-        });
+        toolbar.setNavigationOnClickListener(
+                view -> this.startActivity(new Intent(inflatedView.getContext(), Forum.class))
+        );
 
         ActionBar actionBar = ((Forum)getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -355,13 +356,17 @@ public class FragmentForumNewTheme extends Fragment {
     }
 
     private void createTheme() {
+        SharedPreferences sharedpreferences
+                = this.getActivity().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
+
         List<NameValuePair> params = new ArrayList<>(List.of(
                 new BasicNameValuePair("category_id", this.categoryId),
                 new BasicNameValuePair("sections_id", this.sectionId),
                 new BasicNameValuePair("title", title.getText().toString()),
                 new BasicNameValuePair("city", spinner.getSelectedItem().toString()),
                 new BasicNameValuePair("phone", viewMyPhone.isChecked() ? userInfo.optString("phone") : ""),
-                new BasicNameValuePair("content", description.getText().toString())
+                new BasicNameValuePair("content", description.getText().toString()),
+                new BasicNameValuePair("id", sharedpreferences.getString("id", null))
         ));
 
         if (!photoNames.isEmpty()) {

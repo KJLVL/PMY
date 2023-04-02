@@ -3,6 +3,7 @@ package com.example.myaquarium.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -34,28 +35,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.ImageViewer;
 import com.example.myaquarium.R;
 import com.example.myaquarium.adapter.ForumCommentsAdapter;
-import com.example.myaquarium.server.Requests;
+import com.example.myaquarium.service.Requests;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.like.LikeButton;
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,20 +62,18 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
     private LinearLayout linearLayout;
     private Bitmap bitmap;
     private EditText comment;
-    private TextView phone;
-    private TextView city;
     private LinearLayout layoutPhoto;
 
     private List<String> photoNames;
     private List<String> photoList;
     private int count = 0;
-    private String loginTo = "";
     private String idLoginTo = "";
 
     private final JSONObject theme;
     private final String id;
     private final Requests requests = new Requests();
     private ForumCommentsAdapter forumCommentsAdapter;
+    private SharedPreferences sharedpreferences;
 
     public FragmentForumViewTheme(JSONObject theme, String id) {
         this.theme = theme;
@@ -103,6 +93,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
                 false
         );
 
+        this.sharedpreferences = this.getActivity().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
         TextView title = inflatedView.findViewById(R.id.title);
         title.setText(theme.optString("sections"));
 
@@ -199,13 +190,11 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
     }
 
     private void sendComment() {
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpPost http = new HttpPost(requests.urlRequest + "user/forum/comment");
-
         List<NameValuePair> params = new ArrayList<>(List.of(
                 new BasicNameValuePair("theme_id", theme.optString("id")),
                 new BasicNameValuePair("response_user_id", idLoginTo),
-                new BasicNameValuePair("comment", comment.getText().toString())
+                new BasicNameValuePair("comment", comment.getText().toString()),
+                new BasicNameValuePair("id", sharedpreferences.getString("id", null))
         ));
 
         if (!photoNames.isEmpty()) {
@@ -215,42 +204,32 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
 
         Runnable runnable = () -> {
             try {
-                http.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-                HttpResponse httpResponse = httpclient.execute(http);
-                HttpEntity httpEntity = httpResponse.getEntity();
-                BufferedReader bufferedReader = new BufferedReader(
-                        new InputStreamReader(httpEntity.getContent(), StandardCharsets.UTF_8),
-                        8
-                );
-                StringBuilder stringBuilder = new StringBuilder();
-                while (bufferedReader.readLine() != null) {
-                    stringBuilder.append(bufferedReader.readLine());
-                }
-
-                JSONObject object = new JSONObject(stringBuilder.toString());
-                String success = object.getString("success");
-                if (success.equals("1")) {
-                    inflatedView.post(() -> {
-                        comment.setText("");
-                        if (count == 1) {
-                            layoutPhoto.removeAllViewsInLayout();
-                        }
-                        count = 0;
-                        Toast.makeText(
-                                inflatedView.getContext(),
-                                "Комментарий был успешно добавлен", Toast.LENGTH_LONG
-                        ).show();
-                        InputMethodManager imm = (InputMethodManager) getActivity()
-                                .getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(
-                                getActivity()
-                                        .getWindow()
-                                        .getDecorView()
-                                        .getWindowToken(),
-                                0
-                        );
-                        this.getComments();
-                    });
+                JSONArray comments = requests.setRequest(requests.urlRequest + "user/forum/comment", params);
+                for (int i = 0; i < comments.length(); i++) {
+                    JSONObject result = new JSONObject(String.valueOf(comments.getJSONObject(i)));
+                    if (result.optString("success").equals("1")) {
+                        inflatedView.post(() -> {
+                            comment.setText("");
+                            if (count == 1) {
+                                layoutPhoto.removeAllViewsInLayout();
+                            }
+                            count = 0;
+                            Toast.makeText(
+                                    inflatedView.getContext(),
+                                    "Комментарий был успешно добавлен", Toast.LENGTH_LONG
+                            ).show();
+                            InputMethodManager imm = (InputMethodManager) getActivity()
+                                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(
+                                    getActivity()
+                                            .getWindow()
+                                            .getDecorView()
+                                            .getWindowToken(),
+                                    0
+                            );
+                            this.getComments();
+                        });
+                    }
                 }
 
             } catch (IOException | JSONException e) {
@@ -264,7 +243,8 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
     private void likeAction(LikeButton likeButton) {
         List<NameValuePair> params = new ArrayList<>(List.of(
                 new BasicNameValuePair("theme_id", theme.optString("id")),
-                new BasicNameValuePair("like", String.valueOf(likeButton.isLiked()))
+                new BasicNameValuePair("like", String.valueOf(likeButton.isLiked())),
+                new BasicNameValuePair("id", sharedpreferences.getString("id", null))
         )
         );
 
@@ -300,8 +280,9 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
 
     private void getLike(LikeButton likeButton) {
         List<NameValuePair> params = new ArrayList<>(List.of(
-                new BasicNameValuePair("theme_id", theme.optString("id"))
-        )
+                new BasicNameValuePair("theme_id", theme.optString("id")),
+                new BasicNameValuePair("id", sharedpreferences.getString("id", null))
+            )
         );
 
         Runnable runnable = () -> {
@@ -359,7 +340,6 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
                 imm.showSoftInput(comment, InputMethodManager.SHOW_IMPLICIT);
                 comment.requestFocus();
                 comment.setText(nameAuthor + ", ");
-                loginTo = loginAuthor;
                 idLoginTo = author;
             };
 

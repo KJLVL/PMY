@@ -20,7 +20,7 @@ import com.example.myaquarium.R;
 import com.example.myaquarium.Service;
 import com.example.myaquarium.adapter.FishListWithChoiceAdapter;
 import com.example.myaquarium.adapter.ResultCompatibilityAdapter;
-import com.example.myaquarium.server.Requests;
+import com.example.myaquarium.service.Requests;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -43,15 +43,11 @@ public class FragmentServiceCalculatorFish extends Fragment {
 
     private FishListWithChoiceAdapter fishAdapter;
     private ResultCompatibilityAdapter compatibilityAdapter;
-    private boolean[] checked;
 
+    private boolean[] checked;
     private List<String> fishList;
     private List<String> currentFishList;
     private List<List<String>> resultComp;
-
-    public static FragmentServiceCalculatorFish newInstance() {
-        return new FragmentServiceCalculatorFish();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,9 +100,9 @@ public class FragmentServiceCalculatorFish extends Fragment {
 
     private void setToolbar() {
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(view -> {
-            this.startActivity(new Intent(inflatedView.getContext(), Service.class));
-        });
+        toolbar.setNavigationOnClickListener(
+                view -> this.startActivity(new Intent(inflatedView.getContext(), Service.class))
+        );
 
         ActionBar actionBar = ((Service)getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -135,9 +131,7 @@ public class FragmentServiceCalculatorFish extends Fragment {
                     fishList.add(object.getString("fish_name"));
                 }
                 this.setFishList(fishList);
-                this.inflatedView.post(() -> {
-                    fishAdapter.notifyDataSetChanged();
-                });
+                this.inflatedView.post(() -> fishAdapter.notifyDataSetChanged());
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -171,11 +165,11 @@ public class FragmentServiceCalculatorFish extends Fragment {
                 ).show();
                 return;
             }
-            this.getComp();
+            this.getCompatibility();
         });
     }
 
-    private void getComp() {
+    private void getCompatibility() {
         resultComp = new ArrayList<>();
 
         List<NameValuePair> params = new ArrayList<>(List.of(

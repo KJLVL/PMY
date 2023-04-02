@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import com.example.myaquarium.server.Requests;
+import com.example.myaquarium.service.Navigation;
+import com.example.myaquarium.service.Requests;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
@@ -26,7 +26,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class TipsPage extends AppCompatActivity {
     private Requests requests;
@@ -38,28 +37,20 @@ public class TipsPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tips_page);
+        Navigation.setToolbar(
+                this,
+                getApplicationContext().getString(R.string.tips_text),
+                Tips.class
+        );
+        Navigation.setMenuNavigation(this);
+
+
         requests = new Requests();
-        this.setToolbar();
 
         layout = findViewById(R.id.layout);
         Bundle arguments = getIntent().getExtras();
 
         this.getTips(arguments.getString("id"));
-
-    }
-
-    private void setToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        TextView textView = findViewById(R.id.title);
-        textView.setText(getApplicationContext().getString(R.string.tips_text));
-
-        toolbar.setNavigationOnClickListener(view -> this.startActivity(new Intent(this, Tips.class)));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

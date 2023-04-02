@@ -1,18 +1,16 @@
 package com.example.myaquarium;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.adapter.TipsAdapter;
 import com.example.myaquarium.adapter.TipsMenuAdapter;
-import com.example.myaquarium.server.Requests;
+import com.example.myaquarium.service.Navigation;
+import com.example.myaquarium.service.Requests;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +19,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Tips extends AppCompatActivity {
     private List<String> tipsMenuList;
@@ -42,8 +39,12 @@ public class Tips extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tips);
-
-        this.setToolbar();
+        Navigation.setToolbar(
+                this,
+                getApplicationContext().getString(R.string.tips_text),
+                Service.class
+        );
+        Navigation.setMenuNavigation(this);
 
         fullTipsList = new ArrayList<>();
         tipsMenuRecycler = findViewById(R.id.tipsMenu);
@@ -58,30 +59,6 @@ public class Tips extends AppCompatActivity {
 
         this.getTipsMenu();
         this.getTips();
-
-        TextView calculator = findViewById(R.id.service);
-        TextView profile = findViewById(R.id.profile);
-        TextView forum = findViewById(R.id.forum);
-
-        calculator.setOnClickListener(view -> this.startActivity(new Intent(this, Service.class)));
-        forum.setOnClickListener(view -> this.startActivity(new Intent(this, Forum.class)));
-        profile.setOnClickListener(view -> this.startActivity(new Intent(this, Profile.class)));
-    }
-
-    private void setToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        TextView textView = findViewById(R.id.title);
-        textView.setText(getApplicationContext().getString(R.string.tips_text));
-
-        toolbar.setNavigationOnClickListener(view -> {
-            this.startActivity(new Intent(this, Service.class));
-        });
     }
 
     private void getTipsMenu() {
