@@ -14,8 +14,8 @@ import com.example.myaquarium.adapter.view.ResultCompatibilityViewHolder;
 import java.util.List;
 
 public class ResultCompatibilityAdapter extends RecyclerView.Adapter<ResultCompatibilityViewHolder> {
-    private Context context;
-    private List<List<String>> fishList;
+    private final Context context;
+    private final List<List<String>> fishList;
 
     public ResultCompatibilityAdapter(
             Context context,

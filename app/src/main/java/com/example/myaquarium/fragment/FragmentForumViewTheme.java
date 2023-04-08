@@ -334,7 +334,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
             );
             commentsRecycler.setLayoutManager(layoutManager);
 
-            ForumCommentsAdapter.onAnswerClickListener onAnswerClickListener = (author, loginAuthor, nameAuthor) -> {
+            ForumCommentsAdapter.onAnswerClickListener onAnswerClickListener = (author, nameAuthor) -> {
                 InputMethodManager imm = (InputMethodManager)
                         getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(comment, InputMethodManager.SHOW_IMPLICIT);
@@ -343,16 +343,15 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
                 idLoginTo = author;
             };
 
-            ForumCommentsAdapter.onClickImageListener onClickImageListener = (uri, image) -> {
-                image.setOnClickListener(view -> {
-                    Intent intent = new Intent(this.getContext(), ImageViewer.class);
-                    intent.putExtra("image", uri);
-                    intent.putExtra("theme", theme.toString());
-                    intent.putExtra("id", id);
-                    intent.putExtra("class", "ViewTheme");
-                    startActivity(intent);
-                });
-            };
+            ForumCommentsAdapter.onClickImageListener onClickImageListener =
+            (uri, image) -> image.setOnClickListener(view -> {
+                Intent intent = new Intent(this.getContext(), ImageViewer.class);
+                intent.putExtra("image", uri);
+                intent.putExtra("theme", theme.toString());
+                intent.putExtra("id", id);
+                intent.putExtra("class", "ViewTheme");
+                startActivity(intent);
+            });
 
             forumCommentsAdapter = new ForumCommentsAdapter(
                     inflatedView.getContext(),
@@ -404,7 +403,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
         return imageView;
     }
 
-    private ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
@@ -430,15 +429,15 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
                         ImageView newImage = new ImageView(inflatedView.getContext());
                         Picasso.get()
                                 .load(uri)
-                                .resize(0, 100)
+                                .resize(150, 150)
                                 .centerCrop()
                                 .into(newImage);
 
                         generateImage();
 
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                                200,
-                                200
+                                150,
+                                150
                         );
                         lp.setMargins(10,5,0,5);
 

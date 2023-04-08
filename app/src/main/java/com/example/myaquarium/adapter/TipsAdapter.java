@@ -22,9 +22,9 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class TipsAdapter extends RecyclerView.Adapter<TipsViewHolder> {
-    private Context context;
-    private List<JSONObject> tips;
-    private Requests requests = new Requests();
+    private final Context context;
+    private final List<JSONObject> tips;
+    private final Requests requests = new Requests();
 
     public TipsAdapter(Context context, List<JSONObject> tips) {
         this.context = context;

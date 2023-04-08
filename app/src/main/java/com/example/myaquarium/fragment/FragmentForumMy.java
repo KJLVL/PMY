@@ -45,7 +45,6 @@ public class FragmentForumMy extends Fragment {
     private ForumUserThemesAdapter themesAdapter;
     private ForumThemesAdapter likedAdapter;
 
-    private SharedPreferences sharedpreferences;
     private List<NameValuePair> params;
 
     public static FragmentForumMy newInstance() {
@@ -200,6 +199,7 @@ public class FragmentForumMy extends Fragment {
     private void newTheme() {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.my, FragmentForumNewTheme.newInstance());
+
         transaction.commit();
     }
 }

@@ -15,8 +15,8 @@ import com.example.myaquarium.adapter.view.TipsMenuViewHolder;
 import java.util.List;
 
 public class TipsMenuAdapter extends RecyclerView.Adapter<TipsMenuViewHolder> {
-    private Context context;
-    private List<String> category;
+    private final Context context;
+    private final List<String> category;
 
     public TipsMenuAdapter(Context context, List<String> category) {
         this.context = context;

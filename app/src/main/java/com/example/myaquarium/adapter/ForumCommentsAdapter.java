@@ -19,14 +19,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsViewHolder> {
-    private Context context;
-    private JSONArray commentsList;
-    private Requests requests = new Requests();
+    private final Context context;
+    private final JSONArray commentsList;
+    private final Requests requests = new Requests();
     private final ForumCommentsAdapter.onAnswerClickListener onClickListener;
     private final ForumCommentsAdapter.onClickImageListener imageClickListener;
 
     public interface onAnswerClickListener {
-        void onStateClick(String author, String loginAuthor, String name);
+        void onStateClick(String author, String name);
     }
 
     public interface onClickImageListener {
@@ -80,12 +80,14 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
                 Picasso.get()
                         .load(requests.urlRequestImg + jsonObject.optString("images"))
                         .into(holder.switcher);
-                holder.switcher.setOnClickListener(view -> {
-                    imageClickListener.onImageClick(requests.urlRequestImg + jsonObject.optString("images"), holder.switcher);
-                });
+                holder.switcher.setOnClickListener(view -> imageClickListener.onImageClick(
+                                requests.urlRequestImg + jsonObject.optString("images"),
+                                holder.switcher
+                        )
+                );
             }
             holder.answer.setOnClickListener(view -> {
-                onClickListener.onStateClick(jsonObject.optString("user_id"), jsonObject.optString("login_from"), jsonObject.optString("name"));
+                onClickListener.onStateClick(jsonObject.optString("user_id"), jsonObject.optString("name"));
             });
 
         } catch (JSONException e) {

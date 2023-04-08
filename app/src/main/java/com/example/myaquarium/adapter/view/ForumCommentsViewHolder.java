@@ -13,13 +13,13 @@ import com.github.chrisbanes.photoview.PhotoView;
 
 
 public class ForumCommentsViewHolder extends RecyclerView.ViewHolder {
-    public ImageView avatar;
-    public TextView author;
-    public TextView date;
-    public TextView comment;
-    public LinearLayout images;
-    public PhotoView switcher;
-    public AppCompatButton answer;
+    public final ImageView avatar;
+    public final TextView author;
+    public final TextView date;
+    public final TextView comment;
+    public final LinearLayout images;
+    public final PhotoView switcher;
+    public final AppCompatButton answer;
 
     public ForumCommentsViewHolder(View view){
         super(view);

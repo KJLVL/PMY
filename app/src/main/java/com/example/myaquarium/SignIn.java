@@ -83,19 +83,15 @@ public class SignIn extends AppCompatActivity {
                     JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
                     dialogInterface.dismiss();
                     if (object.optString("success").equals("1")) {
-                        runOnUiThread(() -> {
-                            Toast.makeText(
-                                    this,
-                                    "Вы были успешно зарегистрированы", Toast.LENGTH_SHORT
-                            ).show();
-                        });
+                        runOnUiThread(() -> Toast.makeText(
+                                this,
+                                "Вы были успешно зарегистрированы", Toast.LENGTH_SHORT
+                        ).show());
                     } else {
-                        runOnUiThread(() -> {
-                            Toast.makeText(
-                                    this,
-                                    "Пользователь с таким email уже зарегистрирован", Toast.LENGTH_SHORT
-                            ).show();
-                        });
+                        runOnUiThread(() -> Toast.makeText(
+                                this,
+                                "Пользователь с таким email уже зарегистрирован", Toast.LENGTH_SHORT
+                        ).show());
                     }
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
@@ -218,12 +214,10 @@ public class SignIn extends AppCompatActivity {
                         startActivity(new Intent(SignIn.this, Profile.class));
                     } else {
                         dialogInterface.dismiss();
-                        runOnUiThread(() -> {
-                            Toast.makeText(
-                                    this,
-                                    "Не верно введен email или пароль", Toast.LENGTH_SHORT
-                            ).show();
-                        });
+                        runOnUiThread(() -> Toast.makeText(
+                                this,
+                                "Не верно введен email или пароль", Toast.LENGTH_SHORT
+                        ).show());
                     }
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
@@ -241,9 +235,9 @@ public class SignIn extends AppCompatActivity {
             alertDialog.setTitle("Введите ваш Email для восстановления пароля");
             forgot.setVisibility(View.GONE);
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setText("Отправить");
-            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(view1 -> {
-                this.passwordRecovery(loginField.getText().toString(), alertDialog);
-            });
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(
+                    view1 -> this.passwordRecovery(loginField.getText().toString(), alertDialog)
+            );
 
             alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setText("Назад");
             alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(view1 -> {

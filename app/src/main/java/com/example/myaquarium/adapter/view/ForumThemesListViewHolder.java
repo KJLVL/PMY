@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.R;
 
 public class ForumThemesListViewHolder extends RecyclerView.ViewHolder {
-    public SwitchCompat checkBox;
+    public final SwitchCompat checkBox;
 
     public ForumThemesListViewHolder(View view){
         super(view);

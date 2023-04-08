@@ -14,23 +14,16 @@ import com.example.myaquarium.adapter.view.FishListWithChoiceViewHolder;
 import java.util.List;
 
 public class FishListWithChoiceAdapter extends RecyclerView.Adapter<FishListWithChoiceViewHolder> {
-    private Context context;
-    private List<String> fishList;
-//    private final OnFishClickListener onClickListener;
-    private boolean[] checked;
-
-//    public interface OnFishClickListener {
-//        void onStateClick(SwitchCompat fish);
-//    }
+    private final Context context;
+    private final List<String> fishList;
+    private final boolean[] checked;
 
     public FishListWithChoiceAdapter(
             Context context,
             List<String> fishList
-//            OnFishClickListener onClickListener
     ) {
         this.context = context;
         this.fishList = fishList;
-//        this.onClickListener = onClickListener;
         checked = new boolean[fishList.size()];
     }
 
@@ -49,10 +42,7 @@ public class FishListWithChoiceAdapter extends RecyclerView.Adapter<FishListWith
         holder.checkBox.setText(fishList.get(position));
         holder.checkBox.setChecked(checked[position]);
         holder.checkBox.setOnClickListener(
-                v -> {
-                    checked[position] = !checked[position];
-//                    onClickListener.onStateClick(holder.checkBox);
-                }
+                v -> checked[position] = !checked[position]
         );
     }
 

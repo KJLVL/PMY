@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +19,7 @@ import com.example.myaquarium.R;
 import com.example.myaquarium.Service;
 import com.example.myaquarium.adapter.FishListWithChoiceAdapter;
 import com.example.myaquarium.adapter.ResultCompatibilityAdapter;
+import com.example.myaquarium.service.CalculateMessages;
 import com.example.myaquarium.service.Requests;
 
 import org.apache.http.NameValuePair;
@@ -112,12 +112,7 @@ public class FragmentServiceCalculatorFish extends Fragment {
     private void setMessage() {
         TextView btnFish = inflatedView.findViewById(R.id.btnFish);
         btnFish.setOnClickListener(view -> {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(inflatedView.getContext());
-            dialog.setTitle(R.string.service_title_fish);
-            dialog.setMessage(R.string.service_msg_fish);
-
-            dialog.setPositiveButton("Закрыть", (dialogInterface, i) -> dialogInterface.dismiss());
-            dialog.show();
+            CalculateMessages.setMessage(inflatedView, R.string.service_title_fish, R.string.service_msg_fish);
         });
     }
 

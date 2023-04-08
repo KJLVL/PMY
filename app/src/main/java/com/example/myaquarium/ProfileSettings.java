@@ -54,10 +54,8 @@ public class ProfileSettings extends AppCompatActivity {
     private EditText phone;
     private EditText login;
 
-    private TextView password;
     private ImageView image;
     private Button save;
-    private TextView exit;
 
     private RelativeLayout root;
 
@@ -87,9 +85,9 @@ public class ProfileSettings extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
         phone = findViewById(R.id.phone);
         login = findViewById(R.id.login);
-        password = findViewById(R.id.password);
+        TextView password = findViewById(R.id.password);
         save = findViewById(R.id.save);
-        exit = findViewById(R.id.exit);
+        TextView exit = findViewById(R.id.exit);
 
         this.getCities();
         this.getUser();
@@ -136,15 +134,16 @@ public class ProfileSettings extends AppCompatActivity {
     }
 
     private void changePassword() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         dialog.setTitle("Изменение пароля");
 
         LayoutInflater inflater = LayoutInflater.from(this);
-        View registrationWindow = inflater.inflate(R.layout.change_password_window, null);
-        dialog.setView(registrationWindow);
+        View changePassword = inflater.inflate(R.layout.change_password_window, null);
+        changePassword.setBackgroundColor(getResources().getColor(R.color.ripple));
+        dialog.setView(changePassword);
 
-        MaterialEditText oldPasswordField = registrationWindow.findViewById(R.id.oldPassword);
-        MaterialEditText newPasswordField = registrationWindow.findViewById(R.id.newPassword);
+        MaterialEditText oldPasswordField = changePassword.findViewById(R.id.oldPassword);
+        MaterialEditText newPasswordField = changePassword.findViewById(R.id.newPassword);
 
         dialog.setNegativeButton("Отменить", (dialogInterface, i) -> dialogInterface.dismiss());
         dialog.setPositiveButton("Сохранить", (dialogInterface, i) -> {
@@ -162,9 +161,8 @@ public class ProfileSettings extends AppCompatActivity {
 
             List<NameValuePair> params = new ArrayList<>(List.of(
                     new BasicNameValuePair("oldPassword", oldPassword),
-                    new BasicNameValuePair("oldPassword", oldPassword),
+                    new BasicNameValuePair("newPassword", newPassword),
                     new BasicNameValuePair("id", UserData.getUserData(this))
-
                 )
             );
 
@@ -174,10 +172,16 @@ public class ProfileSettings extends AppCompatActivity {
                     JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
                     if (object.optString("success").equals("1")) {
                         dialogInterface.dismiss();
-                        getNotice("Пароль был успешно изменен!");
+                        root.post(() -> Toast.makeText(
+                                this,
+                                "Пароль был успешно изменен", Toast.LENGTH_SHORT
+                        ).show());
                     } else {
                         dialogInterface.dismiss();
-                        getNotice("Неверно введен текущий пароль. Повторите попытку!");
+                        root.post(() -> Toast.makeText(
+                                this,
+                                "Неверно введен текущий пароль. Повторите попытку", Toast.LENGTH_SHORT
+                        ).show());
                     }
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
@@ -188,15 +192,6 @@ public class ProfileSettings extends AppCompatActivity {
 
         });
         dialog.show();
-    }
-
-    private void getNotice(String message) {
-        this.runOnUiThread(() -> {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(ProfileSettings.this);
-            dialog.setMessage(message);
-            dialog.setPositiveButton("Закрыть", (dialogInterface, i) -> dialogInterface.dismiss());
-            dialog.show();
-        });
     }
 
     private void getUser() {
@@ -287,12 +282,10 @@ public class ProfileSettings extends AppCompatActivity {
                 JSONArray message = requests.setRequest(requests.urlRequest + "user/update", params);
                 JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
                 if (object.optString("success").equals("1")) {
-                    root.post(() -> {
-                        Toast.makeText(
-                                this,
-                                "Данные были успешно сохранены!", Toast.LENGTH_SHORT
-                        ).show();
-                    });
+                    root.post(() -> Toast.makeText(
+                            this,
+                            "Данные были успешно сохранены!", Toast.LENGTH_SHORT
+                    ).show());
                 }
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
@@ -309,7 +302,7 @@ public class ProfileSettings extends AppCompatActivity {
         someActivityResultLauncher.launch(intent);
     }
 
-    private ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {

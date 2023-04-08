@@ -18,13 +18,13 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class FishListAdapter extends RecyclerView.Adapter<FishListViewHolder> {
-    private Context context;
-    private TextView myFish;
+    private final Context context;
+    private final TextView myFish;
     private static List<JSONObject> fishList;
 
     public FishListAdapter(Context context, List<JSONObject> fishList, TextView myFish) {
         this.context = context;
-        this.fishList = fishList;
+        FishListAdapter.fishList = fishList;
         this.myFish = myFish;
     }
 

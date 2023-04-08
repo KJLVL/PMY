@@ -3,13 +3,11 @@ package com.example.myaquarium;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.adapter.FishListAdapter;
+import com.example.myaquarium.service.ImageEditor;
 import com.example.myaquarium.service.Navigation;
 import com.example.myaquarium.service.Requests;
 import com.example.myaquarium.service.UserData;
@@ -81,7 +80,6 @@ public class Profile extends AppCompatActivity {
     private List<String> photoNames;
     private List<String> photoList;
     private Bitmap bitmap;
-    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,12 +156,10 @@ public class Profile extends AppCompatActivity {
                 JSONArray message = requests.setRequest(requests.urlRequest + "user/profile", params);
                 JSONObject object = new JSONObject(String.valueOf(message.getJSONObject(0)));
                 if (object.optString("success").equals("1")) {
-                    this.runOnUiThread(() -> {
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "Данные были успешно сохранены", Toast.LENGTH_SHORT
-                        ).show();
-                    });
+                    this.runOnUiThread(() -> Toast.makeText(
+                            getApplicationContext(),
+                            "Данные были успешно сохранены", Toast.LENGTH_SHORT
+                    ).show());
                 }
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
@@ -231,9 +227,7 @@ public class Profile extends AppCompatActivity {
                 for (int i = 0; i < userFish.length(); i++) {
                     JSONObject result = new JSONObject(String.valueOf(userFish.getJSONObject(i)));
                     if (result.optString("success").equals("0")) {
-                        myFish.post(() -> {
-                            myFish.setVisibility(View.VISIBLE);
-                        });
+                        myFish.post(() -> myFish.setVisibility(View.VISIBLE));
                         return;
                     }
                     fishListCurrent.add(result);
@@ -412,7 +406,7 @@ public class Profile extends AppCompatActivity {
         });
     }
 
-    private ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() != Activity.RESULT_OK) return;
@@ -433,33 +427,9 @@ public class Profile extends AppCompatActivity {
                 Thread thread = new Thread(runnable);
                 thread.start();
 
-                Picasso.get().load(uri).into(img);
+                Button button = ImageEditor.editAddedImage(uri, this, img);
+                LinearLayout layout = ImageEditor.editLayoutImage(this, button, img);
 
-                LinearLayout layout = new LinearLayout(this);
-                layout.setOrientation(LinearLayout.HORIZONTAL);
-                layout.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT)
-                );
-
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                        200,
-                        200
-                );
-
-                Button button = new Button(this);
-                LinearLayout.LayoutParams lpBtn = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        70
-                );
-
-                lpBtn.setMargins(30, 0, 0, 0);
-                button.setText("удалить");
-                button.setTextSize(10);
-                button.setTextColor(Color.WHITE);
-                button.setLayoutParams(lpBtn);
-                button.setPadding(0, 0, 0, 0);
-                button.setBackgroundResource(R.color.bthAll);
                 button.setOnClickListener(view -> {
                     layout.removeAllViews();
                     int index = photoNames.indexOf(uri.getLastPathSegment());
@@ -468,10 +438,6 @@ public class Profile extends AppCompatActivity {
                     sendFish.setVisibility(this.photoList.size() != 0 ? View.VISIBLE : View.GONE);
                 });
 
-                img.setLayoutParams(lp);
-                layout.setGravity(Gravity.CENTER_VERTICAL);
-                layout.addView(img);
-                layout.addView(button);
                 linearLayout.addView(layout);
             });
 

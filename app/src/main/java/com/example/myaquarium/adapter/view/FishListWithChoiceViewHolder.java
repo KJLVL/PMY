@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.R;
 
 public class FishListWithChoiceViewHolder extends RecyclerView.ViewHolder {
-    public SwitchCompat checkBox;
+    public final SwitchCompat checkBox;
 
     public FishListWithChoiceViewHolder(View view){
         super(view);

@@ -13,10 +13,12 @@ import com.example.myaquarium.R;
 import com.example.myaquarium.adapter.view.ForumThemesListViewHolder;
 
 import java.util.List;
+import java.util.Map;
 
 public class ForumThemesListAdapter extends RecyclerView.Adapter<ForumThemesListViewHolder> {
     private final Context context;
     private final List<String> themesList;
+    private final Map<String, Boolean> checked;
     private final OnThemeClickListener onClickListener;
 
     public interface OnThemeClickListener {
@@ -26,10 +28,12 @@ public class ForumThemesListAdapter extends RecyclerView.Adapter<ForumThemesList
     public ForumThemesListAdapter(
             Context context,
             List<String> themesList,
+            Map<String, Boolean> checked,
             OnThemeClickListener onClickListener
     ) {
         this.context = context;
         this.themesList = themesList;
+        this.checked = checked;
         this.onClickListener = onClickListener;
     }
 
@@ -46,6 +50,11 @@ public class ForumThemesListAdapter extends RecyclerView.Adapter<ForumThemesList
     @Override
     public void onBindViewHolder(@NonNull ForumThemesListViewHolder holder, int position) {
         holder.checkBox.setText(themesList.get(position));
+
+        if (!checked.isEmpty()) {
+            holder.checkBox.setChecked(Boolean.TRUE.equals(checked.get(themesList.get(position))));
+        }
+
         holder.checkBox.setOnClickListener(
                 view -> onClickListener.onStateClick(themesList.get(position), holder.checkBox)
         );

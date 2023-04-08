@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.R;
 
 public class ForumThemesViewHolder extends RecyclerView.ViewHolder {
-    public LinearLayout sectionsItem;
-    public TextView theme;
-    public TextView author;
-    public TextView date;
+    public final LinearLayout sectionsItem;
+    public final TextView theme;
+    public final TextView author;
+    public final TextView date;
 
     public ForumThemesViewHolder(View view){
         super(view);

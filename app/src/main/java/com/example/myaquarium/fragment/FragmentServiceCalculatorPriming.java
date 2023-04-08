@@ -12,20 +12,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.myaquarium.R;
 import com.example.myaquarium.Service;
+import com.example.myaquarium.service.CalculateMessages;
 
 public class FragmentServiceCalculatorPriming extends Fragment {
     private View inflatedView;
     private Button calcPriming;
-
-    public static FragmentServiceCalculatorPriming newInstance() {
-        return new FragmentServiceCalculatorPriming();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,9 +42,9 @@ public class FragmentServiceCalculatorPriming extends Fragment {
 
     private void setToolbar() {
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(view -> {
-            this.startActivity(new Intent(inflatedView.getContext(), Service.class));
-        });
+        toolbar.setNavigationOnClickListener(
+                view -> this.startActivity(new Intent(inflatedView.getContext(), Service.class))
+        );
 
         ActionBar actionBar = ((Service)getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -58,12 +54,7 @@ public class FragmentServiceCalculatorPriming extends Fragment {
     private void setMessage() {
         TextView btnPr = inflatedView.findViewById(R.id.btnPr);
         btnPr.setOnClickListener(view -> {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(inflatedView.getContext());
-            dialog.setTitle(R.string.service_title_priming);
-            dialog.setMessage(R.string.service_msg_priming);
-
-            dialog.setPositiveButton("Закрыть", (dialogInterface, i) -> dialogInterface.dismiss());
-            dialog.show();
+            CalculateMessages.setMessage(inflatedView, R.string.service_title_priming, R.string.service_msg_priming);
         });
     }
 

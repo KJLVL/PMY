@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.R;
 
 public class ResultCompatibilityViewHolder extends RecyclerView.ViewHolder {
-    public TextView name;
-    public ImageView result;
+    public final TextView name;
+    public final ImageView result;
 
     public ResultCompatibilityViewHolder(View view){
         super(view);

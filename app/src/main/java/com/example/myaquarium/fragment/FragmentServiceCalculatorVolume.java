@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.R;
 import com.example.myaquarium.Service;
 import com.example.myaquarium.adapter.FishListAdapter;
+import com.example.myaquarium.service.CalculateMessages;
 import com.example.myaquarium.service.Requests;
 
 import org.apache.http.NameValuePair;
@@ -63,10 +63,6 @@ public class FragmentServiceCalculatorVolume extends Fragment {
     private List<JSONObject> fishListAll;
     private List<String> fishList;
     private static List<JSONObject> fishListCurrent;
-
-    public static FragmentServiceCalculatorVolume newInstance() {
-        return new FragmentServiceCalculatorVolume();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,9 +110,9 @@ public class FragmentServiceCalculatorVolume extends Fragment {
 
     private void setToolbar() {
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(view -> {
-            this.startActivity(new Intent(inflatedView.getContext(), Service.class));
-        });
+        toolbar.setNavigationOnClickListener(
+                view -> this.startActivity(new Intent(inflatedView.getContext(), Service.class))
+        );
 
         ActionBar actionBar = ((Service) getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -126,12 +122,7 @@ public class FragmentServiceCalculatorVolume extends Fragment {
     private void setMessage() {
         TextView btnVol = inflatedView.findViewById(R.id.btnVol);
         btnVol.setOnClickListener(view -> {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(inflatedView.getContext());
-            dialog.setTitle(R.string.service_title_volume);
-            dialog.setMessage(R.string.service_msg_volume);
-
-            dialog.setPositiveButton("Закрыть", (dialogInterface, i) -> dialogInterface.dismiss());
-            dialog.show();
+            CalculateMessages.setMessage(inflatedView, R.string.service_title_volume, R.string.service_msg_volume);
         });
     }
 

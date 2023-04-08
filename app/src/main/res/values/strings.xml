@@ -43,8 +43,8 @@
     <string name="service_calculate2">Рассичтать объем грунта</string>
     <string name="service_rec_prim">Необходимое количество грунта:</string>
     <string name="service_question">?</string>
-    <string name="service_msg_fish"></string>
-    <string name="service_title_fish"></string>
+    <string name="service_msg_fish">Аквариумных рыбок - великое множество. И далеко не все рыбки совместимы между собой, даже если на глаз они кажутся мирными. Под совместимостью мы понимаем не только отсутствие взаимной агресси у разных видов, но и близкие параметры воды, обустройства, рациона питания и прочих условий содержания.</string>
+    <string name="service_title_fish">Расчет осовместимости рыбок</string>
     <string name="service_msg_priming">Перед покупкой грунта в аквариум необходимо определить его количество, чтобы не остался лишний или наоборот, не хватило. Калькулятор поможет вам в этом! Просто введите указанные данные!</string>
     <string name="service_title_priming">Расчет объема аквариума</string>
     <string name="service_title_volume">Расчет объема аквариума</string>

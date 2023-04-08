@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.R;
 
 public class FishListViewHolder extends RecyclerView.ViewHolder {
-    public TextView nameView;
-    public TextView countView;
-    public Button addButton;
-    public Button removeButton;
-    public Button deleteButton;
+    public final TextView nameView;
+    public final TextView countView;
+    public final Button addButton;
+    public final Button removeButton;
+    public final Button deleteButton;
 
     public FishListViewHolder(View view){
         super(view);

@@ -17,8 +17,8 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class ForumThemesAdapter extends RecyclerView.Adapter<ForumThemesViewHolder> {
-    private Context context;
-    private List<JSONObject> themesList;
+    private final Context context;
+    private final List<JSONObject> themesList;
     private final OnThemeClickListener onClickListener;
 
     public interface OnThemeClickListener {

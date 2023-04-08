@@ -5,13 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +31,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.myaquarium.Forum;
 import com.example.myaquarium.R;
+import com.example.myaquarium.service.ImageEditor;
 import com.example.myaquarium.service.Requests;
-import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -61,8 +59,6 @@ public class FragmentForumNewTheme extends Fragment {
     private TextView title;
     private TextView description;
     private LinearLayout theme;
-    private Button create;
-    private Button addPhoto;
     private LinearLayout linearLayout;
 
     private List<Map<String, String>> categoryList;
@@ -99,8 +95,8 @@ public class FragmentForumNewTheme extends Fragment {
         title = inflatedView.findViewById(R.id.title);
         description = inflatedView.findViewById(R.id.description);
         theme = inflatedView.findViewById(R.id.theme);
-        create = inflatedView.findViewById(R.id.create);
-        addPhoto = inflatedView.findViewById(R.id.addPhoto);
+        Button create = inflatedView.findViewById(R.id.create);
+        Button addPhoto = inflatedView.findViewById(R.id.addPhoto);
         linearLayout = inflatedView.findViewById(R.id.layout);
 
         this.getCities();
@@ -153,6 +149,10 @@ public class FragmentForumNewTheme extends Fragment {
                     this.spinner.setAdapter(adapter);
                     if (!userInfo.optString("city").equals("null"))
                         this.spinner.setSelection(adapter.getPosition(userInfo.optString("city")));
+                    String phone = userInfo.optString("phone");
+                    if (phone.equals("") || phone.equals("null")) {
+                        viewMyPhone.setEnabled(false);
+                    }
                 });
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
@@ -266,55 +266,30 @@ public class FragmentForumNewTheme extends Fragment {
         }
     }
 
-    private ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     countPhoto++;
+
                     Intent data = result.getData();
                     Uri uri = data.getData();
                     photoNames.add(uri.getLastPathSegment());
 
                     ImageView img = new ImageView(inflatedView.getContext());
                     img.setImageURI(uri);
-
                     BitmapDrawable bd = (BitmapDrawable) img.getDrawable();
                     Runnable runnable = () -> {
-                        this.bitmap = bd.getBitmap();
+                        Bitmap bitmap = bd.getBitmap();
                         img.post(() -> this.generateImage(bitmap));
 
                     };
                     Thread thread = new Thread(runnable);
                     thread.start();
 
-                    Picasso.get().load(uri).into(img);
-                    img.setRotation(90);
+                    Button button = ImageEditor.editAddedImage(uri, inflatedView.getContext(), img);
+                    LinearLayout layout = ImageEditor.editLayoutImage(inflatedView.getContext(), button, img);
 
-                    LinearLayout layout = new LinearLayout(inflatedView.getContext());
-                    layout.setOrientation(LinearLayout.HORIZONTAL);
-                    layout.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT)
-                    );
-
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                            200,
-                            200
-                    );
-
-                    Button button = new Button(inflatedView.getContext());
-                    LinearLayout.LayoutParams lpBtn = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT,
-                            70
-                    );
-
-                    lpBtn.setMargins(30, 0, 0, 0);
-                    button.setText("удалить");
-                    button.setTextSize(10);
-                    button.setTextColor(Color.WHITE);
-                    button.setLayoutParams(lpBtn);
-                    button.setPadding(0,0,0,0);
-                    button.setBackgroundResource(R.color.bthAll);
                     button.setOnClickListener(view -> {
                         layout.removeAllViews();
                         int index = photoNames.indexOf(uri.getLastPathSegment());
@@ -323,10 +298,6 @@ public class FragmentForumNewTheme extends Fragment {
                         countPhoto--;
                     });
 
-                    img.setLayoutParams(lp);
-                    layout.setGravity(Gravity.CENTER_VERTICAL);
-                    layout.addView(img);
-                    layout.addView(button);
                     linearLayout.addView(layout);
                 }
             });
@@ -369,8 +340,7 @@ public class FragmentForumNewTheme extends Fragment {
                 new BasicNameValuePair("id", sharedpreferences.getString("id", null))
         ));
 
-        if (!photoNames.isEmpty()) {
-            params.add(new BasicNameValuePair("photoNames", photoNames.toString()));
+        if (!photoList.isEmpty()) {
             params.add(new BasicNameValuePair("photo", photoList.toString()));
         }
 

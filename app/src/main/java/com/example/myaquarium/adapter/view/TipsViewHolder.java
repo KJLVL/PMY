@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.R;
 
 public class TipsViewHolder extends RecyclerView.ViewHolder {
-    public ImageView tipsImage;
-    public TextView tipsTitle;
-    public TextView tipsContent;
+    public final ImageView tipsImage;
+    public final TextView tipsTitle;
+    public final TextView tipsContent;
 
     public TipsViewHolder(View view) {
         super(view);

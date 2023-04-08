@@ -39,7 +39,6 @@ public class Calendar extends AppCompatActivity {
     private final Requests requests = new Requests();
     private List<String> events = new ArrayList<>();
     private List<NameValuePair> params;
-    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.R;
 
 public final class TipsMenuViewHolder extends RecyclerView.ViewHolder {
-    public TextView categoryTitle;
+    public final TextView categoryTitle;
 
     public TipsMenuViewHolder(@NonNull View view) {
         super(view);
