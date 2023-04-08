@@ -26,6 +26,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myaquarium.model.User;
 import com.example.myaquarium.service.Navigation;
 import com.example.myaquarium.service.Requests;
 import com.example.myaquarium.service.UserData;
@@ -43,7 +44,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import pl.utkala.searchablespinner.SearchableSpinner;
 
@@ -59,7 +59,7 @@ public class ProfileSettings extends AppCompatActivity {
 
     private RelativeLayout root;
 
-    private JSONObject userInfo;
+    private User user;
 
     private Requests requests;
     private Bitmap bitmap;
@@ -121,9 +121,7 @@ public class ProfileSettings extends AppCompatActivity {
                             cities
                     );
                     this.spinner.setAdapter(adapter);
-                    if (!userInfo.optString("city").equals("null"))
-                        this.spinner.setSelection(adapter.getPosition(userInfo.optString("city")));
-                    else this.spinner.setSelection(adapter.getPosition(""));
+                    this.spinner.setSelection(adapter.getPosition(this.user.getCity()));
                 });
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
@@ -197,32 +195,25 @@ public class ProfileSettings extends AppCompatActivity {
     private void getUser() {
         List<NameValuePair> params = new ArrayList<>(List.of(
                 new BasicNameValuePair("id", UserData.getUserData(this))
-        )
+            )
         );
         Runnable runnable = () -> {
             try {
-                JSONArray user = requests.setRequest(requests.urlRequest + "user", params);
-                userInfo = new JSONObject(user.getJSONObject(0).toString());
+                this.user = requests.getUser(requests.setRequest(requests.urlRequest + "user", params));
 
                 this.runOnUiThread(() -> {
-                    name.setText(userInfo.optString("user_name"));
-                    if (!userInfo.optString("surname").equals("null"))
-                        surname.setText(userInfo.optString("surname"));
-                    if (!userInfo.optString("phone").equals("null"))
-                        phone.setText(userInfo.optString("phone"));
-                    login.setText(userInfo.optString("login"));
+                    name.setText(this.user.getUserName());
+                    surname.setText(this.user.getSurname());
+                    phone.setText(this.user.getPhone());
+                    login.setText(this.user.getLogin());
 
-                    if (!Objects.equals(userInfo.optString("avatar"), "")) {
-                        Picasso.get()
-                                .load(requests.urlRequestImg + userInfo.optString("avatar"))
-                                .into(image);
-                    } else {
-                        image.setImageResource(R.drawable.ic_launcher_foreground);
-                    }
+                    Picasso.get()
+                            .load(requests.urlRequestImg + this.user.getAvatar())
+                            .into(image);
 
                     image.setOnClickListener(view -> {
                         Intent intent = new Intent(this, ImageViewer.class);
-                        intent.putExtra("image", requests.urlRequestImg + userInfo.optString("avatar"));
+                        intent.putExtra("image", requests.urlRequestImg + this.user.getAvatar());
                         intent.putExtra("class", "ProfileSettings");
                         startActivity(intent);
                     });

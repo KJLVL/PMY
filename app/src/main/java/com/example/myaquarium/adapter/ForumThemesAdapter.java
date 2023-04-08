@@ -11,23 +11,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.R;
 import com.example.myaquarium.adapter.view.ForumThemesViewHolder;
-
-import org.json.JSONObject;
+import com.example.myaquarium.model.Theme;
 
 import java.util.List;
 
 public class ForumThemesAdapter extends RecyclerView.Adapter<ForumThemesViewHolder> {
     private final Context context;
-    private final List<JSONObject> themesList;
+    private final List<Theme> themesList;
     private final OnThemeClickListener onClickListener;
 
     public interface OnThemeClickListener {
-        void onStateClick(JSONObject theme, String category);
+        void onStateClick(String themeId, String category);
     }
 
     public ForumThemesAdapter(
             Context context,
-            List<JSONObject> themesList,
+            List<Theme> themesList,
             OnThemeClickListener onClickListener
     ) {
         this.context = context;
@@ -48,19 +47,18 @@ public class ForumThemesAdapter extends RecyclerView.Adapter<ForumThemesViewHold
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ForumThemesViewHolder holder, int position) {
-        holder.theme.setText(themesList.get(position).optString("title"));
-        holder.author.setText("автор: " + themesList.get(position).optString("author"));
-        holder.date.setText(themesList.get(position).optString("date"));
-
+        holder.theme.setText(themesList.get(position).getTitle());
+        holder.author.setText("автор: " + themesList.get(position).getAuthor());
+        holder.date.setText(themesList.get(position).getDate());
         this.setBackground(holder, position);
 
         holder.sectionsItem.setOnClickListener(
-                v -> onClickListener.onStateClick(themesList.get(position), themesList.get(position).optString("category_id"))
+                v -> onClickListener.onStateClick(themesList.get(position).getId(), themesList.get(position).getCategoryId())
         );
     }
 
     private void setBackground(ForumThemesViewHolder holder, int position) {
-        switch (themesList.get(position).optString("sections")) {
+        switch (themesList.get(position).getSections()) {
             case "Общие вопросы содержания":
                 holder.sectionsItem.setBackgroundColor(context.getResources().getColor(R.color.general_issues));
                 break;

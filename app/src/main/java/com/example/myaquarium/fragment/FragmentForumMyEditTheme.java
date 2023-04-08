@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.myaquarium.Forum;
 import com.example.myaquarium.R;
+import com.example.myaquarium.model.Theme;
 import com.example.myaquarium.service.ImageEditor;
 import com.example.myaquarium.service.Requests;
 
@@ -51,13 +52,13 @@ public class FragmentForumMyEditTheme extends Fragment {
     private List<String> photoList;
     private Bitmap bitmap;
     private int countPhoto = 0;
-    private final JSONObject theme;
+    private final Theme theme;
 
-    public FragmentForumMyEditTheme(JSONObject theme) {
+    public FragmentForumMyEditTheme(Theme theme) {
         this.theme = theme;
     }
 
-    public static FragmentForumMyEditTheme newInstance(JSONObject theme) {
+    public static FragmentForumMyEditTheme newInstance(Theme theme) {
         return new FragmentForumMyEditTheme(theme);
     }
 
@@ -73,9 +74,9 @@ public class FragmentForumMyEditTheme extends Fragment {
         this.setToolbar();
 
         description = inflatedView.findViewById(R.id.description);
-        description.setText(theme.optString("content"));
+        description.setText(theme.getContent());
         title = inflatedView.findViewById(R.id.title);
-        title.setText(theme.optString("title"));
+        title.setText(theme.getTitle());
         Button edit = inflatedView.findViewById(R.id.edit);
         Button addPhoto = inflatedView.findViewById(R.id.addPhoto);
         linearLayout = inflatedView.findViewById(R.id.layout);
@@ -84,8 +85,8 @@ public class FragmentForumMyEditTheme extends Fragment {
         photoNames = new ArrayList<>();
         photoList = new ArrayList<>();
 
-        if (!theme.optString("images").equals("null") && !theme.optString("images").equals("")) {
-            for (String image : theme.optString("images").split(";")) {
+        if (!theme.getImages().equals("null") && !theme.getImages().equals("")) {
+            for (String image : theme.getImages().split(";")) {
                 this.getImage(image);
             }
         }
@@ -206,7 +207,7 @@ public class FragmentForumMyEditTheme extends Fragment {
     private void updateTheme() {
         List<NameValuePair> params = new ArrayList<>(List.of(
                 new BasicNameValuePair("title", title.getText().toString()),
-                new BasicNameValuePair("id", theme.optString("id")),
+                new BasicNameValuePair("id", theme.getId()),
                 new BasicNameValuePair("content", description.getText().toString())
         ));
 

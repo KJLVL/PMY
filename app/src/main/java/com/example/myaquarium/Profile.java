@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.adapter.FishListAdapter;
+import com.example.myaquarium.model.User;
 import com.example.myaquarium.service.ImageEditor;
 import com.example.myaquarium.service.Navigation;
 import com.example.myaquarium.service.Requests;
@@ -60,6 +61,7 @@ public class Profile extends AppCompatActivity {
     private TextView downloadDefine;
 
     private Requests requests;
+    private User user;
 
     private TextView nameField;
     private TextView result;
@@ -74,7 +76,6 @@ public class Profile extends AppCompatActivity {
 
     private FishListAdapter fishAdapter;
 
-    private Map<String, String> userInfo;
     private List<String> fishList;
     private static List<JSONObject> fishListCurrent;
     private List<String> photoNames;
@@ -109,7 +110,6 @@ public class Profile extends AppCompatActivity {
         Button save = this.findViewById(R.id.save);
 
         fishListCurrent = new ArrayList<>();
-        userInfo = new HashMap<>();
         if (fishListCurrent.size() == 0) {
             myFish.setVisibility(View.VISIBLE);
         } else {
@@ -177,32 +177,20 @@ public class Profile extends AppCompatActivity {
         );
         Runnable runnable = () -> {
             try {
-                JSONArray user = requests.setRequest(requests.urlRequest + "user", params);
-                JSONObject object = new JSONObject(user.getJSONObject(0).toString());
-                userInfo.put("name", object.getString("user_name"));
-                userInfo.put("login", object.getString("login"));
-
-                userInfo.put("surname", !object.getString("surname").equals("null")
-                        ? object.getString("surname") : "");
-
-                userInfo.put("aquarium_volume", !object.getString("aquarium_volume").equals("null")
-                        ? object.getString("aquarium_volume") : "");
-
-                userInfo.put("avatar", !object.getString("avatar").equals("null")
-                        ? object.getString("avatar") : "");
+                this.user = requests.getUser(requests.setRequest(requests.urlRequest + "user", params));
 
                 this.runOnUiThread(() -> {
-                    String name = userInfo.get("name") + " " + userInfo.get("surname");
+                    String name = this.user.getUserName() + " " + this.user.getSurname();
                     nameField.setText(name);
-                    volumeField.setText(userInfo.get("aquarium_volume"));
+                    volumeField.setText(this.user.getAquariumVolume());
 
                     Picasso.get()
-                            .load(requests.urlRequestImg + userInfo.get("avatar"))
+                            .load(requests.urlRequestImg + this.user.getAvatar())
                             .resize(350, 0)
                             .into(image);
                     image.setOnClickListener(view -> {
                         Intent intent = new Intent(this, ImageViewer.class);
-                        intent.putExtra("image", requests.urlRequestImg + userInfo.get("avatar"));
+                        intent.putExtra("image", requests.urlRequestImg + this.user.getAvatar());
                         intent.putExtra("class", "Profile");
                         startActivity(intent);
                     });

@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myaquarium.ImageViewer;
 import com.example.myaquarium.R;
 import com.example.myaquarium.adapter.ForumCommentsAdapter;
+import com.example.myaquarium.model.Theme;
 import com.example.myaquarium.service.Requests;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.like.LikeButton;
@@ -69,18 +70,18 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
     private int count = 0;
     private String idLoginTo = "";
 
-    private final JSONObject theme;
+    private final Theme theme;
     private final String id;
     private final Requests requests = new Requests();
     private ForumCommentsAdapter forumCommentsAdapter;
     private SharedPreferences sharedpreferences;
 
-    public FragmentForumViewTheme(JSONObject theme, String id) {
+    public FragmentForumViewTheme(Theme theme, String id) {
         this.theme = theme;
         this.id = id;
     }
 
-    public static FragmentForumViewTheme newInstance(JSONObject theme, String id) {
+    public static FragmentForumViewTheme newInstance(Theme theme, String id) {
         return new FragmentForumViewTheme(theme, id);
     }
 
@@ -95,27 +96,23 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
 
         this.sharedpreferences = this.getActivity().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
         TextView title = inflatedView.findViewById(R.id.title);
-        title.setText(theme.optString("sections"));
+        title.setText(theme.getSections());
 
         TextView phone = inflatedView.findViewById(R.id.phone);
-        if (!theme.optString("user_phone").equals("") && !theme.optString("user_phone").equals("null")) {
-            phone.setText("Номер телефона: " + theme.optString("user_phone"));
+        if (!theme.getUserPhone().equals("null") && !theme.getUserPhone().equals("")) {
+            phone.setText("Номер телефона: " + theme.getUserPhone());
         } else {
             phone.setVisibility(View.GONE);
         }
 
         TextView city = inflatedView.findViewById(R.id.city);
-        if (!theme.optString("city").equals("") && !theme.optString("city").equals("null")) {
-            city.setText("Город: " + theme.optString("city"));
-        } else {
-            city.setVisibility(View.GONE);
-        }
+        city.setText("Город: " + theme.getCity());
 
 
         TextView themeTitle = inflatedView.findViewById(R.id.themeTitle);
-        themeTitle.setText(theme.optString("title"));
+        themeTitle.setText(theme.getTitle());
         TextView content = inflatedView.findViewById(R.id.content);
-        content.setText(theme.optString("content"));
+        content.setText(theme.getContent());
         photoNames = new ArrayList<>();
         photoList = new ArrayList<>();
         linearLayout = inflatedView.findViewById(R.id.layout);
@@ -155,7 +152,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
 
         this.getComments();
 
-        if (theme.optString("images").equals("null") || theme.optString("images").equals("")) {
+        if (theme.getImages().equals("null") || theme.getImages().equals("")) {
             imagesLayout.setVisibility(View.GONE);
         } else {
             this.setImages();
@@ -191,7 +188,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
 
     private void sendComment() {
         List<NameValuePair> params = new ArrayList<>(List.of(
-                new BasicNameValuePair("theme_id", theme.optString("id")),
+                new BasicNameValuePair("theme_id", theme.getId()),
                 new BasicNameValuePair("response_user_id", idLoginTo),
                 new BasicNameValuePair("comment", comment.getText().toString()),
                 new BasicNameValuePair("id", sharedpreferences.getString("id", null))
@@ -242,7 +239,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
 
     private void likeAction(LikeButton likeButton) {
         List<NameValuePair> params = new ArrayList<>(List.of(
-                new BasicNameValuePair("theme_id", theme.optString("id")),
+                new BasicNameValuePair("theme_id", theme.getId()),
                 new BasicNameValuePair("like", String.valueOf(likeButton.isLiked())),
                 new BasicNameValuePair("id", sharedpreferences.getString("id", null))
         )
@@ -280,7 +277,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
 
     private void getLike(LikeButton likeButton) {
         List<NameValuePair> params = new ArrayList<>(List.of(
-                new BasicNameValuePair("theme_id", theme.optString("id")),
+                new BasicNameValuePair("theme_id", theme.getId()),
                 new BasicNameValuePair("id", sharedpreferences.getString("id", null))
             )
         );
@@ -305,7 +302,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
 
     private void getComments() {
         List<NameValuePair> params = new ArrayList<>(List.of(
-                new BasicNameValuePair("theme_id", theme.optString("id"))
+                new BasicNameValuePair("theme_id", theme.getId())
             )
         );
 
@@ -367,7 +364,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
         images = new ArrayList<>();
         Runnable runnable = () -> {
             try {
-                for (String item : theme.optString("images").split(";")) {
+                for (String item : theme.getImages().split(";")) {
                     Bitmap bitmap = Picasso.get().load(requests.urlRequestImg + item).get();
                     this.images.add(bitmap);
                 }

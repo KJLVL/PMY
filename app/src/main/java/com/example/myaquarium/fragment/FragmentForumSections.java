@@ -20,6 +20,7 @@ import com.example.myaquarium.R;
 import com.example.myaquarium.ViewTheme;
 import com.example.myaquarium.adapter.ForumThemesAdapter;
 import com.example.myaquarium.adapter.ForumThemesListAdapter;
+import com.example.myaquarium.model.Theme;
 import com.example.myaquarium.service.Requests;
 
 import org.apache.http.NameValuePair;
@@ -30,7 +31,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -48,11 +48,10 @@ public class FragmentForumSections extends Fragment {
     private LinearLayout filter;
     private SearchableSpinner citySpinner;
 
-    private List<JSONObject> themesList;
-    private List<JSONObject> currentThemes;
+    private List<Theme> themesList;
+    private List<Theme> currentThemes;
     private List<String> themesListItems;
     private Map<String, Boolean> checked;
-    private Map<String, Boolean> checkedCity;
 
     private final int id;
 
@@ -88,7 +87,6 @@ public class FragmentForumSections extends Fragment {
         filter = inflatedView.findViewById(R.id.filter);
 
         checked = new LinkedHashMap<>();
-        checkedCity = new HashMap<>();
         themesList = new ArrayList<>();
         currentThemes = new ArrayList<>();
 
@@ -142,16 +140,16 @@ public class FragmentForumSections extends Fragment {
                     return;
                 }
 
-                List<JSONObject> oldThemes = new ArrayList<>();
-                for (JSONObject item : themesList) {
-                    if (!item.optString("city").equals(adapterView.getSelectedItem())) {
+                List<Theme> oldThemes = new ArrayList<>();
+                for (Theme item : themesList) {
+                    if (!item.getCity().equals(adapterView.getSelectedItem())) {
                         oldThemes.add(item);
-                        checked.put(item.optString("sections"), false);
+                        checked.put(item.getSections(), false);
                     }
                 }
                 currentThemes.removeAll(oldThemes);
-                for (JSONObject item : currentThemes) {
-                    checked.put(item.optString("sections"), true);
+                for (Theme item : currentThemes) {
+                    checked.put(item.getSections(), true);
                 }
                 checkAllSectionsItems();
                 setThemesListItems(themesListItems);
@@ -175,7 +173,6 @@ public class FragmentForumSections extends Fragment {
                 for (int i = 0; i < result.length(); i++) {
                     JSONObject object = new JSONObject(String.valueOf(result.getJSONObject(i)));
                     cities.add(object.optString("city"));
-                    checkedCity.put(object.optString("city"), true);
                 }
 
                 inflatedView.post(() -> {
@@ -204,7 +201,7 @@ public class FragmentForumSections extends Fragment {
             sectionsFilter.setLayoutManager(layoutManager);
 
             ForumThemesListAdapter.OnThemeClickListener onThemeClickListener = (theme, checkBox) -> {
-                List<JSONObject> oldThemes = new ArrayList<>();
+                List<Theme> oldThemes = new ArrayList<>();
                 currentThemes = new ArrayList<>(themesList);
 
                 if (checkBox.isChecked()) {
@@ -215,9 +212,9 @@ public class FragmentForumSections extends Fragment {
                 }
                 checkAllSectionsItems();
 
-                for (JSONObject item : themesList) {
+                for (Theme item : themesList) {
                     for (Map.Entry<String, Boolean> entry: checked.entrySet()) {
-                        if (item.optString("sections").equals(entry.getKey()) && !entry.getValue()) {
+                        if (item.getSections().equals(entry.getKey()) && !entry.getValue()) {
                             oldThemes.add(item);
                         }
                     }
@@ -246,7 +243,7 @@ public class FragmentForumSections extends Fragment {
         }
     }
 
-    private void setThemesList(List<JSONObject> themesList) {
+    private void setThemesList(List<Theme> themesList) {
         themesRecycler.post(() -> {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
                     inflatedView.getContext(),
@@ -255,11 +252,11 @@ public class FragmentForumSections extends Fragment {
             );
             themesRecycler.setLayoutManager(layoutManager);
 
-            ForumThemesAdapter.OnThemeClickListener onThemeClickListener = (theme, category) -> {
-
+            ForumThemesAdapter.OnThemeClickListener onThemeClickListener = (themeId, category) -> {
                 Intent intent = new Intent(inflatedView.getContext(), ViewTheme.class);
-                intent.putExtra("theme", theme.toString());
+                intent.putExtra("themeId", themeId);
                 intent.putExtra("id", category);
+
                 this.startActivity(intent);
             };
 
@@ -283,13 +280,15 @@ public class FragmentForumSections extends Fragment {
         Runnable runnable = () -> {
             try {
                 JSONArray result = requests.setRequest(requests.urlRequest + "themes", params);
+
                 for (int i = 0; i < result.length(); i++) {
-                    JSONObject object = new JSONObject(String.valueOf(result.getJSONObject(i)));
-                    if (!themesListItems.contains(object.getString("sections"))) {
-                        checked.put(object.getString("sections"), true);
-                        themesListItems.add(object.getString("sections"));
+                    JSONObject theme = result.getJSONObject(i);
+                    this.themesList.add(requests.getTheme(theme));
+
+                    if (!themesListItems.contains(theme.getString("sections"))) {
+                        checked.put(theme.getString("sections"), true);
+                        themesListItems.add(theme.getString("sections"));
                     }
-                    themesList.add(object);
                 }
                 this.inflatedView.post(() -> {
                     themesAdapter.notifyDataSetChanged();
@@ -318,12 +317,12 @@ public class FragmentForumSections extends Fragment {
         });
     }
 
-    private void searchThemesByEditText(String search, List<JSONObject> themesList) {
-        List<JSONObject> currentThemes = new ArrayList<>();
-        List<JSONObject> startThemes = new ArrayList<>(themesList);
+    private void searchThemesByEditText(String search, List<Theme> themesList) {
+        List<Theme> currentThemes = new ArrayList<>();
+        List<Theme> startThemes = new ArrayList<>(themesList);
         String searchText = search.toLowerCase(Locale.ROOT);
-        for (JSONObject item: themesList) {
-            if(!item.optString("title").toLowerCase(Locale.ROOT).contains(searchText)) {
+        for (Theme item: themesList) {
+            if(!item.getTitle().toLowerCase(Locale.ROOT).contains(searchText)) {
                 currentThemes.add(item);
             }
         }

@@ -9,14 +9,23 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myaquarium.fragment.FragmentForumViewTheme;
+import com.example.myaquarium.model.Theme;
 import com.example.myaquarium.service.Navigation;
+import com.example.myaquarium.service.Requests;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ViewTheme extends AppCompatActivity {
+    private Theme theme;
+    private Requests requests;
     private String id;
 
     @Override
@@ -26,19 +35,33 @@ public class ViewTheme extends AppCompatActivity {
         Navigation.setMenuNavigation(this);
 
         this.setToolbar();
+        requests = new Requests();
 
         Bundle arguments = getIntent().getExtras();
-        id = arguments.get("id").toString();
-        JSONObject theme = new JSONObject();
-        try {
-            theme = new JSONObject(arguments.getString("theme"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        this.id = arguments.get("id").toString();
+        this.getThemeById(arguments.getString("themeId"));
+    }
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.scrollViewTheme, FragmentForumViewTheme.newInstance(theme, id));
-        ft.commit();
+    private void getThemeById(String themeId) {
+        List<NameValuePair> params = new ArrayList<>(List.of(
+                new BasicNameValuePair("theme_id", themeId)
+            )
+        );
+        Runnable runnable = () -> {
+            try {
+                JSONArray result = requests.setRequest(requests.urlRequest + "themes/getTheme", params);
+                this.theme = requests.getTheme(result.getJSONObject(0));
+                runOnUiThread(() -> {
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.scrollViewTheme, FragmentForumViewTheme.newInstance(theme, id));
+                    ft.commit();
+                });
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
     private void setToolbar() {

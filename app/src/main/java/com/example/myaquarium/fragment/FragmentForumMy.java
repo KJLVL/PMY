@@ -19,6 +19,7 @@ import com.example.myaquarium.R;
 import com.example.myaquarium.ViewTheme;
 import com.example.myaquarium.adapter.ForumThemesAdapter;
 import com.example.myaquarium.adapter.ForumUserThemesAdapter;
+import com.example.myaquarium.model.Theme;
 import com.example.myaquarium.service.Requests;
 
 import org.apache.http.NameValuePair;
@@ -37,8 +38,8 @@ public class FragmentForumMy extends Fragment {
     private RecyclerView themesRecycler;
     private RecyclerView likedRecycler;
 
-    private List<JSONObject> themesList;
-    private List<JSONObject> likedList;
+    private List<Theme> themesList;
+    private List<Theme> likedList;
 
     private Requests requests;
 
@@ -103,9 +104,9 @@ public class FragmentForumMy extends Fragment {
             try {
                 JSONArray list = requests.setRequest(requests.urlRequest + "user/forum/themes", this.params);
                 for (int i = 0; i < list.length(); i++) {
-                    JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
-                    if (object.optString("success").equals("0")) return;
-                    themesList.add(object);
+                    JSONObject theme = list.getJSONObject(i);
+                    if (theme.optString("success").equals("0")) return;
+                    this.themesList.add(requests.getTheme(theme));
                 }
                 this.inflatedView.post(() -> {
                     themesAdapter.notifyDataSetChanged();
@@ -127,9 +128,9 @@ public class FragmentForumMy extends Fragment {
             );
             themesRecycler.setLayoutManager(layoutManager);
 
-            ForumUserThemesAdapter.OnThemeClickListener onThemeClickListener = (theme, category) -> {
+            ForumUserThemesAdapter.OnThemeClickListener onThemeClickListener = (themeId, category) -> {
                 Intent intent = new Intent(inflatedView.getContext(), ViewTheme.class);
-                intent.putExtra("theme", theme.toString());
+                intent.putExtra("themeId", themeId);
                 intent.putExtra("id", category);
                 this.startActivity(intent);
             };
@@ -152,17 +153,16 @@ public class FragmentForumMy extends Fragment {
 
     private void getUserLiked() {
         likedList = new ArrayList<>();
+
         Runnable runnable = () -> {
             try {
                 JSONArray list = requests.setRequest(requests.urlRequest + "user/forum/liked", this.params);
                 for (int i = 0; i < list.length(); i++) {
-                    JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
-                    if (object.optString("success").equals("0")) return;
-                    likedList.add(object);
+                    JSONObject theme = list.getJSONObject(i);
+                    if (theme.optString("success").equals("0")) return;
+                    likedList.add(requests.getTheme(theme));
                 }
-                this.inflatedView.post(() -> {
-                    likedAdapter.notifyDataSetChanged();
-                });
+                this.inflatedView.post(() -> likedAdapter.notifyDataSetChanged());
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -180,9 +180,9 @@ public class FragmentForumMy extends Fragment {
             );
             likedRecycler.setLayoutManager(layoutManager);
 
-            ForumThemesAdapter.OnThemeClickListener onThemeClickListener = (theme, category) -> {
+            ForumThemesAdapter.OnThemeClickListener onThemeClickListener = (themeId, category) -> {
                 Intent intent = new Intent(inflatedView.getContext(), ViewTheme.class);
-                intent.putExtra("theme", theme.toString());
+                intent.putExtra("themeId", themeId);
                 intent.putExtra("id", category);
                 this.startActivity(intent);
             };

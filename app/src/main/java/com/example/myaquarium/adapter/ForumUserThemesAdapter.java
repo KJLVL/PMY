@@ -10,28 +10,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.R;
 import com.example.myaquarium.adapter.view.ForumUserThemesViewHolder;
-
-import org.json.JSONObject;
+import com.example.myaquarium.model.Theme;
 
 import java.util.List;
 
 public class ForumUserThemesAdapter extends RecyclerView.Adapter<ForumUserThemesViewHolder> {
     private final Context context;
-    private final List<JSONObject> themesList;
+    private final List<Theme> themesList;
     private final OnThemeClickListener onClickListener;
     private final OnEditClickListener onEditListener;
 
     public interface OnThemeClickListener {
-        void onStateClick(JSONObject themeId, String category);
+        void onStateClick(String themeId, String category);
     }
 
     public interface OnEditClickListener {
-        void onStateClick(JSONObject themeId);
+        void onStateClick(Theme themeId);
     }
 
     public ForumUserThemesAdapter(
             Context context,
-            List<JSONObject> themesList,
+            List<Theme> themesList,
             OnThemeClickListener onClickListener,
             OnEditClickListener onEditListener
     ) {
@@ -53,12 +52,12 @@ public class ForumUserThemesAdapter extends RecyclerView.Adapter<ForumUserThemes
 
     @Override
     public void onBindViewHolder(@NonNull ForumUserThemesViewHolder holder, int position) {
-        holder.theme.setText(themesList.get(position).optString("title"));
-        holder.date.setText(themesList.get(position).optString("date"));
+        holder.theme.setText(themesList.get(position).getTitle());
+        holder.date.setText(themesList.get(position).getDate());
         this.setBackground(holder, position);
 
         holder.sectionsItem.setOnClickListener(
-                v -> onClickListener.onStateClick(themesList.get(position), themesList.get(position).optString("category_id"))
+                v -> onClickListener.onStateClick(themesList.get(position).getId(), themesList.get(position).getCategoryId())
         );
         holder.edit.setOnClickListener(
                 v -> onEditListener.onStateClick(themesList.get(position))
@@ -66,7 +65,7 @@ public class ForumUserThemesAdapter extends RecyclerView.Adapter<ForumUserThemes
     }
 
     private void setBackground(ForumUserThemesViewHolder holder, int position) {
-        switch (themesList.get(position).optString("sections")) {
+        switch (themesList.get(position).getSections()) {
             case "Общие вопросы содержания":
                 holder.sectionsItem.setBackgroundColor(context.getResources().getColor(R.color.general_issues));
                 break;
