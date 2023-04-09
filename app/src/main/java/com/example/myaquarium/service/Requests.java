@@ -21,8 +21,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class Requests {
-    public final String urlRequest = "https://f376-37-112-232-215.ngrok-free.app/";
-    public final String urlRequestImg = "https://f376-37-112-232-215.ngrok-free.app/img/";
+    public final String urlRequest = "https://c1bf-37-112-232-215.ngrok-free.app/";
+    public final String urlRequestImg = "https://c1bf-37-112-232-215.ngrok-free.app/img/";
 
     public JSONArray setRequest(
             String url,

@@ -354,7 +354,8 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
                     inflatedView.getContext(),
                     comments,
                     onAnswerClickListener,
-                    onClickImageListener
+                    onClickImageListener,
+                    sharedpreferences.getString("id", null)
             );
             commentsRecycler.setAdapter(forumCommentsAdapter);
         });

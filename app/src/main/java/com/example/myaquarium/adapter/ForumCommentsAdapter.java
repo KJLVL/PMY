@@ -24,6 +24,7 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
     private final Requests requests = new Requests();
     private final ForumCommentsAdapter.onAnswerClickListener onClickListener;
     private final ForumCommentsAdapter.onClickImageListener imageClickListener;
+    private final String userId;
 
     public interface onAnswerClickListener {
         void onStateClick(String author, String name);
@@ -37,12 +38,14 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
             Context context,
             JSONArray commentsList,
             ForumCommentsAdapter.onAnswerClickListener onClickListener,
-            ForumCommentsAdapter.onClickImageListener imageClickListener
+            ForumCommentsAdapter.onClickImageListener imageClickListener,
+            String userId
     ) {
         this.context = context;
         this.commentsList = commentsList;
         this.onClickListener = onClickListener;
         this.imageClickListener = imageClickListener;
+        this.userId = userId;
     }
 
     @NonNull
@@ -86,9 +89,15 @@ public class ForumCommentsAdapter extends RecyclerView.Adapter<ForumCommentsView
                         )
                 );
             }
-            holder.answer.setOnClickListener(view -> {
-                onClickListener.onStateClick(jsonObject.optString("user_id"), jsonObject.optString("name"));
-            });
+            if (!jsonObject.optString("user_id").equals(userId)) {
+                holder.answer.setOnClickListener(view -> onClickListener.onStateClick(
+                                jsonObject.optString("user_id"),
+                                jsonObject.optString("name")
+                        )
+                );
+            } else {
+                holder.answer.setVisibility(View.GONE);
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();

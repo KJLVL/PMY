@@ -1,11 +1,11 @@
 package com.example.myaquarium.adapter.view;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.R;
@@ -19,7 +19,7 @@ public class ForumCommentsViewHolder extends RecyclerView.ViewHolder {
     public final TextView comment;
     public final LinearLayout images;
     public final PhotoView switcher;
-    public final AppCompatButton answer;
+    public final Button answer;
 
     public ForumCommentsViewHolder(View view){
         super(view);

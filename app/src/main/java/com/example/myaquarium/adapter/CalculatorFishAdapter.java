@@ -9,16 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.R;
-import com.example.myaquarium.adapter.view.FishListWithChoiceViewHolder;
+import com.example.myaquarium.adapter.view.CalculatorFishViewHolder;
 
 import java.util.List;
 
-public class FishListWithChoiceAdapter extends RecyclerView.Adapter<FishListWithChoiceViewHolder> {
+public class CalculatorFishAdapter extends RecyclerView.Adapter<CalculatorFishViewHolder> {
     private final Context context;
     private final List<String> fishList;
     private final boolean[] checked;
 
-    public FishListWithChoiceAdapter(
+    public CalculatorFishAdapter(
             Context context,
             List<String> fishList
     ) {
@@ -29,16 +29,16 @@ public class FishListWithChoiceAdapter extends RecyclerView.Adapter<FishListWith
 
     @NonNull
     @Override
-    public FishListWithChoiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CalculatorFishViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View fishItems = LayoutInflater
                 .from(context)
                 .inflate(R.layout.fish_list_item_by_comp, parent, false);
 
-        return new FishListWithChoiceViewHolder(fishItems);
+        return new CalculatorFishViewHolder(fishItems);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FishListWithChoiceViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CalculatorFishViewHolder holder, int position) {
         holder.checkBox.setText(fishList.get(position));
         holder.checkBox.setChecked(checked[position]);
         holder.checkBox.setOnClickListener(

@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.R;
 import com.example.myaquarium.Service;
-import com.example.myaquarium.adapter.FishListWithChoiceAdapter;
+import com.example.myaquarium.adapter.CalculatorFishAdapter;
 import com.example.myaquarium.adapter.ResultCompatibilityAdapter;
 import com.example.myaquarium.service.CalculateMessages;
 import com.example.myaquarium.service.Requests;
@@ -41,7 +41,7 @@ public class FragmentServiceCalculatorFish extends Fragment {
 
     private Requests requests;
 
-    private FishListWithChoiceAdapter fishAdapter;
+    private CalculatorFishAdapter fishAdapter;
     private ResultCompatibilityAdapter compatibilityAdapter;
 
     private boolean[] checked;
@@ -137,7 +137,7 @@ public class FragmentServiceCalculatorFish extends Fragment {
 
     private void setFishList(List<String> items) {
         listview.post(() -> {
-            fishAdapter = new FishListWithChoiceAdapter(inflatedView.getContext(), items);
+            fishAdapter = new CalculatorFishAdapter(inflatedView.getContext(), items);
             listview.setAdapter(fishAdapter);
             checked = fishAdapter.getChecked();
         });

@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myaquarium.R;
 
-public class FishListWithChoiceViewHolder extends RecyclerView.ViewHolder {
+public class CalculatorFishViewHolder extends RecyclerView.ViewHolder {
     public final SwitchCompat checkBox;
 
-    public FishListWithChoiceViewHolder(View view){
+    public CalculatorFishViewHolder(View view){
         super(view);
         checkBox = view.findViewById(R.id.item);
     }

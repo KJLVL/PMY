@@ -13,7 +13,7 @@
         android:gravity="center_vertical"
         android:padding="15dp"
         android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="7dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UselessParent">
@@ -94,14 +94,15 @@
                     android:layout_gravity="center"/>
             </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 android:id="@+id/answer"
                 android:layout_marginTop="7dp"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:background="@color/bthAll"
+                android:layout_height="35dp"
+                android:backgroundTint="@color/bthAll"
                 android:textColor="@color/white"
                 android:layout_gravity="end"
+                android:textSize="10sp"
                 android:text="ответить"
                 />
 
