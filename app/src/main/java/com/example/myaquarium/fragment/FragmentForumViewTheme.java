@@ -201,7 +201,10 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
 
         Runnable runnable = () -> {
             try {
-                JSONArray comments = requests.setRequest(requests.urlRequest + "user/forum/comment", params);
+                JSONArray comments = requests.setRequest(
+                        requests.urlRequest + "user/forum/comment",
+                        params
+                );
                 for (int i = 0; i < comments.length(); i++) {
                     JSONObject result = new JSONObject(String.valueOf(comments.getJSONObject(i)));
                     if (result.optString("success").equals("1")) {
@@ -215,6 +218,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
                                     inflatedView.getContext(),
                                     "Комментарий был успешно добавлен", Toast.LENGTH_LONG
                             ).show();
+
                             InputMethodManager imm = (InputMethodManager) getActivity()
                                     .getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(
@@ -224,6 +228,8 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
                                             .getWindowToken(),
                                     0
                             );
+                            comment.setText("");
+
                             this.getComments();
                         });
                     }
@@ -242,7 +248,7 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
                 new BasicNameValuePair("theme_id", theme.getId()),
                 new BasicNameValuePair("like", String.valueOf(likeButton.isLiked())),
                 new BasicNameValuePair("id", sharedpreferences.getString("id", null))
-        )
+            )
         );
 
         Runnable runnable = () -> {

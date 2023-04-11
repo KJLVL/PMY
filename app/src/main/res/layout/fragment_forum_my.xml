@@ -18,7 +18,7 @@
         <Button
             android:id="@+id/newTheme"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_gravity="end"
             android:layout_marginStart="15dp"
             android:layout_marginTop="5dp"
@@ -26,7 +26,7 @@
             android:backgroundTint="@color/bthAll"
             android:text="Создать новую тему"
             android:textColor="@color/white"
-            android:textSize="13sp" />
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/showMyThemes"

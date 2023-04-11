@@ -47,7 +47,8 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/calc_item"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:padding="5dp"
+                android:textSize="16sp"
                 tools:ignore="RtlSymmetry" />
 
             <TextView
@@ -57,7 +58,8 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/calc_item"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="16sp"
+                android:padding="5dp"
                 tools:ignore="RtlSymmetry" />
 
             <TextView
@@ -67,7 +69,8 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/calc_item"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:padding="5dp"
+                android:textSize="16sp"
                 tools:ignore="RtlSymmetry" />
 
             <LinearLayout

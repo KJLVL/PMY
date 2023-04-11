@@ -18,7 +18,8 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/scrollSections"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/header"
@@ -26,9 +27,9 @@
         android:layout_above="@+id/include"
         android:layout_marginBottom="1dp"
         android:background="@drawable/background"
+        android:orientation="vertical"
         android:isScrollContainer="false">
         <LinearLayout
-            android:id="@+id/scrollSections"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -44,7 +45,7 @@
                 app:itemTextColor="@drawable/service_menu_view"
                 app:menu="@menu/forum_menu" />
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
     <include
         android:id="@+id/include"

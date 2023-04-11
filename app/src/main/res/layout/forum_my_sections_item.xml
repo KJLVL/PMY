@@ -55,14 +55,14 @@
         <Button
             android:id="@+id/edit"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_gravity="center_horizontal|center_vertical"
             android:layout_weight="5"
             android:layout_marginEnd="5dp"
             android:backgroundTint="@color/bthAll"
             android:text="изменить"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
 
     </LinearLayout>
 

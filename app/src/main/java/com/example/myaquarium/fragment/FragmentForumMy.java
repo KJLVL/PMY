@@ -106,7 +106,8 @@ public class FragmentForumMy extends Fragment {
                 for (int i = 0; i < list.length(); i++) {
                     JSONObject theme = list.getJSONObject(i);
                     if (theme.optString("success").equals("0")) return;
-                    this.themesList.add(requests.getTheme(theme));
+                    Theme requestsTheme = requests.getTheme(theme);
+                    this.themesList.add(requestsTheme);
                 }
                 this.inflatedView.post(() -> {
                     themesAdapter.notifyDataSetChanged();

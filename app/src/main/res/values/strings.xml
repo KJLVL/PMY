@@ -31,7 +31,7 @@
     <string name="service_menu_calendar">Календарь</string>
     <string name="service_calculator_volume">Калькулятор объема аквариума</string>
     <string name="service_calculator_priming">Калькулятор объема грунта</string>
-    <string name="service_volume_fish">Выберите рыбок, которые живут в вашем аквариуме:</string>
+    <string name="service_volume_fish">Выберите ваших рыбок:</string>
     <string name="service_calculator_search">Поиск</string>
     <string name="service_use_my_fish">Расчитать для рыбок, указанных в профиле</string>
     <string name="service_calculate">Рассчитать объем аквариума</string>
@@ -84,7 +84,7 @@
     <string name="settings_volume">Объем аквариума (в литрах)</string>
     <string name="settings_my_fish">Мои рыбки</string>
     <string name="settings_add">Выберите рыбок для добавления:</string>
-    <string name="settings_save">Сохранить</string>
+    <string name="settings_save">Сохранить изменения</string>
 
     <!--    for profile-->
     <string name="settings_myLikeData">Избранное</string>

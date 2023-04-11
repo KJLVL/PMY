@@ -284,14 +284,14 @@
             <Button
                 android:id="@+id/save"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="45dp"
                 android:layout_gravity="end"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
                 android:backgroundTint="@color/bthAll"
                 android:text="@string/settings_save"
                 android:textColor="@color/white"
-                android:textSize="10sp" />
+                android:textSize="11sp" />
         </LinearLayout>
 
     </ScrollView>
