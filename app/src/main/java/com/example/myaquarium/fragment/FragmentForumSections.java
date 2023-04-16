@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -76,6 +77,13 @@ public class FragmentForumSections extends Fragment {
                 container,
                 false
         );
+
+        TextView cityText = inflatedView.findViewById(R.id.cityText);
+        LinearLayout citySelect = inflatedView.findViewById(R.id.citySelect);
+        if (this.id != 2) {
+            cityText.setVisibility(View.GONE);
+            citySelect.setVisibility(View.GONE);
+        }
 
         search = inflatedView.findViewById(R.id.search);
         citySpinner = inflatedView.findViewById(R.id.citySpinner);

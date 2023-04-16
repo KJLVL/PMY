@@ -70,7 +70,6 @@ public class FragmentForumNewTheme extends Fragment {
     private String sectionId;
     private List<String> photoNames;
     private List<String> photoList;
-    private Bitmap bitmap;
     private int countPhoto = 0;
 
     public static FragmentForumNewTheme newInstance() {
@@ -129,6 +128,11 @@ public class FragmentForumNewTheme extends Fragment {
 
     private void getCities() {
         List<String> cities = new ArrayList<>();
+        SharedPreferences sharedpreferences
+                = this.getActivity().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
+        List<NameValuePair> params = new ArrayList<>(List.of(
+                new BasicNameValuePair("id", sharedpreferences.getString("id", null))
+        ));
         Runnable runnable = () -> {
             try {
                 JSONArray result = requests.setRequest(requests.urlRequest + "city", new ArrayList<>());
@@ -137,7 +141,7 @@ public class FragmentForumNewTheme extends Fragment {
                     cities.add(object.optString("city"));
                 }
 
-                JSONArray user = requests.setRequest(requests.urlRequest + "user", new ArrayList<>());
+                JSONArray user = requests.setRequest(requests.urlRequest + "user", params);
                 userInfo = new JSONObject(user.getJSONObject(0).toString());
 
                 inflatedView.post(() -> {

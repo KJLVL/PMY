@@ -37,6 +37,8 @@ public class FragmentForumMy extends Fragment {
 
     private RecyclerView themesRecycler;
     private RecyclerView likedRecycler;
+    private TextView myTheme;
+    private TextView myLike;
 
     private List<Theme> themesList;
     private List<Theme> likedList;
@@ -68,6 +70,8 @@ public class FragmentForumMy extends Fragment {
         );
 
         Button newTheme = inflatedView.findViewById(R.id.newTheme);
+        myTheme = inflatedView.findViewById(R.id.myTheme);
+        myLike = inflatedView.findViewById(R.id.myLike);
         themesRecycler = inflatedView.findViewById(R.id.themesRecycler);
         likedRecycler = inflatedView.findViewById(R.id.likedRecycler);
         TextView showMyThemes = inflatedView.findViewById(R.id.showMyThemes);
@@ -105,13 +109,16 @@ public class FragmentForumMy extends Fragment {
                 JSONArray list = requests.setRequest(requests.urlRequest + "user/forum/themes", this.params);
                 for (int i = 0; i < list.length(); i++) {
                     JSONObject theme = list.getJSONObject(i);
-                    if (theme.optString("success").equals("0")) return;
+                    if (theme.optString("success").equals("0")) {
+                        this.myTheme.post(() -> myTheme.setVisibility(View.VISIBLE));
+                        return;
+                    } else {
+                        this.myTheme.post(() -> myTheme.setVisibility(View.GONE));
+                    }
                     Theme requestsTheme = requests.getTheme(theme);
                     this.themesList.add(requestsTheme);
                 }
-                this.inflatedView.post(() -> {
-                    themesAdapter.notifyDataSetChanged();
-                });
+                this.inflatedView.post(() -> themesAdapter.notifyDataSetChanged());
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -160,7 +167,12 @@ public class FragmentForumMy extends Fragment {
                 JSONArray list = requests.setRequest(requests.urlRequest + "user/forum/liked", this.params);
                 for (int i = 0; i < list.length(); i++) {
                     JSONObject theme = list.getJSONObject(i);
-                    if (theme.optString("success").equals("0")) return;
+                    if (theme.optString("success").equals("0")) {
+                        this.myLike.post(() -> myLike.setVisibility(View.VISIBLE));
+                        return;
+                    } else {
+                        this.myLike.post(() -> myLike.setVisibility(View.GONE));
+                    }
                     likedList.add(requests.getTheme(theme));
                 }
                 this.inflatedView.post(() -> likedAdapter.notifyDataSetChanged());

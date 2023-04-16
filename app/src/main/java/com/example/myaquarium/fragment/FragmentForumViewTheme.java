@@ -106,7 +106,11 @@ public class FragmentForumViewTheme extends Fragment implements ViewSwitcher.Vie
         }
 
         TextView city = inflatedView.findViewById(R.id.city);
-        city.setText("Город: " + theme.getCity());
+        if (theme.getCategoryId().equals("2")) {
+            city.setText("Город: " + theme.getCity());
+        } else {
+            city.setVisibility(View.GONE);
+        }
 
 
         TextView themeTitle = inflatedView.findViewById(R.id.themeTitle);
