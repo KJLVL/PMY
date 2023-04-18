@@ -63,19 +63,28 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listview"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="250dp"
             android:background="@drawable/calc_item"
             android:padding="20dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:ignore="RtlSymmetry"
             tools:listitem="@layout/fish_list_item_by_comp" />
 
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/useMyFish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:buttonTint="@color/mainColor"
+            android:text="@string/service_use_my_fish"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
         <Button
             android:id="@+id/calculationFish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="7dp"
             android:textSize="12sp"
             android:backgroundTint="@color/bthAll"
             android:text="@string/service_com_btn"

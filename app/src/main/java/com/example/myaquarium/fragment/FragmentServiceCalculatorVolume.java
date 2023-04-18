@@ -104,7 +104,6 @@ public class FragmentServiceCalculatorVolume extends Fragment {
             }
         });
 
-
         return inflatedView;
     }
 

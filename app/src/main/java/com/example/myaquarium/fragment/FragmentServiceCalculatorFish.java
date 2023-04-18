@@ -1,11 +1,14 @@
 package com.example.myaquarium.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +33,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +42,8 @@ public class FragmentServiceCalculatorFish extends Fragment {
     private RecyclerView listview;
     private RecyclerView listviewResult;
     private Button calculationFish;
+    private CheckBox useMyFish;
+    private LinearLayout textResult;
 
     private Requests requests;
 
@@ -65,21 +71,77 @@ public class FragmentServiceCalculatorFish extends Fragment {
         listview = inflatedView.findViewById(R.id.listview);
         listviewResult = inflatedView.findViewById(R.id.listviewResult);
         calculationFish = inflatedView.findViewById(R.id.calculationFish);
+        useMyFish = inflatedView.findViewById(R.id.useMyFish);
+        textResult = inflatedView.findViewById(R.id.textResult);
 
         this.setToolbar();
         this.setMessage();
 
         this.getFishList();
 
+        useMyFish.setOnClickListener(view -> {
+            if (useMyFish.isChecked()) {
+                this.getUserFish();
+            } else {
+                currentFishList.clear();
+                Arrays.fill(checked, false);
+                setFishList(fishList);
+            }
+        });
+
         this.calculateFish();
 
         return inflatedView;
     }
 
+    private void getUserFish() {
+
+        SharedPreferences sharedpreferences = getActivity().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
+        List<NameValuePair> params = new ArrayList<>(List.of(
+                new BasicNameValuePair("id", sharedpreferences.getString("id", null))
+        )
+        );
+        Runnable runnable = () -> {
+            try {
+                currentFishList.clear();
+
+                JSONArray list = requests.setRequest(requests.urlRequest + "user/fish", params);
+                for (int i = 0; i < list.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(list.getJSONObject(i)));
+                    if (object.toString().contains("success")) {
+                        listview.post(() -> {
+                            useMyFish.setChecked(false);
+                            useMyFish.setClickable(false);
+                            Toast.makeText(
+                                    inflatedView.getContext(),
+                                    "Данные о ваших рыбках не заполнены", Toast.LENGTH_SHORT
+                            ).show();
+                        });
+                        return;
+                    }
+
+                    currentFishList.add(object.getString("fish"));
+                }
+
+                for (int i = 0; i < fishList.size(); i++) {
+                    for (String fish: currentFishList) {
+                        if (fish.equals(fishList.get(i))) {
+                            checked[i] = true;
+                            break;
+                        }
+                    }
+                }
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+
     private void setCompatibilityList(List<List<String>> compList) {
         listviewResult.post(() -> {
             if (compList.size() != 0) {
-                LinearLayout textResult = inflatedView.findViewById(R.id.textResult);
                 textResult.setVisibility(View.VISIBLE);
                 listviewResult.setVisibility(View.VISIBLE);
                 TextView btnRes = inflatedView.findViewById(R.id.btnRes);

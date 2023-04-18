@@ -54,7 +54,7 @@
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:gravity="center_horizontal"
-                    app:cardCornerRadius="50dp">
+                    app:cardCornerRadius="45dp">
 
                     <ImageView
                         android:id="@+id/image"
@@ -244,36 +244,33 @@
                     android:id="@+id/result"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/fishText"
+                <LinearLayout
+                    android:id="@+id/layoutResult"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/black"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:orientation="vertical" />
 
                 <Button
                     android:id="@+id/clearResults"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_gravity="end"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:backgroundTint="@color/bthAll"
                     android:text="очистить"
-                    android:textColor="@color/gray"
-                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
                     android:visibility="gone" />
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/layoutSend"

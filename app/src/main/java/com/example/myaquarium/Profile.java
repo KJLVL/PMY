@@ -3,11 +3,13 @@ package com.example.myaquarium;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -65,11 +67,11 @@ public class Profile extends AppCompatActivity {
 
     private TextView nameField;
     private TextView result;
-    private TextView fishText;
     private TextView volumeField;
     private TextView myFish;
     private ImageView image;
     private LinearLayout linearLayout;
+    private LinearLayout layoutResult;
     private Button sendFish;
     private Button clearResults;
     private ProgressBar progressBar;
@@ -100,9 +102,9 @@ public class Profile extends AppCompatActivity {
 
         progressBar = this.findViewById(R.id.progressBar);
         result = this.findViewById(R.id.result);
-        fishText = this.findViewById(R.id.fishText);
 
         linearLayout = this.findViewById(R.id.layout);
+        layoutResult = this.findViewById(R.id.layoutResult);
         nameField = this.findViewById(R.id.nameField);
         myFish = this.findViewById(R.id.myFish);
         image = this.findViewById(R.id.image);
@@ -133,7 +135,8 @@ public class Profile extends AppCompatActivity {
         clearResults = this.findViewById(R.id.clearResults);
         clearResults.setOnClickListener(view -> {
             this.clearResults.setVisibility(View.GONE);
-            this.fishText.setVisibility(View.GONE);
+            this.layoutResult.setVisibility(View.GONE);
+            this.layoutResult.removeAllViews();
             this.result.setVisibility(View.GONE);
             this.downloadDefine.setVisibility(View.VISIBLE);
         });
@@ -232,7 +235,7 @@ public class Profile extends AppCompatActivity {
 
     private void getFishList() {
         fishList = new ArrayList<>();
-        fishList.add("");
+        fishList.add("не выбрано");
         Runnable runnable = () -> {
             try {
                 JSONArray list = requests.setRequest(requests.urlRequest + "fish/list", new ArrayList<>());
@@ -257,13 +260,13 @@ public class Profile extends AppCompatActivity {
                 fishList
         );
         this.fishSpinner.setAdapter(adapter);
-        this.fishSpinner.setSelection(adapter.getPosition(""));
+        this.fishSpinner.setSelection(adapter.getPosition("не выбрано"));
 
         this.fishSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 try {
-                    if (adapterView.getSelectedItem() == "") {
+                    if (adapterView.getSelectedItem() == "не выбрано") {
                         return;
                     }
 
@@ -330,6 +333,7 @@ public class Profile extends AppCompatActivity {
                     this.downloadDefine.setVisibility(View.GONE);
                     this.linearLayout.removeAllViews();
                 });
+
                 HttpClient httpclient = new DefaultHttpClient();
                 HttpPost http = new HttpPost(this.requests.urlRequest + "recognize");
                 http.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
@@ -372,8 +376,8 @@ public class Profile extends AppCompatActivity {
                         return;
                     }
                     fishTextList.add(result.optString("fish_name"));
-                    this.setResults(fishTextList);
                 }
+                this.setResults(fishTextList);
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -385,12 +389,80 @@ public class Profile extends AppCompatActivity {
     private void setResults(List<String> fishTextList) {
         runOnUiThread(() -> {
             this.clearResults.setVisibility(View.VISIBLE);
+            this.layoutResult.setVisibility(View.VISIBLE);
             this.result.setVisibility(View.VISIBLE);
             this.result.setText(R.string.settings_yes_result);
-            this.fishText.setVisibility(View.VISIBLE);
             String fish = String.valueOf(fishTextList);
             fish = fish.substring(0, fish.length() - 1).substring(1);
-            this.fishText.setText(fish);
+            List<String> fishList = List.of(fish.split(", "));
+
+            for (String item: fishList) {
+                TextView fishText = new TextView(this);
+                fishText.setText(item);
+                fishText.setTextSize(16);
+                fishText.setTextColor(getResources().getColor(R.color.black));
+
+                Button button = new Button(this);
+                LinearLayout.LayoutParams lpBtn = new LinearLayout.LayoutParams(
+                        70,
+                        70
+                );
+                lpBtn.setMargins(30, 0, 0, 0);
+                button.setText("+");
+                button.setTextColor(Color.WHITE);
+                button.setLayoutParams(lpBtn);
+                button.setPadding(0,0,0,0);
+                button.setBackgroundResource(R.color.bthAll);
+
+                button.setOnClickListener(view -> {
+                    for (int i = 0; i < fishListCurrent.size(); i++) {
+                        JSONObject curFish = new JSONObject();
+
+                        if (fishListCurrent.get(i).optString("fish").equals(fishText.getText().toString())) {
+                            try {
+                                curFish.put("fish", fishText.getText().toString());
+                                curFish.put(
+                                        "count",
+                                        fishListCurrent.get(i).optInt("count") + 1
+                                );
+                                fishListCurrent.set(i, curFish);
+                                setFishList(fishListCurrent);
+                                return;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    JSONObject curFish = new JSONObject();
+                    try {
+                        curFish.put("fish", fishText.getText().toString());
+                        curFish.put("count", "1");
+                        fishListCurrent.add(curFish);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    setFishList(fishListCurrent);
+                });
+
+                LinearLayout layout = new LinearLayout(this);
+
+                layout.setOrientation(LinearLayout.HORIZONTAL);
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+
+                layoutParams.setMargins(0,0,0, 10);
+                layout.setLayoutParams(layoutParams);
+                layout.setGravity(Gravity.CENTER_VERTICAL);
+                layout.addView(fishText);
+                layout.addView(button);
+
+                layoutResult.addView(layout);
+            }
         });
     }
 
