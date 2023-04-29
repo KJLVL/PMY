@@ -55,7 +55,6 @@ public class FragmentForumSections extends Fragment {
     private Map<String, Boolean> checked;
 
     private final int id;
-
     private Requests requests;
 
     private ForumThemesAdapter themesAdapter;

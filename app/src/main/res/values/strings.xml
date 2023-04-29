@@ -97,7 +97,7 @@
     <string name="service_calendar_add">Добавить событие</string>
     <string name="service_calendar_add_text">Новая заметка</string>
     <string name="service_calendar_save">Сохранить</string>
-    <string name="service_calendar_note">Выберите дату и введите вашу заметку</string>
+    <string name="service_calendar_note">Введите вашу заметку</string>
 
     <string name="material_calendar_monday">ПН</string>
     <string name="material_calendar_tuesday">ВТ</string>

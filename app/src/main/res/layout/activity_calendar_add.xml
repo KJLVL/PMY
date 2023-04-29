@@ -54,19 +54,76 @@
             android:textColorHint="@color/gray"
             android:textSize="15sp" />
 
-        <androidx.appcompat.widget.AppCompatButton
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="5dp"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/addFish"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_marginBottom="5dp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="Повтор заметки"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="14sp" />-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/calc_item"-->
+<!--                android:orientation="horizontal">-->
+
+<!--                <pl.utkala.searchablespinner.SearchableSpinner-->
+<!--                    android:id="@+id/eventSpinner"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:closeText="закрыть"-->
+<!--                    app:dialogTitle="Выберите рыбок для добавления" />-->
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/repeatLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="5dp"-->
+<!--            android:orientation="vertical"-->
+<!--            android:visibility="gone">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_marginBottom="5dp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="Конец повтора"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="14sp" />-->
+
+<!--            <DatePicker-->
+<!--                android:id="@+id/datePicker"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:background="@drawable/layout"-->
+<!--                android:calendarViewShown="false"-->
+<!--                android:datePickerMode="spinner" />-->
+<!--        </LinearLayout>-->
+
+        <Button
             android:id="@+id/save"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_gravity="end"
             android:layout_marginTop="5dp"
-            android:background="@color/bthAll"
-            android:enabled="false"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/bthAll"
             android:text="@string/service_calendar_save"
             android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:textSize="13sp" />
     </LinearLayout>
 
     <include

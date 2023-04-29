@@ -134,5 +134,4 @@ public class Tips extends AppCompatActivity {
         tipsList.addAll(filterTips);
         tipsAdapter.notifyDataSetChanged();
     }
-
 }

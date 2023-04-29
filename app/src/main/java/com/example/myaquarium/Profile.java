@@ -65,7 +65,6 @@ public class Profile extends AppCompatActivity {
     private Requests requests;
     private User user;
 
-    private TextView nameField;
     private TextView result;
     private TextView volumeField;
     private TextView myFish;
@@ -105,7 +104,7 @@ public class Profile extends AppCompatActivity {
 
         linearLayout = this.findViewById(R.id.layout);
         layoutResult = this.findViewById(R.id.layoutResult);
-        nameField = this.findViewById(R.id.nameField);
+
         myFish = this.findViewById(R.id.myFish);
         image = this.findViewById(R.id.image);
         volumeField = this.findViewById(R.id.volumeField);
@@ -184,6 +183,7 @@ public class Profile extends AppCompatActivity {
 
                 this.runOnUiThread(() -> {
                     String name = this.user.getUserName() + " " + this.user.getSurname();
+                    TextView nameField = this.findViewById(R.id.nameField);
                     nameField.setText(name);
                     volumeField.setText(this.user.getAquariumVolume());
 

@@ -1,6 +1,9 @@
 package com.example.myaquarium;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
+import com.example.myaquarium.service.AlarmReceiver;
 import com.example.myaquarium.service.Navigation;
 import com.example.myaquarium.service.Requests;
 import com.example.myaquarium.service.UserData;
@@ -74,8 +78,30 @@ public class CalendarAdd extends AppCompatActivity {
         });
     }
 
-    private void saveEvent(String content) {
+    private void setNotice(String content) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.putExtra("content", content);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        String[] date = simpleDateFormat.format(this.calendar.getFirstSelectedDate().getTime()).split("-");
+        calendar.set(java.util.Calendar.YEAR, Integer.parseInt(date[0]));
+        calendar.set(java.util.Calendar.MONTH, Integer.parseInt(date[1]) - 1);
+        calendar.set(java.util.Calendar.DAY_OF_MONTH, Integer.parseInt(date[2]));
+        calendar.set(java.util.Calendar.HOUR_OF_DAY, 10);
+        calendar.set(java.util.Calendar.MINUTE, 0);
+        calendar.set(java.util.Calendar.SECOND, 0);
+        calendar.set(java.util.Calendar.MILLISECOND, 0);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+        }
+
+    }
+
+    private void saveEvent(String content) {
+        setNotice(content);
         List<NameValuePair> params = new ArrayList<>(List.of(
                 new BasicNameValuePair("date", simpleDateFormat.format(calendar.getFirstSelectedDate().getTime())),
                 new BasicNameValuePair("content", content),
@@ -93,6 +119,7 @@ public class CalendarAdd extends AppCompatActivity {
                                 getApplicationContext(),
                                 "Заметка была успешно добавлена", Toast.LENGTH_SHORT
                         ).show();
+                        setNotice(content);
                         startActivity(new Intent(this, Calendar.class));
                     });
                 }
@@ -140,5 +167,4 @@ public class CalendarAdd extends AppCompatActivity {
         Thread thread = new Thread(runnable);
         thread.start();
     }
-
 }

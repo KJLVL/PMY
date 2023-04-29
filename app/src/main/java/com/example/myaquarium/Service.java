@@ -18,11 +18,6 @@ import com.example.myaquarium.service.Navigation;
 import java.util.Objects;
 
 public class Service extends AppCompatActivity {
-    private ImageView fish;
-    private ImageView volume;
-    private ImageView priming;
-    private ImageView tips;
-    private ImageView calendar;
     private LinearLayout layoutService;
 
     @Override
@@ -32,18 +27,17 @@ public class Service extends AppCompatActivity {
         this.setToolbar();
 
         Navigation.setMenuNavigation(this);
-
-        fish = findViewById(R.id.fish);
-        volume = findViewById(R.id.volume);
-        priming = findViewById(R.id.priming);
-        tips = findViewById(R.id.tips);
-        calendar = findViewById(R.id.calendar);
-        layoutService = findViewById(R.id.scrollService);
-
         this.setNavigationByImage();
     }
 
     private void setNavigationByImage() {
+        ImageView fish = findViewById(R.id.fish);
+        ImageView volume = findViewById(R.id.volume);
+        ImageView priming = findViewById(R.id.priming);
+        ImageView tips = findViewById(R.id.tips);
+        ImageView calendar = findViewById(R.id.calendar);
+        layoutService = findViewById(R.id.scrollService);
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.addToBackStack(null);
 
